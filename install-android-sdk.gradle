@@ -1,0 +1,46 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+final File sdkDir = new File(buildDir, 'android-sdk')
+final File sdkTools = new File(sdkDir, 'sdk-tools.zip')
+
+// Download and unpack SDK tools
+sdkDir.mkdirs();
+ant.get(src: getSdkToolsUrl(), dest: sdkTools, skipexisting: true)
+ant.unzip(src: sdkTools, dest: sdkDir, overwrite: false)
+
+// Make the sdk manager executable
+final File sdkManager = new File(sdkDir, 'tools/bin/sdkmanager')
+sdkManager.executable = true
+
+// Create the local.properties file if necessary
+final File localProperties = new File(project.rootDir, 'local.properties')
+if (!localProperties.exists()) {
+    localProperties.text = "sdk.dir=${sdkDir.absolutePath}"
+}
+
+// Only after the extension has been filled, download the specified versions
+afterEvaluate {
+    execute sdkManager.absolutePath, "--sdk_root=${sdkDir.absolutePath}", "platforms;${android.compileSdkVersion}", "build-tools;${android.buildToolsVersion}"
+}
+
+
+String getSdkToolsUrl() {
+    if (Os.isFamily(Os.FAMILY_UNIX)) {
+        return 'https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip'
+    } else {
+        throw new RuntimeException('Unsupported OS. File a bug report to get it added')
+    }
+}
+
+void execute(final String... args) {
+    final Process p = args.execute()
+    p.out << 'y\n' * 1000
+
+    final StringBuilder output = new StringBuilder()
+    p.waitForProcessOutput(output, output)
+    println output.toString()
+    if (p.exitValue() != 0) {
+        println 'Failed to run'
+        throw new RuntimeException("Inlined execution exited with return value ${p.exitValue()}")
+    }
+}

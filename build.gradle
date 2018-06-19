@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.lint:lint-gradle:26.1.2'
+        classpath 'com.noveogroup.android:check:1.2.5'
+
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
+    jcenter()
+}
+
+apply from: 'install-android-sdk.gradle'
+apply plugin: 'com.android.application'
+apply plugin: 'com.noveogroup.android.check'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
+    lintOptions {
+        warningsAsErrors true
+        abortOnError true
+        disable 'GradleDependency', 'AllowBackup', 'GoogleAppIndexingWarning'
+    }
+}
+
+check {
+    abortOnError true
+    checkstyle { config hard() }
+    findbugs { config hard() }
+    pmd { config hard() }
+}
+
+defaultTasks 'assemble'
