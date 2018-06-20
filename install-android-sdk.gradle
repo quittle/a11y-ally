@@ -1,46 +1,53 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-final File sdkDir = new File(buildDir, 'android-sdk')
-final File sdkTools = new File(sdkDir, 'sdk-tools.zip')
+apply plugin: AndroidSdkInstallationPlugin
 
-// Download and unpack SDK tools
-sdkDir.mkdirs();
-ant.get(src: getSdkToolsUrl(), dest: sdkTools, skipexisting: true)
-ant.unzip(src: sdkTools, dest: sdkDir, overwrite: false)
+class AndroidSdkInstallationPlugin implements Plugin<Project> {
+    @Override
+    public void apply(final Project project) {
+        final File sdkDir = new File(project.buildDir, 'android-sdk')
+        final File sdkTools = new File(sdkDir, 'sdk-tools.zip')
 
-// Make the sdk manager executable
-final File sdkManager = new File(sdkDir, 'tools/bin/sdkmanager')
-sdkManager.executable = true
+        // Download and unpack SDK tools
+        sdkDir.mkdirs();
+        project.ant.get(src: getSdkToolsUrl(), dest: sdkTools, skipexisting: true)
+        project.ant.unzip(src: sdkTools, dest: sdkDir, overwrite: false)
 
-// Create the local.properties file if necessary
-final File localProperties = new File(project.rootDir, 'local.properties')
-if (!localProperties.exists()) {
-    localProperties.text = "sdk.dir=${sdkDir.absolutePath}"
-}
+        // Make the sdk manager executable
+        final File sdkManager = new File(sdkDir, 'tools/bin/sdkmanager')
+        sdkManager.executable = true
 
-// Only after the extension has been filled, download the specified versions
-afterEvaluate {
-    execute sdkManager.absolutePath, "--sdk_root=${sdkDir.absolutePath}", "platforms;${android.compileSdkVersion}", "build-tools;${android.buildToolsVersion}"
-}
+        // Create the local.properties file if necessary
+        final File localProperties = new File(project.rootDir, 'local.properties')
+        if (!localProperties.exists()) {
+            localProperties.text = "sdk.dir=${sdkDir.absolutePath}"
+        }
 
-
-String getSdkToolsUrl() {
-    if (Os.isFamily(Os.FAMILY_UNIX)) {
-        return 'https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip'
-    } else {
-        throw new RuntimeException('Unsupported OS. File a bug report to get it added')
+        // Only after the extension has been filled, download the specified versions
+        project.afterEvaluate {
+            execute sdkManager.absolutePath, "--sdk_root=${sdkDir.absolutePath}", "platforms;${project.android.compileSdkVersion}", "build-tools;${project.android.buildToolsVersion}"
+        }
     }
-}
 
-void execute(final String... args) {
-    final Process p = args.execute()
-    p.out << 'y\n' * 1000
 
-    final StringBuilder output = new StringBuilder()
-    p.waitForProcessOutput(output, output)
-    println output.toString()
-    if (p.exitValue() != 0) {
-        println 'Failed to run'
-        throw new RuntimeException("Inlined execution exited with return value ${p.exitValue()}")
+    private static String getSdkToolsUrl() {
+        if (Os.isFamily(Os.FAMILY_UNIX)) {
+            return 'https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip'
+        } else {
+            throw new RuntimeException('Unsupported OS. File a bug report to get it added')
+        }
+    }
+
+    private static void execute(final String... args) {
+        final Process p = args.execute()
+        p.out << 'y\n' * 1000
+
+        final StringBuilder output = new StringBuilder()
+        p.waitForProcessOutput(output, output)
+        println output.toString()
+        if (p.exitValue() != 0) {
+            println 'Failed to run'
+            throw new RuntimeException("Inlined execution exited with return value ${p.exitValue()}")
+        }
     }
 }
