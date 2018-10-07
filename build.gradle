@@ -14,12 +14,15 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.quittle.setup-android-sdk' version '0.0.1'
+}
+
 repositories {
     google()
     jcenter()
 }
 
-apply from: 'install-android-sdk.gradle'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.noveogroup.android.check'
