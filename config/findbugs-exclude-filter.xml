@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter>
+    <Match>
+        <Class name="com.quittle.a11yally.BuildConfig" />
+    </Match>
+    <Match>
+        <Class name="com.quittle.a11yally.R" />
+    </Match>
+    <Match>
+        <Class name="~com\.quittle\.a11yally\.R\$.*" />
+    </Match>
+</FindBugsFilter>

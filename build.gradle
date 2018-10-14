@@ -1,5 +1,5 @@
 buildscript {
-    project.ext.KOTLIN_VERSION = '1.2.51'
+    project.ext.KOTLIN_VERSION = '1.2.71'
 
     repositories {
         jcenter()
@@ -7,15 +7,15 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
-        classpath 'com.android.tools.lint:lint-gradle:26.1.2'
-        classpath 'com.noveogroup.android:check:1.2.5'
+        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.lint:lint-gradle:26.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
     }
 }
 
 plugins {
     id 'com.quittle.setup-android-sdk' version '0.0.1'
+    id 'com.vanniktech.code.quality.tools' version '0.13.0'
 }
 
 repositories {
@@ -25,11 +25,10 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.noveogroup.android.check'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 16
@@ -50,14 +49,20 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
 }
 
-check {
-    abortOnError true
-    checkstyle { config hard() }
-    findbugs { config hard() }
-    pmd { config hard() }
+codeQualityTools {
+    htmlReports true
+    xmlReports false
+
+    detekt {
+        config = 'config/detekt-config.yml'
+    }
+
+    findbugs {
+        excludeFilter = 'config/findbugs-exclude-filter.xml'
+    }
 }
 
-defaultTasks 'assemble', 'lint'
+defaultTasks 'assemble', 'check'
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-Xlint:all'

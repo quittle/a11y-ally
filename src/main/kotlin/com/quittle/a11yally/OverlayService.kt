@@ -1,12 +1,9 @@
 package com.quittle.a11yally
 
 import android.accessibilityservice.AccessibilityService
-import android.app.Service
-import android.content.Intent
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
-import android.os.IBinder
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.Gravity
@@ -15,22 +12,28 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 
-private val OVERLAY_TYPE : Int by lazy @Suppress("deprecation") {
+@Suppress("deprecation")
+private val overlayType: Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
+} else {
+    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+}
+/*by lazy @Suppress("deprecation") {
     if (Build.VERSION.SDK_INT < 26) {
         WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
     } else {
         WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
     }
-}
+}*/
 
-private val OVERLAY_FLAGS : Int =
+private const val OVERLAY_FLAGS: Int =
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 
-private val PIXEL_FORMAT : Int = PixelFormat.TRANSLUCENT
+private const val PIXEL_FORMAT: Int = PixelFormat.TRANSLUCENT
 
 public class OverlayService : AccessibilityService() {
-    var drawView : RelativeLayout? = null
+    var drawView: RelativeLayout? = null
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         getRootInActiveWindow()?.let {
@@ -43,7 +46,7 @@ public class OverlayService : AccessibilityService() {
                         //node.getHintText() == null &&
                         //node.getLabeledBy() == null
                         ) {
-                    highlightNode(drawView!!, node);
+                    highlightNode(drawView!!, node)
                     android.util.Log.i("OverlayService", "Missing text: " + node.getClassName())
                 }
             })
@@ -52,21 +55,22 @@ public class OverlayService : AccessibilityService() {
     }
 
     private fun highlightNode(parentView: RelativeLayout, node: AccessibilityNodeInfo) {
-        val r = Rect()
-        node.getBoundsInScreen(r)
-        val v = View(this)
-        v.setBackgroundResource(R.color.yellow);
-        val params = RelativeLayout.LayoutParams(r.width(), r.height());
-        params.leftMargin = r.left;
-        params.topMargin = r.top;
-        parentView.addView(v, params);
+        val rect = Rect()
+        node.getBoundsInScreen(rect)
+        val view = View(this)
+        view.setBackgroundResource(R.color.yellow)
+        val params = RelativeLayout.LayoutParams(rect.width(), rect.height())
+        params.leftMargin = rect.left
+        params.topMargin = rect.top
+        parentView.addView(view, params)
     }
 
-    private fun iterateAccessibilityNodeInfos(root: AccessibilityNodeInfo, onEachCallback: (AccessibilityNodeInfo) -> Unit) {
+    private fun iterateAccessibilityNodeInfos(root: AccessibilityNodeInfo,
+                                              onEachCallback: (AccessibilityNodeInfo) -> Unit) {
         onEachCallback(root)
-        for (i in 0 .. root.getChildCount() - 1) {
+        for (i in 0..root.getChildCount() - 1) {
             root.getChild(i)?.let {
-                iterateAccessibilityNodeInfos(it, onEachCallback);
+                iterateAccessibilityNodeInfos(it, onEachCallback)
                 it.recycle()
             }
         }
@@ -78,35 +82,36 @@ public class OverlayService : AccessibilityService() {
         super.onCreate()
         drawView = buildDrawView()
         Toast.makeText(getBaseContext(), "onCreate", Toast.LENGTH_LONG).show()
-        val params : WindowManager.LayoutParams = WindowManager.LayoutParams(
+        val params: WindowManager.LayoutParams = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
-                OVERLAY_TYPE,
+                overlayType,
                 OVERLAY_FLAGS or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PIXEL_FORMAT)
         params.gravity = Gravity.LEFT or Gravity.TOP
-        val wm : WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        wm.addView(drawView, params);
+        val windowManager: WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        windowManager.addView(drawView, params)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Toast.makeText(getBaseContext(), "onDestroy", Toast.LENGTH_LONG).show()
         if (drawView != null) {
-            (getSystemService(WINDOW_SERVICE) as WindowManager).removeView(drawView);
-            drawView = null;
+            (getSystemService(WINDOW_SERVICE) as WindowManager).removeView(drawView)
+            drawView = null
         }
     }
 
     @Suppress("deprecation")
-    private fun buildDrawView() : RelativeLayout {
-        val v = RelativeLayout(this)
-        v.setLayoutParams(WindowManager.LayoutParams(
+    private fun buildDrawView(): RelativeLayout {
+        val relativeLayout = RelativeLayout(this)
+        relativeLayout.setLayoutParams(WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
-                0, 0,
-                OVERLAY_TYPE, OVERLAY_FLAGS, PIXEL_FORMAT))
-        v.setBackgroundColor(getResources().getColor(R.color.red))
-        return v
+                overlayType,
+                OVERLAY_FLAGS,
+                PIXEL_FORMAT))
+        relativeLayout.setBackgroundColor(getResources().getColor(R.color.red))
+        return relativeLayout
     }
 }
