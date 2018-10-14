@@ -57,7 +57,7 @@ check {
     pmd { config hard() }
 }
 
-defaultTasks 'assemble'
+defaultTasks 'assemble', 'lint'
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-Xlint:all'
