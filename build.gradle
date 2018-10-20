@@ -42,11 +42,13 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
 }
 
 dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    testImplementation 'junit:junit:4.12'
 }
 
 codeQualityTools {
@@ -58,11 +60,12 @@ codeQualityTools {
     }
 
     findbugs {
+        enabled = false // Fails the build without java input
         excludeFilter = 'config/findbugs-exclude-filter.xml'
     }
 }
 
-defaultTasks 'assemble', 'check'
+defaultTasks 'assemble', 'test', 'check'
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-Xlint:all'

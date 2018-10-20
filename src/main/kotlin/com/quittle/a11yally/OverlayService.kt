@@ -18,13 +18,6 @@ private val overlayType: Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O
 } else {
     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 }
-/*by lazy @Suppress("deprecation") {
-    if (Build.VERSION.SDK_INT < 26) {
-        WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
-    } else {
-        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-    }
-}*/
 
 private const val OVERLAY_FLAGS: Int =
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 
 public class MainActivity : Activity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+    protected override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startService(Intent(this, OverlayService::class.java))
     }
