@@ -13,7 +13,6 @@ test-pattern: # Configure exclusions for test sources
     - 'NamingRules'
     - 'WildcardImport'
     - 'MagicNumber'
-    - 'MaxLineLength'
     - 'LateinitUsage'
     - 'StringLiteralDuplication'
     - 'SpreadOperator'

@@ -1,0 +1,6 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="@string/pref_display_content_description"
+        android:title="@string/checkbox_feature_content_description"
+        android:defaultValue="true" />
+</PreferenceScreen>

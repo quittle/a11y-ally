@@ -1,15 +1,20 @@
 package com.quittle.a11yally
 
 import android.accessibilityservice.AccessibilityService
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
+import android.preference.PreferenceManager
+import android.support.annotation.ColorRes
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.Gravity
-import android.widget.RelativeLayout
-import android.view.View
 import android.view.WindowManager
+import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 
 @Suppress("deprecation")
@@ -25,37 +30,57 @@ private const val OVERLAY_FLAGS: Int =
 
 private const val PIXEL_FORMAT: Int = PixelFormat.TRANSLUCENT
 
-public class OverlayService : AccessibilityService() {
+/**
+ * According to the docs for {@link OnSharedPreferenceChangeListener}, the app must hold a strong
+ * reference to the listener to protect against garbage collection.
+ * @link SharedPreferences#registerOnSharedPreferenceChangeListener
+ */
+public class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener {
     var drawView: RelativeLayout? = null
+    var displayContentDescription: Boolean = false
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        if (key.equals(getString(R.string.pref_display_content_description))) {
+            displayContentDescription = sharedPreferences.getBoolean(key, displayContentDescription)
+        }
+    }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         getRootInActiveWindow()?.let {
             drawView?.removeViewsInLayout(0, drawView!!.getChildCount())
             iterateAccessibilityNodeInfos(it, { node: AccessibilityNodeInfo ->
-                if (node.getChildCount() == 0 &&
-                        node.isFocusable() &&
-                        node.getText() == null &&
-                        node.getContentDescription() == null //&&
-                        //node.getHintText() == null &&
-                        //node.getLabeledBy() == null
-                        ) {
-                    highlightNode(drawView!!, node)
-                    android.util.Log.i("OverlayService", "Missing text: " + node.getClassName())
+                if (node.isFocusable()) {
+                    val textView = highlightNode(drawView!!, node)
+                    if (displayContentDescription) {
+                        textView.setText(node.getContentDescription())
+                    }
+                    @ColorRes var resourceId: Int = -1
+                    if (node.getContentDescription() == null) {
+                        Log.i("OverlayService", "Missing text: " + node.getClassName())
+                        resourceId = R.color.red
+                    } else if (node.getText() != null) {
+                        resourceId = R.color.yellow
+                    }
+                    if (resourceId != -1) {
+                        textView.setBackgroundResource(resourceId)
+                        textView.refreshDrawableState()
+                    }
                 }
             })
             it.recycle()
         }
     }
 
-    private fun highlightNode(parentView: RelativeLayout, node: AccessibilityNodeInfo) {
+    private fun highlightNode(parentView: RelativeLayout, node: AccessibilityNodeInfo): TextView {
         val rect = Rect()
         node.getBoundsInScreen(rect)
-        val view = View(this)
-        view.setBackgroundResource(R.color.yellow)
+        val textView = TextView(this)
+        textView.setGravity(Gravity.CENTER)
         val params = RelativeLayout.LayoutParams(rect.width(), rect.height())
         params.leftMargin = rect.left
         params.topMargin = rect.top
-        parentView.addView(view, params)
+        parentView.addView(textView, params)
+        return textView
     }
 
     private fun iterateAccessibilityNodeInfos(root: AccessibilityNodeInfo,
@@ -73,8 +98,13 @@ public class OverlayService : AccessibilityService() {
 
     override fun onCreate() {
         super.onCreate()
+
+        val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPref.registerOnSharedPreferenceChangeListener(this)
+        displayContentDescription = sharedPref.getBoolean(
+                getString(R.string.pref_display_content_description), displayContentDescription)
+
         drawView = buildDrawView()
-        Toast.makeText(getBaseContext(), "onCreate", Toast.LENGTH_LONG).show()
         val params: WindowManager.LayoutParams = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,

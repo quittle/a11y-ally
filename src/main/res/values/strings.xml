@@ -4,4 +4,5 @@
     <string name="accessibility_service_description">A11y Service</string>
     <string name="enable_service_button_enabled">Enabled</string>
     <string name="enable_service_button_disabled">Disabled</string>
+    <string name="checkbox_feature_content_description">Display Content Description</string>
 </resources>
