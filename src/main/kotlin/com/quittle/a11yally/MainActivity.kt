@@ -5,12 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ToggleButton
 
-public class MainActivity : FragmentActivity() {
-    protected override fun onCreate(savedInstanceState: Bundle?) {
+class MainActivity : FragmentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.main_activity)
-        getSupportFragmentManager()
+        supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.content, FixedPreferenceFragment.newInstance(R.xml.preferences))
                 .commit()
