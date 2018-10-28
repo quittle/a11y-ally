@@ -55,11 +55,12 @@ class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener 
                         textView.text = node.contentDescription
                     }
                     @ColorRes var resourceId: Int = -1
-                    if (node.contentDescription == null) {
+                    if (node.text === null && node.contentDescription === null) {
                         Log.i("OverlayService", "Missing text: " + node.className)
                         resourceId = R.color.red
-                    } else if (node.text != null) {
-                        resourceId = R.color.yellow
+                    }
+                    if (displayContentDescription && node.contentDescription !== null) {
+                        resourceId = R.drawable.content_description_background
                     }
                     if (resourceId != -1) {
                         textView.setBackgroundResource(resourceId)
@@ -135,7 +136,6 @@ class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener 
                 overlayType,
                 OVERLAY_FLAGS,
                 PIXEL_FORMAT)
-        relativeLayout.setBackgroundColor(resources.getColor(R.color.red))
         return relativeLayout
     }
 }

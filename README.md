@@ -15,7 +15,7 @@ It is currently **not** very functional. Check the feature list below to see wha
 * [ ] UI to specify which apps to provide feedback for
 * [ ] Improve highlighting UX
 * [ ] Investigate and if feasible, provide color-blindness renderings
-* [ ] Provide visual text-renderings of what labels are over UI
+* [x] Provide visual text-renderings of what labels are over UI
 * [ ] Provide a linear, text-based overlay, allowing only linear-navigation like consumption
 
 ### Tests
