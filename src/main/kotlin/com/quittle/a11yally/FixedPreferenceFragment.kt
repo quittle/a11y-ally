@@ -1,8 +1,8 @@
 package com.quittle.a11yally
 
 import android.os.Bundle
-import android.support.annotation.XmlRes
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.annotation.XmlRes
+import androidx.preference.PreferenceFragmentCompat
 
 /**
  * Preference fragment backed by a resource

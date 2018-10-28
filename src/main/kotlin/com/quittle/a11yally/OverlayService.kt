@@ -7,7 +7,7 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.preference.PreferenceManager
-import android.support.annotation.ColorRes
+import androidx.annotation.ColorRes
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
