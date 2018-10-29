@@ -12,7 +12,8 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.main_activity)
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.content, FixedPreferenceFragment.newInstance(R.xml.preferences))
+                .replace(R.id.preferences_holder,
+                        FixedPreferenceFragment.newInstance(R.xml.preferences))
                 .commit()
 
         val overlayServiceIntent = Intent(this, OverlayService::class.java)
