@@ -7,7 +7,6 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.preference.PreferenceManager
-import androidx.annotation.ColorRes
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
@@ -52,14 +51,16 @@ class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener 
                 if (node.isFocusable) {
                     val textView = highlightNode(drawView!!, node)
                     if (displayContentDescription) {
-                        textView.text = node.contentDescription
+                        textView.text = getContentDescription(node)
                     }
-                    @ColorRes var resourceId: Int = -1
-                    if (node.text === null && node.contentDescription === null) {
+
+                    var resourceId: Int = -1
+                    if (node.text === null && getContentDescription(node) === null &&
+                            node.childCount == 0) {
                         Log.i("OverlayService", "Missing text: " + node.className)
                         resourceId = R.color.red
                     }
-                    if (displayContentDescription && node.contentDescription !== null) {
+                    if (displayContentDescription && getContentDescription(node) !== null) {
                         resourceId = R.drawable.content_description_background
                     }
                     if (resourceId != -1) {
@@ -69,6 +70,16 @@ class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener 
                 }
             }
             it.recycle()
+        }
+    }
+
+    private fun getContentDescription(node: AccessibilityNodeInfo): CharSequence? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 &&
+                node.labeledBy !== null) {
+            Log.i("OverlayService", "Found a label by")
+            node.labeledBy.contentDescription
+        } else {
+            node.contentDescription
         }
     }
 
