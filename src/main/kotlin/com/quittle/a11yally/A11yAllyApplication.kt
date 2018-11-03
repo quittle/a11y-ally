@@ -32,7 +32,8 @@ class A11yAllyApplication : Application() {
             startActivityIntent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, true)
         }
 
-        val serviceEnabled = (getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager)
+        val serviceEnabled = (getSystemService(Context.ACCESSIBILITY_SERVICE) as
+                        AccessibilityManager)
                 .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK)
                 .map(AccessibilityServiceInfo::getId)
                 .any("$packageName/.${OverlayService::class.simpleName}"::equals)

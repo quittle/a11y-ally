@@ -88,7 +88,8 @@ class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener 
         val rect = Rect()
         node.getBoundsInScreen(rect)
         val textView = TextView(this)
-        textView.setTextColor(ResourcesCompat.getColor(resources, R.color.content_description_text, null))
+        textView.setTextColor(ResourcesCompat.getColor(
+                resources, R.color.content_description_text, null))
         textView.gravity = Gravity.CENTER
         textView.setShadowLayer(4f, 1f, 1f, R.color.white)
         val params = RelativeLayout.LayoutParams(rect.width(), rect.height())
