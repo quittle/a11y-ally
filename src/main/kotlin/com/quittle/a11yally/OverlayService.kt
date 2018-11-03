@@ -15,6 +15,7 @@ import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 
 @Suppress("deprecation")
 private val overlayType: Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -87,8 +88,9 @@ class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener 
         val rect = Rect()
         node.getBoundsInScreen(rect)
         val textView = TextView(this)
+        textView.setTextColor(ResourcesCompat.getColor(resources, R.color.content_description_text, null))
         textView.gravity = Gravity.CENTER
-        textView.setShadowLayer(4f, 0f, 0f, R.color.white)
+        textView.setShadowLayer(4f, 1f, 1f, R.color.white)
         val params = RelativeLayout.LayoutParams(rect.width(), rect.height())
         params.leftMargin = rect.left
         params.topMargin = rect.top
@@ -124,7 +126,6 @@ class OverlayService : AccessibilityService(), OnSharedPreferenceChangeListener 
                 overlayType,
                 OVERLAY_FLAGS or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PIXEL_FORMAT)
-        params.gravity = Gravity.LEFT or Gravity.TOP
         val windowManager: WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         windowManager.addView(drawView, params)
     }
