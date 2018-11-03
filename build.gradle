@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.quittle.setup-android-sdk' version '0.0.1'
+    id 'com.quittle.setup-android-sdk' version '0.1.0'
     id 'com.vanniktech.code.quality.tools' version '0.13.0'
 }
 
@@ -29,6 +29,16 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+
+            signingConfig = debug.signingConfig
+        }
+    }
 
     defaultConfig {
         minSdkVersion 16
@@ -49,7 +59,7 @@ android {
 
 dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'androidx.fragment:fragment:1.0.0'
