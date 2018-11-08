@@ -12,6 +12,7 @@ import android.util.Log
 import android.net.Uri
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
+import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 
 private const val TAG = "A11yAllyApplication"
 
@@ -36,7 +37,7 @@ class A11yAllyApplication : Application() {
                         AccessibilityManager)
                 .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK)
                 .map(AccessibilityServiceInfo::getId)
-                .any("$packageName/.${OverlayService::class.simpleName}"::equals)
+                .any("$packageName/.${A11yAllyAccessibilityAnalyzer::class.simpleName}"::equals)
 
         if (!serviceEnabled) {
             try {

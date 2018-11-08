@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ToggleButton
+import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,14 +17,14 @@ class MainActivity : FragmentActivity() {
                         FixedPreferenceFragment.newInstance(R.xml.preferences))
                 .commit()
 
-        val overlayServiceIntent = Intent(this, OverlayService::class.java)
+        val analyzerServiceIntent = Intent(this, A11yAllyAccessibilityAnalyzer::class.java)
 
         val enableServiceToggleButton: ToggleButton = findViewById(R.id.enable_service_button)
         enableServiceToggleButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                startService(overlayServiceIntent)
+                startService(analyzerServiceIntent)
             } else {
-                stopService(overlayServiceIntent)
+                stopService(analyzerServiceIntent)
             }
         }
     }
