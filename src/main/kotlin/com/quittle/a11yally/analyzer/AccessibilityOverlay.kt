@@ -15,7 +15,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.quittle.a11yally.R
-import com.quittle.a11yally.observer.ServiceLifeCycleObserver
+import com.quittle.a11yally.observer.ServiceLifecycleObserver
 
 @Suppress("deprecation", "TopLevelPropertyNaming")
 private val OVERLAY_TYPE: Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -38,7 +38,7 @@ private const val TAG: String = "AccessibilityOverlay"
 class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
         AccessibilityAnalyzer.AccessibilityItemEventListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        ServiceLifeCycleObserver {
+        ServiceLifecycleObserver {
     private var drawView: RelativeLayout? = null
     private var displayContentDescription: Boolean = false
     private val context: Context = accessibilityAnalyzer.applicationContext

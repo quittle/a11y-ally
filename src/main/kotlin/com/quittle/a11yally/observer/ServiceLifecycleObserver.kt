@@ -7,7 +7,7 @@ import androidx.lifecycle.OnLifecycleEvent
 /**
  * Interface to ensure safe consumption of {@link LifecycleObserver} events for a service.
  */
-interface ServiceLifeCycleObserver : LifecycleObserver {
+interface ServiceLifecycleObserver : LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
     fun onServiceAny() {}
 
