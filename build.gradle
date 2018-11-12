@@ -26,6 +26,8 @@ repositories {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+System.out.println('secret example: ' + System.getenv('SECRET'))
+
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
