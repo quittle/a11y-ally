@@ -28,6 +28,7 @@ apply plugin: 'kotlin-android'
 
 System.out.println('secret example: ' + System.getenv('SECRET').toUpperCase())
 System.out.println('secret example length: ' + System.getenv('SECRET').length())
+System.out.println('example length: ' + System.getenv('ANDROID_SIGNING_PASSWORD').length())
 
 android {
     compileSdkVersion 28
