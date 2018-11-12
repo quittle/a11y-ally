@@ -29,6 +29,12 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
          * {@link onAccessibilityNodeInfo}.
          */
         fun onAccessibilityEventEnd()
+
+        /**
+         * Called when a non-whitelisted, accessibility event occurred. Can be leveraged to clear
+         * state when leaving an app of interest.
+         */
+        fun onNonWhitelistedApp()
     }
 
     /**
@@ -39,7 +45,23 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
      */
     protected abstract val listeners: Collection<AccessibilityItemEventListener>
 
+    /**
+     * Returns the whitelist of apps to analyze. This is used, rather than using
+     * {@link #setServiceInfo} to support non-whitelisted app accessibility events. This is a method
+     * because it is evaluated on every event to enable dynamic updates, e.g. via preferences.
+     * @return The list of app package names to analyze, e.g. {@code com.quittle.a11yally} or null
+     *         to analyze all packages.
+     */
+    protected abstract fun getAppWhitelist(): Iterable<String>?
+
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
+        val whitelist = getAppWhitelist()
+        if (whitelist !== null && !whitelist.contains(rootInActiveWindow?.packageName)) {
+            listeners.forEach(AccessibilityItemEventListener::onNonWhitelistedApp)
+            // Return early if not whitelisted
+            return
+        }
+
         listeners.forEach(AccessibilityItemEventListener::onAccessibilityEventStart)
         rootInActiveWindow?.let {
             iterateAccessibilityNodeInfos(it, this::onNodeEvent)

@@ -18,4 +18,6 @@ class AccessibilityItemLogger : AccessibilityAnalyzer.AccessibilityItemEventList
             Log.i(TAG, "Missing text: " + node.className)
         }
     }
+
+    override fun onNonWhitelistedApp() {}
 }

@@ -10,6 +10,10 @@ import androidx.lifecycle.LifecycleRegistry
  * this service's context.
  */
 class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), LifecycleOwner {
+    override fun getAppWhitelist(): Iterable<String>? {
+        return null
+    }
+
     private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
     override fun getLifecycle(): Lifecycle {

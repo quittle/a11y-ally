@@ -48,7 +48,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     override fun onAccessibilityEventStart() {
-        drawView?.removeViewsInLayout(0, drawView!!.childCount)
+        clearDrawView()
     }
 
     override fun onAccessibilityEventEnd() {
@@ -76,6 +76,10 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
                 textView.refreshDrawableState()
             }
         }
+    }
+
+    override fun onNonWhitelistedApp() {
+        clearDrawView()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -144,5 +148,9 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         } else {
             node.contentDescription
         }
+    }
+
+    private fun clearDrawView() {
+        drawView?.removeViewsInLayout(0, drawView!!.childCount)
     }
 }
