@@ -30,13 +30,29 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
 
+    final String androidSigningPassword = System.getenv('ANDROID_SIGNING_PASSWORD')
+    signingConfigs {
+        if (androidSigningPassword) {
+            release {
+                storeFile file('config/a11y-ally-release.jks')
+                storePassword androidSigningPassword
+                keyPassword androidSigningPassword
+                keyAlias 'a11y-ally-release-11/11/18'
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
 
-            signingConfig = debug.signingConfig
+            if (androidSigningPassword) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig debug.signingConfig
+            }
         }
     }
 

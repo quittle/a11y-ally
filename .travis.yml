@@ -1,6 +1,17 @@
+env:
+  global:
+    secure: ApwvULTvJ7Nj72bfVThK7poU/WEybEaJNW8AsoriI7fpdz+ZFO4fgGAIfs0gAFdYIntohYKPymueuMoOXPX0CeqHl4YnZ6/ojPl/Go2+gIOk4QZdbhuMyPKyp+gMKWqaG3/kjNBkzpxWIHPwZlP/Q86y3jSW4Fy+jVsJs37o2KspLXne30mw4OId2xJIpHTfKL0XR3HP9xg9O7DMCGcXiPhfSVOKErx/zsZplZq2g7/p2j2qU4jlmuSIzCl43RHtmeajoN5mmmukk5DFVZ2tlwDCthwRsDxTIInyfKG1Dop/68l3GBgBFPzs6vy1E1tMxLiWAbNcUJ43d2yGKBYhQgE81Dackh4gy5mefTVZkKUfS2Ad5EiXmaapxsP5LP1KBG1CDlWSudFHmWBxqhiAEeq/Oh2ZS86ns6UkhEIW1o4/n5Cha4uOV4kAroJcPRausqCvyyEKOd+undQVB8393Qpyu/7s+Sg0BOkXLaCmwFA1ZhTaNJOPFNl3/IJs6mUb6sxhvGsqmBBubVoLsh+C2n97n70H8nYeXld4mTvvmNdrlxiaHANWYMrmyLsrIDGx+nSGpNLufQZiKtn9lY+5YmgJjyRjImSEA7S7cV5EVo27QYj15BbUpyq++07lgZvI5n3jTUArrJtbs8mQeK87dRXI99cr9UGRFfXbdEDKAEg=
+
 language: java
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_e375928ce4bc_key -iv $encrypted_e375928ce4bc_iv
+  -in config/a11y-ally-release.jks.enc -out config/a11y-ally-release.jks
+  -d
+
 script:
-  - ./gradlew
+- ./gradlew
+
 deploy:
   provider: releases
   api_key:
