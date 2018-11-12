@@ -96,7 +96,7 @@ codeQualityTools {
     }
 }
 
-defaultTasks 'assemble', 'test', 'check'
+defaultTasks 'assemble', 'bundle', 'test', 'check'
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-Xlint:all'
