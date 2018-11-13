@@ -3,4 +3,10 @@
         android:key="@string/pref_display_content_description"
         android:title="@string/checkbox_feature_content_description"
         android:defaultValue="true" />
+    <Preference android:title="@string/open_unfriendly_activity_button_label">
+        <intent
+            android:targetPackage="com.quittle.a11yally"
+            android:targetClass="com.quittle.a11yally.UnfriendlyActivity">
+        </intent>
+    </Preference>
 </PreferenceScreen>

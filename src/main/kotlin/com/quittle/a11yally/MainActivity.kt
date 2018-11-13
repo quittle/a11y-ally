@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ToggleButton
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
+import com.quittle.a11yally.view.FixedPreferenceFragment
 
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

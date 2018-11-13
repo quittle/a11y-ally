@@ -1,11 +1,11 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.view
 
 import android.os.Bundle
 import androidx.annotation.XmlRes
 import androidx.preference.PreferenceFragmentCompat
 
 /**
- * Preference fragment backed by a resource
+ * Preference fragment backed by a fixed resource
  */
 class FixedPreferenceFragment : PreferenceFragmentCompat() {
     companion object {

@@ -7,7 +7,6 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
@@ -56,25 +55,22 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
-        if (node.isFocusable) {
-            val textView = highlightNode(drawView!!, node)
-            if (displayContentDescription) {
-                textView.text = getContentDescription(node)
-            }
+        val textView = highlightNode(drawView!!, node)
+        val nodeContentDescription = getContentDescription(node)
 
-            var resourceId: Int = -1
-            if (node.text === null && getContentDescription(node) === null &&
-                    node.childCount == 0) {
-                Log.i(TAG, "Missing text: " + node.className)
-                resourceId = R.color.red
-            }
-            if (displayContentDescription && getContentDescription(node) !== null) {
-                resourceId = R.drawable.content_description_background
-            }
-            if (resourceId != -1) {
-                textView.setBackgroundResource(resourceId)
-                textView.refreshDrawableState()
-            }
+        var resourceId: Int = -1
+        if (node.text === null &&
+                nodeContentDescription === null &&
+                node.childCount == 0 &&
+                isNodeLikelyFocusable(node)) {
+            resourceId = R.color.red
+        } else if (displayContentDescription && nodeContentDescription !== null) {
+            textView.text = nodeContentDescription
+            resourceId = R.drawable.content_description_background
+        }
+        if (resourceId != -1) {
+            textView.setBackgroundResource(resourceId)
+            textView.refreshDrawableState()
         }
     }
 
@@ -144,10 +140,16 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     private fun getContentDescription(node: AccessibilityNodeInfo): CharSequence? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 &&
                 node.labeledBy !== null) {
-            node.labeledBy.contentDescription
+            node.labeledBy.contentDescription ?: node.labeledBy.text
         } else {
             node.contentDescription
         }
+    }
+
+    private fun isNodeLikelyFocusable(node: AccessibilityNodeInfo): Boolean {
+        return node.text !== null ||
+                node.isFocusable ||
+                getContentDescription(node) !== null
     }
 
     private fun clearDrawView() {

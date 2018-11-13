@@ -9,13 +9,16 @@
             android:name=".A11yAllyApplication"
             android:label="@string/app_label"
             android:icon="@mipmap/ic_launcher"
-            android:allowBackup="true">
+            android:allowBackup="true"
+            android:theme="@style/MainTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UnfriendlyActivity"
+                android:parentActivityName=".MainActivity" />
         <service android:name=".analyzer.A11yAllyAccessibilityAnalyzer"
                 android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>

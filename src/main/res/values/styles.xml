@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <style name="MainTheme" parent="Theme.AppCompat.CompactMenu">
+        <item name="android:textViewStyle">@style/MainTextViewStyle</item>
+    </style>
+    <style name="MainTextViewStyle" parent="android:style/TextAppearance.Medium">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="UnfriendlyEntryTheme">
+        <item name="android:padding">16sp</item>
+    </style>
+</resources>
