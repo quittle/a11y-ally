@@ -64,5 +64,30 @@
                 android:contentDescription="@string/text_view_content_description"
                 android:text="@string/text_view_with_content_description" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:theme="@style/UnfriendlyEntryTheme">
+
+            <View
+                android:layout_alignLeft="@id/foreground_text"
+                android:layout_alignRight="@id/foreground_text"
+                android:layout_alignStart="@id/foreground_text"
+                android:layout_alignEnd="@id/foreground_text"
+                android:layout_alignTop="@id/foreground_text"
+                android:layout_alignBottom="@id/foreground_text"
+                android:focusable="true"
+                android:layout_height="0dp"
+                android:layout_width="0dp" />
+
+            <TextView
+                android:id="@+id/foreground_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unlabeled_focusable_view" />
+
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
