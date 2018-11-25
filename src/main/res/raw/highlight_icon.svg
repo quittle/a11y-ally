@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <rect height="25" width="25" fill="#ccc" />
+        <g transform="translate(1, 1)" stroke-width=".5" stroke="#888">
+            <!-- Fills in curve holes -->
+            <g rx="1">
+                <rect height="7" width="23" x="0" y="0" rx="1" />
+                <rect height="23" width="8" x="15" y="0" rx="1" />
+            </g>
+
+            <!-- Rectangles -->
+            <g>
+                <rect height="7" width="15" x="0" y="0" fill="#bbb" rx="1" />
+                <rect height="4" width="8" x="15" y="0" fill="#ff5252" rx="1" />
+                <rect height="12" width="8" x="15" y="4" fill="#bbb" rx="1" />
+                <rect height="7" width="23" x="0" y="16" fill="#ff5252" rx="1" />
+            </g>
+        </g>
+    </g>
+</svg>

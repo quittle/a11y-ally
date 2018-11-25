@@ -1,12 +1,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:key="@string/pref_display_content_description"
+        android:key="@string/pref_display_content_descriptions"
         android:title="@string/checkbox_feature_content_description"
         android:defaultValue="true" />
+    <MultiSelectListPreference
+        android:key="packages_to_analyze"
+        android:title="Packages to analyze"
+        android:entries="@array/empty_string_array"
+        android:entryValues="@array/empty_string_array" />
     <Preference android:title="@string/open_unfriendly_activity_button_label">
         <intent
             android:targetPackage="com.quittle.a11yally"
-            android:targetClass="com.quittle.a11yally.UnfriendlyActivity">
-        </intent>
+            android:targetClass="com.quittle.a11yally.UnfriendlyActivity" />
     </Preference>
 </PreferenceScreen>

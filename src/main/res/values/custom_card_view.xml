@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="CustomCardView">
+        <attr name="image" format="reference" />
+        <attr name="imageBackgroundColor" format="color" />
+        <attr name="text" format="string" />
+    </declare-styleable>
+</resources>

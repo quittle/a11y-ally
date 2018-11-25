@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Contains string constants used as preference keys and must not be translated -->
 <resources>
-    <string name="pref_display_content_description">pref_display_content_description</string>
+    <string name="pref_display_content_descriptions">pref_display_content_descriptions</string>
+    <string name="pref_highlight_accessibility_issues">pref_highlight_accessibility_issues</string>
 </resources>
 

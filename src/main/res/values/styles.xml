@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <style name="MainTheme" parent="Theme.AppCompat.CompactMenu">
+    <style name="MainTheme" parent="Theme.AppCompat.Light">
         <item name="android:textViewStyle">@style/MainTextViewStyle</item>
     </style>
     <style name="MainTextViewStyle" parent="android:style/TextAppearance.Medium">

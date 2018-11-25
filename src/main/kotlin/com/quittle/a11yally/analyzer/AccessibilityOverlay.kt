@@ -79,7 +79,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == context.getString(R.string.pref_display_content_description)) {
+        if (key == context.getString(R.string.pref_display_content_descriptions)) {
             displayContentDescription = sharedPreferences.getBoolean(key, displayContentDescription)
         }
     }
@@ -88,7 +88,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPref.registerOnSharedPreferenceChangeListener(this)
         displayContentDescription = sharedPref.getBoolean(
-                context.getString(R.string.pref_display_content_description),
+                context.getString(R.string.pref_display_content_descriptions),
                 displayContentDescription)
 
         drawView = buildDrawView()

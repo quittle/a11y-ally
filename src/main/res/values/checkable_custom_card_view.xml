@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="CheckableCustomCardView">
+        <attr name="checked" format="boolean" />
+        <attr name="imageUnchecked" format="reference" />
+        <attr name="imageBackgroundColorUnchecked" format="color" />
+        <attr name="preference_key" format="string" />
+    </declare-styleable>
+</resources>

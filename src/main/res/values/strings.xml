@@ -12,4 +12,10 @@
     <string name="text_view_content_description">…so the screen reader only reads this</string>
     <string name="explore_unfriendly_activity">Explore this screen for the types of things the Accessibility Overlay can detect and display.\n\nRed highlighting indicates elements with screen reader issues. If content description displaying is enabled, certain unexpected labelling issues may be more noticeable.</string>
     <string name="unlabeled_focusable_view">The view behind this text may be important for tab navigation but simply *boop*s when it is focused, not indicating what it is or does.</string>
+    <string name="all_permissions_granted">All necessary permissions already granted.</string>
+    <string name="check_permissions_button_label">Check Permissions</string>
+    <string name="display_content_descriptions_toggle_label">Display Content Descriptions</string>
+    <string name="highlight_accessibility_issues_toggle_button">Highlight Issues</string>
+
+    <string-array name="empty_string_array" />
 </resources>
