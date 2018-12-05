@@ -7,6 +7,7 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.preference.PreferenceManager
+import android.provider.Settings
 import android.view.Gravity
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
@@ -43,7 +44,10 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     private val context: Context = accessibilityAnalyzer.applicationContext
 
     init {
-        accessibilityAnalyzer.lifecycle.addObserver(this)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                Settings.canDrawOverlays(accessibilityAnalyzer.applicationContext)) {
+            accessibilityAnalyzer.lifecycle.addObserver(this)
+        }
     }
 
     override fun onAccessibilityEventStart() {
@@ -55,6 +59,10 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
+        if (drawView == null) {
+            return
+        }
+
         val textView = highlightNode(drawView!!, node)
         val nodeContentDescription = getContentDescription(node)
 

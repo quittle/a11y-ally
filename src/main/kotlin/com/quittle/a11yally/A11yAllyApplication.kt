@@ -7,16 +7,16 @@ import android.os.StrictMode
 class A11yAllyApplication : Application() {
 
     init {
-        if (BuildConfig.DEBUG && false) {
+        if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
                     .detectAll()
                     .penaltyLog()
-                    .penaltyDeath()
+                    // .penaltyDeath()
                     .build())
             StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
                     .detectAll()
                     .penaltyLog()
-                    .penaltyDeath()
+                    // .penaltyDeath()
                     .build())
         }
     }
