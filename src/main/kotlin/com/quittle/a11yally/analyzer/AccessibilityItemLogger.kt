@@ -9,6 +9,10 @@ private const val TAG: String = "AccessibilityItemLogger"
  * Logs accessibility errors to Logcat.
  */
 class AccessibilityItemLogger : AccessibilityAnalyzer.AccessibilityItemEventListener {
+    override fun onPause() {}
+
+    override fun onResume() {}
+
     override fun onAccessibilityEventStart() {}
 
     override fun onAccessibilityEventEnd() {}

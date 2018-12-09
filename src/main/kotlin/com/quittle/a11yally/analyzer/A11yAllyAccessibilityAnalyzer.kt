@@ -1,35 +1,37 @@
 package com.quittle.a11yally.analyzer
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.preference.PreferenceManager
+import com.quittle.a11yally.R
 
 /**
  * App-specific implementation of an {@link AccessibilityAnalyzer}. It implements
  * {@link LifecycleOwner} for {@link AccessibilityOverlay} to consume its events for drawing, using
  * this service's context.
  */
-class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), LifecycleOwner {
+class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenceChangeListener {
+    private val prefServiceEnabled by lazy { getString(R.string.pref_service_enabled) }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+        if (prefServiceEnabled == key) {
+            if (sharedPreferences.getBoolean(prefServiceEnabled, false)) {
+                resumeListeners()
+            } else {
+                pauseListeners()
+            }
+        }
+    }
+
     override fun getAppWhitelist(): Iterable<String>? {
         return null
     }
 
-    private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
-    }
-
     override fun onCreate() {
         super.onCreate()
-        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this)
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lifecycleRegistry.markState(Lifecycle.State.DESTROYED)
-    }
-
     /**
      * {@inheritDoc}
      *

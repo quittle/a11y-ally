@@ -3,5 +3,6 @@
 <resources>
     <string name="pref_display_content_descriptions">pref_display_content_descriptions</string>
     <string name="pref_highlight_accessibility_issues">pref_highlight_accessibility_issues</string>
+    <string name="pref_service_enabled">service_enabled</string>
 </resources>
 

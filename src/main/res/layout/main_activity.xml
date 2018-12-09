@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="2:1"
@@ -48,7 +48,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:weightSum="2"
@@ -56,7 +56,7 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_marginTop="6dp"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout2">
+            app:layout_constraintTop_toBottomOf="@id/linearLayout1">
 
             <com.quittle.a11yally.view.CustomCardView
                 android:id="@+id/permissions_check"
@@ -77,6 +77,30 @@
                 app:image="@drawable/highlight_icon"
                 app:imageBackgroundColor="#FFEB3B"
                 app:text="@string/open_unfriendly_activity_button_label" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:weightSum="2"
+            app:layout_constraintDimensionRatio="2:1"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2">
+
+            <com.quittle.a11yally.view.CheckableCustomCardView
+                android:id="@+id/toggle_service_enable"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                app:image="@drawable/permissions_icon"
+                app:imageBackgroundColor="#1E88E5"
+                app:text="Enable"
+                app:preference_key="@string/pref_service_enabled" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -7,7 +7,6 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.preference.PreferenceManager
-import android.provider.Settings
 import android.view.Gravity
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
@@ -15,7 +14,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.quittle.a11yally.R
-import com.quittle.a11yally.observer.ServiceLifecycleObserver
 
 @Suppress("deprecation", "TopLevelPropertyNaming")
 private val OVERLAY_TYPE: Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -37,21 +35,17 @@ private const val TAG: String = "AccessibilityOverlay"
  */
 class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
         AccessibilityAnalyzer.AccessibilityItemEventListener,
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        ServiceLifecycleObserver {
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private var drawView: RelativeLayout? = null
     private var displayContentDescription: Boolean = false
     private val context: Context = accessibilityAnalyzer.applicationContext
 
-    init {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-                Settings.canDrawOverlays(accessibilityAnalyzer.applicationContext)) {
-            accessibilityAnalyzer.lifecycle.addObserver(this)
-        }
-    }
-
     override fun onAccessibilityEventStart() {
         clearDrawView()
+    }
+
+    init {
+        onResume()
     }
 
     override fun onAccessibilityEventEnd() {
@@ -92,7 +86,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         }
     }
 
-    override fun onServiceCreate() {
+    override fun onResume() {
         val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPref.registerOnSharedPreferenceChangeListener(this)
         displayContentDescription = sharedPref.getBoolean(
@@ -111,7 +105,9 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         windowManager.addView(drawView, params)
     }
 
-    override fun onServiceDestroy() {
+    override fun onPause() {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .unregisterOnSharedPreferenceChangeListener(this)
         if (drawView !== null) {
             (context.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager)
                     .removeView(drawView)
