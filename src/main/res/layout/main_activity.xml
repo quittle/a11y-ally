@@ -97,8 +97,10 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp"
                 android:layout_marginRight="6dp"
-                app:image="@drawable/permissions_icon"
+                app:image="@drawable/service_status_icon"
+                app:imageUnchecked="@drawable/service_status_disabled_icon"
                 app:imageBackgroundColor="#1E88E5"
+                app:imageBackgroundColorUnchecked="#B2CDE5"
                 app:text="Enable"
                 app:preference_key="@string/pref_service_enabled" />
         </LinearLayout>
