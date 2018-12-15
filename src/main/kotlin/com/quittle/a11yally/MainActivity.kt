@@ -3,7 +3,6 @@ package com.quittle.a11yally
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.ActivityNotFoundException
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -14,10 +13,11 @@ import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
     private companion object {
         private val ANALYZER_CLASS_NAME = A11yAllyAccessibilityAnalyzer::class.simpleName
     }

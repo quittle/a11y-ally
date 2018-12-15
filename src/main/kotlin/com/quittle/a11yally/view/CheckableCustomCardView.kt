@@ -73,10 +73,10 @@ class CheckableCustomCardView : Checkable, CustomCardView {
                     view.setImageBackgroundColor(view.mImageBackgroundColorUnchecked)
                 }
 
-                if (view.mPreferenceKey != null) {
+                view.mPreferenceKey?.let { preferenceKey ->
                     PreferenceManager.getDefaultSharedPreferences(view.context).edit()
-                            .putBoolean(view.mPreferenceKey, isChecked)
-                            .apply()
+                            .putBoolean(preferenceKey, isChecked)
+                            ?.apply()
                 }
             }
         }
