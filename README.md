@@ -5,13 +5,13 @@ accessible in a variety of ways. It is intended to be run alongside the main app
 provide feedback to a developer both during manual inspection of the app during development and as
 part of integration test runs by generating reports of issues found.
 
-It is currently **not** very functional. Check the feature list below to see what features are currently supported
+It currently supports partial functionality. Check the feature list below to see what features are currently supported
 
 ## Features
 
 ### Visual Feedback
 * [x] MVP with visual feedback for focusable UI elements without text to render
-* [ ] UI to enable/disable service
+* [x] UI to enable/disable service
 * [ ] UI to specify which apps to provide feedback for
 * [ ] Improve highlighting UX
 * [ ] Investigate and if feasible, provide color-blindness renderings
@@ -22,5 +22,5 @@ It is currently **not** very functional. Check the feature list below to see wha
 * [ ] Monkey-runner style test, checking for focusable elements, never focused during navigation.
 
 ### Reports
-* [ ] Basic reporting of all focusable elements without text to logcat
+* [x] Basic reporting of all focusable elements without text to logcat
 * [ ] Report to text file
