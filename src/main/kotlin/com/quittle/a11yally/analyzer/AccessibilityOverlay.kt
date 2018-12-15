@@ -7,6 +7,7 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
@@ -102,7 +103,12 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
                 PIXEL_FORMAT)
         val windowManager: WindowManager =
                 context.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
-        windowManager.addView(drawView, params)
+
+        try {
+            windowManager.addView(drawView, params)
+        } catch (e: WindowManager.BadTokenException) {
+            Log.d(TAG, "Unable to add overlay view to window manager", e)
+        }
     }
 
     override fun onPause() {

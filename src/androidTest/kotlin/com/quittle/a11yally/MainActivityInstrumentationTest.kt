@@ -21,6 +21,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.toPackage
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import org.junit.After
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Rule
@@ -36,8 +37,9 @@ class MainActivityInstrumentationTest {
     @get:Rule
     val activityRule = ActivityTestRule(MainActivity::class.java)
 
+    @After
     @Before
-    fun setUp() {
+    fun clearPermissions() {
         disableAccessibilityService()
         revokePermissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
     }
