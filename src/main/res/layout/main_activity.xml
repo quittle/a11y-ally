@@ -74,7 +74,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:image="@drawable/highlight_icon"
+                app:image="@drawable/learn_icon"
                 app:imageBackgroundColor="#FFEB3B"
                 app:text="@string/open_unfriendly_activity_button_label" />
         </LinearLayout>
