@@ -12,25 +12,37 @@ import com.quittle.a11yally.R
  */
 class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenceChangeListener {
     private val prefServiceEnabled by lazy { getString(R.string.pref_service_enabled) }
+    private val prefEnableAllApps by lazy { getString(R.string.pref_enable_all_apps) }
+    private val prefEnableAllAppsDefault by lazy {
+        resources.getBoolean(R.bool.pref_enable_all_apps_default)
+    }
+    private val prefEnabledApps by lazy { getString(R.string.pref_enabled_apps) }
+
+    private var whitelistedApps: Iterable<String>? = null
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
-        if (prefServiceEnabled == key) {
-            if (sharedPreferences.getBoolean(prefServiceEnabled, false)) {
-                resumeListeners()
-            } else {
-                pauseListeners()
+        when (key) {
+            prefServiceEnabled -> {
+                if (sharedPreferences.getBoolean(prefServiceEnabled, false)) {
+                    resumeListeners()
+                } else {
+                    pauseListeners()
+                }
             }
+            prefEnabledApps, prefEnableAllApps -> updateAppWhitelist(sharedPreferences)
         }
     }
 
     override fun getAppWhitelist(): Iterable<String>? {
-        return null
+        return whitelistedApps
     }
 
     override fun onCreate() {
         super.onCreate()
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this)
+        PreferenceManager.getDefaultSharedPreferences(this).apply {
+            registerOnSharedPreferenceChangeListener(this@A11yAllyAccessibilityAnalyzer)
+            updateAppWhitelist(this)
+        }
     }
     /**
      * {@inheritDoc}
@@ -42,4 +54,12 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
             AccessibilityItemLogger(),
             AccessibilityOverlay(this)
     ) }
+
+    private fun updateAppWhitelist(preferences: SharedPreferences) {
+        whitelistedApps = if (preferences.getBoolean(prefEnableAllApps, prefEnableAllAppsDefault)) {
+            null
+        } else {
+            preferences.getStringSet(prefEnabledApps, mutableSetOf())
+        }
+    }
 }

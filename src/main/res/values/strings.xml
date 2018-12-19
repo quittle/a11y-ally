@@ -16,6 +16,10 @@
     <string name="check_permissions_button_label">Check Permissions</string>
     <string name="display_content_descriptions_toggle_label">Display Content Descriptions</string>
     <string name="highlight_accessibility_issues_toggle_button">Highlight Issues</string>
+    <string name="select_all">Select all</string>
+    <string name="app_picker_title">Apps to inspect</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 
     <string-array name="empty_string_array" />
 </resources>

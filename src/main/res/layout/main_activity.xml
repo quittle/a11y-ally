@@ -59,6 +59,18 @@
             app:layout_constraintTop_toBottomOf="@id/linearLayout1">
 
             <com.quittle.a11yally.view.CustomCardView
+                android:id="@+id/toggle_app_selection"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                app:image="@drawable/app_filter_icon"
+                app:imageBackgroundColor="#fff"
+                app:text="Apps of Interest"
+                app:preference_key="apps_of_interest_enabled" />
+
+            <com.quittle.a11yally.view.CustomCardView
                 android:id="@+id/permissions_check"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -68,15 +80,6 @@
                 app:image="@drawable/permissions_icon"
                 app:imageBackgroundColor="#1E88E5"
                 app:text="@string/check_permissions_button_label" />
-
-            <com.quittle.a11yally.view.CustomCardView
-                android:id="@+id/open_unfriendly_activity_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:image="@drawable/learn_icon"
-                app:imageBackgroundColor="#FFEB3B"
-                app:text="@string/open_unfriendly_activity_button_label" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,6 +106,15 @@
                 app:imageBackgroundColorUnchecked="#B2CDE5"
                 app:text="Enable"
                 app:preference_key="@string/pref_service_enabled" />
+
+            <com.quittle.a11yally.view.CustomCardView
+                android:id="@+id/open_unfriendly_activity_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:image="@drawable/learn_icon"
+                app:imageBackgroundColor="#FFEB3B"
+                app:text="@string/open_unfriendly_activity_button_label" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

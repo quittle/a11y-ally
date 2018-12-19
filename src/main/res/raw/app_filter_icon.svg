@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="800">
+    <defs>
+        <rect id="bg-square" height="213" width="213" rx="5" ry="5" />
+    </defs>
+    <g>
+        <g id="background">
+            <g id="row-1">
+                <use x="40" y="40" xlink:href="#bg-square" fill="#ee8c94" />
+                <use x="293" y="40" xlink:href="#bg-square" fill="#eee98c" />
+                <use x="546" y="40" xlink:href="#bg-square" fill="#3860b0" />
+            </g>
+            <g id="row-2">
+                <use x="40" y="293" xlink:href="#bg-square" fill="#aeee8c" />
+                <use x="293" y="293" xlink:href="#bg-square" fill="#b88cee" />
+                <use x="546" y="293" xlink:href="#bg-square" fill="#eea68c" />
+            </g>
+            <g id="row-3">
+                <use x="40" y="546" xlink:href="#bg-square" fill="#ee8ce2" />
+                <use x="293" y="546" xlink:href="#bg-square" fill="#8cb3ee" />
+                <use x="546" y="546" xlink:href="#bg-square" fill="#8ceeab" />
+            </g>
+        </g>
+        <g id="filter" transform="translate(172, 172)">
+            <path d="M454.254,15.876c-3.117-5.383-8.783-8.783-15.017-8.783H17.071c-5.95,0-11.617,3.117-14.733,8.5s-3.117,11.617,0,17
+                     l143.65,248.2v151.3c0,9.35,7.65,17,17,17h113.333c9.35,0,17-7.65,17-17v-150.45L453.404,33.16
+                     C456.804,28.06,457.087,21.543,454.254,15.876z M262.154,267.476c-1.7,2.833-2.833,5.95-2.833,9.35v138.267h-79.333V276.26
+                     c0-3.117-0.85-5.95-2.267-8.5L46.538,41.093h361.533L262.154,267.476z"/>
+        </g>
+    </g>
+</svg>

@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
+import com.quittle.a11yally.view.CustomCardView
+import com.quittle.a11yally.view.MultiAppSelectionDialog
 
 class MainActivity : AppCompatActivity() {
     private companion object {
@@ -38,6 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.open_unfriendly_activity_button).setOnClickListener {
             startActivity(Intent(this, UnfriendlyActivity::class.java))
+        }
+
+        findViewById<CustomCardView>(R.id.toggle_app_selection).setOnClickListener {
+            MultiAppSelectionDialog().showNow(supportFragmentManager, null)
         }
     }
 

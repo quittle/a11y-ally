@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Contains string constants used as preference keys and must not be translated -->
-<resources>
+<resources translatable="false">
     <string name="pref_display_content_descriptions">pref_display_content_descriptions</string>
     <string name="pref_highlight_accessibility_issues">pref_highlight_accessibility_issues</string>
     <string name="pref_service_enabled">service_enabled</string>
+    <string name="pref_enabled_apps">enabled_apps</string>
+    <string name="pref_enable_all_apps">enable_all_apps</string>
+    <bool name="pref_enable_all_apps_default">true</bool>
 </resources>
 

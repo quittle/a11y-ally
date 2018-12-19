@@ -163,6 +163,6 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     private fun clearDrawView() {
-        drawView?.removeViewsInLayout(0, drawView!!.childCount)
+        drawView?.removeAllViews()
     }
 }

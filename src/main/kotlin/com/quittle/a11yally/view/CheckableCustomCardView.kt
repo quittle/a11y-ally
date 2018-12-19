@@ -11,7 +11,7 @@ import com.quittle.a11yally.R
 class CheckableCustomCardView : Checkable, CustomCardView {
     @FunctionalInterface
     interface OnCheckedChangeListener {
-        fun onCheckedChanged(view: CheckableCustomCardView, isChecked: Boolean): Unit
+        fun onCheckedChanged(view: CheckableCustomCardView, isChecked: Boolean)
     }
 
     private val mListeners: MutableList<OnCheckedChangeListener> = mutableListOf()
