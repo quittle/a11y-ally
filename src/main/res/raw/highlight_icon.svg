@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
+<svg width="250" height="250" xmlns="http://www.w3.org/2000/svg">
     <g>
-        <rect height="25" width="25" fill="#ccc" />
-        <g transform="translate(1, 1)" stroke-width=".5" stroke="#888">
+        <rect height="250" width="250" fill="#ccc" />
+        <g transform="translate(10, 10)" stroke-width="5" stroke="#888">
             <!-- Fills in curve holes -->
-            <g rx="1">
-                <rect height="7" width="23" x="0" y="0" rx="1" />
-                <rect height="23" width="8" x="15" y="0" rx="1" />
+            <g rx="10">
+                <rect height="70" width="230" x="0" y="0" rx="10" />
+                <rect height="230" width="80" x="150" y="0" rx="10" />
             </g>
 
             <!-- Rectangles -->
             <g>
-                <rect height="7" width="15" x="0" y="0" fill="#bbb" rx="1" />
-                <rect height="4" width="8" x="15" y="0" fill="#ff5252" rx="1" />
-                <rect height="12" width="8" x="15" y="4" fill="#bbb" rx="1" />
-                <rect height="7" width="23" x="0" y="16" fill="#ff5252" rx="1" />
+                <rect height="70" width="150" x="0" y="0" fill="#bbb" rx="10" />
+                <rect height="40" width="80" x="150" y="0" fill="#ff5252" rx="10" />
+                <rect height="120" width="80" x="150" y="40" fill="#bbb" rx="10" />
+                <rect height="70" width="230" x="0" y="160" fill="#ff5252" rx="10" />
             </g>
         </g>
     </g>
