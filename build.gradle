@@ -105,6 +105,10 @@ play {
     serviceAccountCredentials = file('config/a11y-ally-app-publisher@api-7302096083209403391-613431.iam.gserviceaccount.com.json')
     defaultToAppBundles = true
     track = 'alpha'
+    resolutionStrategy = 'auto'
+    outputProcessor {
+        versionNameOverride = "$versionNameOverride.$versionCode"
+    }
 }
 
 codeQualityTools {
