@@ -1,0 +1,1 @@
+As a developmer, it can be hard to focus on all your customers. Discover accessibility issues that Android Lint or other static analysis tools won't catch while running the app either via automated instrumentation tests or get visual feedback while running the app during normal development use.
