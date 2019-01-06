@@ -10,6 +10,9 @@ before_install:
   -in config/a11y-ally-release.jks.enc -out config/a11y-ally-release.jks
   -d
 
+# Disable default install task
+install: true
+
 script:
 - ./gradlew
 
