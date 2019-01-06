@@ -14,13 +14,15 @@ buildscript {
 }
 
 plugins {
+    id 'com.github.triplet.play' version '2.0.0'
     id 'com.quittle.android-emulator' version '0.0.1'
     id 'com.quittle.setup-android-sdk' version '0.1.0'
     id 'com.quittle.svg-2-android-vector' version '0.0.3'
     id 'com.vanniktech.code.quality.tools' version '0.13.0'
+
 }
 
-final boolean IS_IN_TRAVIS = "true" == System.getenv('TRAVIS')
+final boolean IS_IN_TRAVIS = 'true' == System.getenv('TRAVIS')
 
 repositories {
     google()
@@ -97,6 +99,12 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
+}
+
+play {
+    serviceAccountCredentials = file('config/a11y-ally-app-publisher@api-7302096083209403391-613431.iam.gserviceaccount.com.json')
+    defaultToAppBundles = true
+    track = 'alpha'
 }
 
 codeQualityTools {
