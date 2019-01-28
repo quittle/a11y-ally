@@ -1,1 +1,1 @@
-Test accessibility of your app during development
+Test the accessibility of your app during development
