@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:weightSum="2">

@@ -1,0 +1,1 @@
+-keep class kotlin.reflect.jvm.internal.impl.load.java.structure.LightClassOriginKind
