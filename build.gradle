@@ -144,5 +144,6 @@ tasks.withType(JavaCompile) {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         allWarningsAsErrors = true
+        freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
     }
 }

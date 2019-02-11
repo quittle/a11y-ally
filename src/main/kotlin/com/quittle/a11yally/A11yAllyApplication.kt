@@ -26,7 +26,7 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (sharedPreferences != null && key != null &&
+        if (sharedPreferences.isNotNull() && key.isNotNull() &&
                 prefServiceEnabled == key && sharedPreferences.getBoolean(key, false)) {
             applicationContext.startService(
                     Intent(applicationContext, A11yAllyAccessibilityAnalyzer::class.java))

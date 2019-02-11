@@ -482,6 +482,8 @@ style:
     active: false
   VarCouldBeVal:
     active: false
+  VariableMaxLength:
+    active: false
   WildcardImport:
     active: true
     excludeImports: 'java.util.*,kotlinx.android.synthetic.*'

@@ -18,10 +18,7 @@ class AccessibilityItemLogger : AccessibilityAnalyzer.AccessibilityItemEventList
     override fun onAccessibilityEventEnd() {}
 
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
-        if (node.isFocusable &&
-                node.childCount > 0 &&
-                node.text === null &&
-                node.contentDescription === null) {
+        if (isUnlabeledNode(node)) {
             Log.i(TAG, "Missing text: " + node.className)
         }
     }

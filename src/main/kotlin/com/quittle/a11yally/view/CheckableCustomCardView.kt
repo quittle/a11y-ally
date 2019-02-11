@@ -7,6 +7,7 @@ import android.widget.Checkable
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.quittle.a11yally.R
+import com.quittle.a11yally.isNotNull
 
 class CheckableCustomCardView : Checkable, CustomCardView {
     @FunctionalInterface
@@ -125,15 +126,15 @@ class CheckableCustomCardView : Checkable, CustomCardView {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (mPreferenceKey != null) {
-            isChecked = PreferenceManager.getDefaultSharedPreferences(context)
+        isChecked = if (mPreferenceKey.isNotNull()) {
+            PreferenceManager.getDefaultSharedPreferences(context)
                     .getBoolean(mPreferenceKey, mIsChecked)
         } else {
-            isChecked = mIsChecked
+            mIsChecked
         }
     }
 
-    fun setOnCheckedChangeListener(listener: OnCheckedChangeListener) {
+    private fun setOnCheckedChangeListener(listener: OnCheckedChangeListener) {
         mListeners.add(listener)
     }
 
