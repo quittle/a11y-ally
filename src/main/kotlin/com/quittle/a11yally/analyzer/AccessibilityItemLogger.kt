@@ -2,6 +2,7 @@ package com.quittle.a11yally.analyzer
 
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
+import org.json.JSONObject
 
 private const val TAG: String = "AccessibilityItemLogger"
 
@@ -19,7 +20,9 @@ class AccessibilityItemLogger : AccessibilityAnalyzer.AccessibilityItemEventList
 
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
         if (isUnlabeledNode(node)) {
-            Log.i(TAG, "Missing text: " + node.className)
+            val summaryMap = AccessibilityNodeSummary(node).getSummary()
+            val nodeSummary = JSONObject(summaryMap).toString(4)
+            Log.i(TAG, "Unlabeled node found: $nodeSummary")
         }
     }
 
