@@ -4,6 +4,13 @@
         android:versionCode="1"
         android:versionName="0.0.0">
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="com.quittle.a11yally.MANAGE_RECORDING" />
+
+    <permission
+            android:name="com.quittle.a11yally.MANAGE_RECORDING"
+            android:description="@string/permission_manage_recording_description"
+            android:label="@string/permission_manage_recording_label"
+            android:protectionLevel="dangerous" />
 
     <application
             android:name=".A11yAllyApplication"
@@ -28,6 +35,13 @@
             <meta-data
                     android:name="android.accessibilityservice"
                     android:resource="@xml/accessibility_service_config" />
+        </service>
+        <service android:name=".RecordingService"
+                android:permission="com.quittle.a11yally.MANAGE_RECORDING">
+            <intent-filter>
+                <action android:name="com.quittle.a11yally.START_RECORDING" />
+                <action android:name="com.quittle.a11yally.STOP_RECORDING" />
+            </intent-filter>
         </service>
     </application>
 </manifest>

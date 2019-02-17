@@ -10,6 +10,8 @@ private const val TAG: String = "AccessibilityItemLogger"
  * Logs accessibility errors to Logcat.
  */
 class AccessibilityItemLogger : AccessibilityAnalyzer.AccessibilityItemEventListener {
+    private var mIsRecording = false
+
     override fun onPause() {}
 
     override fun onResume() {}
@@ -19,6 +21,10 @@ class AccessibilityItemLogger : AccessibilityAnalyzer.AccessibilityItemEventList
     override fun onAccessibilityEventEnd() {}
 
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
+        if (!mIsRecording) {
+            return
+        }
+
         if (isUnlabeledNode(node)) {
             val summaryMap = AccessibilityNodeSummary(node).getSummary()
             val nodeSummary = JSONObject(summaryMap).toString(4)
@@ -27,4 +33,12 @@ class AccessibilityItemLogger : AccessibilityAnalyzer.AccessibilityItemEventList
     }
 
     override fun onNonWhitelistedApp() {}
+
+    fun startRecording() {
+        mIsRecording = true
+    }
+
+    fun stopRecording() {
+        mIsRecording = false
+    }
 }

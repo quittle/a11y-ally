@@ -17,8 +17,25 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
         resources.getBoolean(R.bool.pref_enable_all_apps_default)
     }
     private val prefEnabledApps by lazy { getString(R.string.pref_enabled_apps) }
+    private val mAccessibilityItemLogger by lazy { AccessibilityItemLogger() }
 
     private var whitelistedApps: Iterable<String>? = null
+
+    companion object {
+        private var sServiceInstance: A11yAllyAccessibilityAnalyzer? = null
+
+        fun getInstance(): A11yAllyAccessibilityAnalyzer? {
+            return sServiceInstance
+        }
+    }
+
+    fun startRecording() {
+        mAccessibilityItemLogger.startRecording()
+    }
+
+    fun stopRecording() {
+        mAccessibilityItemLogger.stopRecording()
+    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         when (key) {
@@ -43,7 +60,16 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
             registerOnSharedPreferenceChangeListener(this@A11yAllyAccessibilityAnalyzer)
             updateAppWhitelist(this)
         }
+
+        sServiceInstance = this
     }
+
+    override fun onDestroy() {
+        sServiceInstance = null
+
+        super.onDestroy()
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -51,7 +77,7 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
      * {@link AccessibilityAnalyzer} is initialized fully.
      */
     override val listeners: Collection<AccessibilityItemEventListener> by lazy { setOf(
-            AccessibilityItemLogger(),
+            mAccessibilityItemLogger,
             AccessibilityOverlay(this)
     ) }
 

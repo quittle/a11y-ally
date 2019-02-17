@@ -20,6 +20,8 @@
     <string name="app_picker_title">Apps to inspect</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="permission_manage_recording_description">Allows recording of accessibility issues. Results may potentially include sensitive data.</string>
+    <string name="permission_manage_recording_label">Manage A11y Ally Recordings</string>
 
     <string-array name="empty_string_array" />
 </resources>
