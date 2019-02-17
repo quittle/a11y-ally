@@ -59,6 +59,11 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
         PreferenceManager.getDefaultSharedPreferences(this).apply {
             registerOnSharedPreferenceChangeListener(this@A11yAllyAccessibilityAnalyzer)
             updateAppWhitelist(this)
+            if (getBoolean(prefServiceEnabled, false)) {
+                resumeListeners()
+            } else {
+                pauseListeners()
+            }
         }
 
         sServiceInstance = this
