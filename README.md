@@ -21,6 +21,7 @@ like, feel free to file an issue and I'll work on adding it.
 
 ### Reports
 * Logging issues to [`logcat`](https://developer.android.com/studio/command-line/logcat)
+* Logging issues to a file for analysis
 * Toggling of logging via [Intent](https://developer.android.com/guide/components/intents-filters)
 
 ## Coming One Day
@@ -29,7 +30,6 @@ like, feel free to file an issue and I'll work on adding it.
 * Investigate checking color-issues
   * Color-blind friendliness
   * High text to background contrast
-* Reporting issues to a text file to enable testing
 
 ## Usage
 
@@ -57,6 +57,15 @@ $ adb shell run-as com.quittle.a11yally am startservice \
     -n "com.quittle.a11yally/.RecordingService" \
     -a "com.quittle.a11yally.STOP_RECORDING" \
     --user 0
+```
+
+Once recording is stopped, the app will print out the location of the recording file that you can
+retrieve. To read it, you will need to again run as the app's user. Below shows one way you could
+read the file. Note that the exact location may vary between devices.
+
+```sh
+$ adb shell run-as com.quittle.a11yally cat \
+    /data/user/0/com.quittle.a11yally/files/recordings/recording.json
 ```
 
 In order to simplify the permission's configuration necessary for a user to toggle from the

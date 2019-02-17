@@ -17,7 +17,7 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
         resources.getBoolean(R.bool.pref_enable_all_apps_default)
     }
     private val prefEnabledApps by lazy { getString(R.string.pref_enabled_apps) }
-    private val mAccessibilityItemLogger by lazy { AccessibilityItemLogger() }
+    private val mAccessibilityItemLogger by lazy { AccessibilityItemLogger(applicationContext) }
 
     private var whitelistedApps: Iterable<String>? = null
 

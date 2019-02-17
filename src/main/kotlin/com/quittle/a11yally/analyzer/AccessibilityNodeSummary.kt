@@ -17,7 +17,7 @@ class AccessibilityNodeSummary(node: AccessibilityNodeInfo) {
      * Provides a summary of all known identifying features of a node.
      * @return A concise summary of the node
      */
-    fun getSummary(): Map<String, Any?> {
+    fun getSummary(): Map<String, Any> {
         var info = mapOf(
                 Pair("windowTitle", getWindowTitle()),
                 Pair("paneTitle", getPaneTitle()),
@@ -29,7 +29,8 @@ class AccessibilityNodeSummary(node: AccessibilityNodeInfo) {
                 Pair("hintText", getHintText()),
                 Pair("text", getText()),
                 Pair("nodeClassPath", getNodeClassPath()))
-        info = info.filterValues { value -> value.isNotNull() }
+        @Suppress("UNCHECKED_CAST")
+        info = info.filterValues { value -> value.isNotNull() } as Map<String, Any>
         return info.toSortedMap()
     }
 
