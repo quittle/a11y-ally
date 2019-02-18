@@ -7,6 +7,8 @@ provide feedback to a developer both during manual inspection of the app during 
 part of integration test runs by generating reports of issues found.
 
 <br />
+<br />
+
 <p align="center">
     <img src="src/main/play/listings/en-US/graphics/phone-screenshots/main.png" alt="Main Screen" />
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
