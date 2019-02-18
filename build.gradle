@@ -181,6 +181,15 @@ imageGrinder {
     }
 }
 
+task copyAdditionalPlayStoreResources(type: Copy) {
+    from new File(customResDir, 'play')
+    into new File(project.buildDir, 'generated/gpp/release/res')
+
+    dependsOn 'generateIconImages'
+
+    tasks['preBuild'].dependsOn it
+}
+
 if (IS_IN_TRAVIS) {
     defaultTasks 'assemble', 'bundle', 'test', 'check'
 } else {
