@@ -1,9 +1,17 @@
 # A11y Ally [![Build Status](https://travis-ci.org/quittle/a11y-ally.svg?branch=master)](https://travis-ci.org/quittle/a11y-ally)
 
+<img align="left" src="src/main/custom-res/icon.svg" alt="Logo" height="80px" />
 This is a tool intended for developers to detect if the Android application they are developing is
 accessible in a variety of ways. It is intended to be run alongside the main application and will
 provide feedback to a developer both during manual inspection of the app during development and as
 part of integration test runs by generating reports of issues found.
+
+<br />
+<p align="center">
+    <img src="src/main/play/listings/en-US/graphics/phone-screenshots/main.png" alt="Main Screen" />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    <img src="src/main/play/listings/en-US/graphics/phone-screenshots/example.png" alt="Highlighting Example" />
+</p>
 
 > It currently only supports a small subset of intended functionality. Check the feature list below
 or in the app to see what features are currently supported. If there's something missing you would

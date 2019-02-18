@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="codeGrey">
+            <stop offset="0%" stop-color="#606060" />
+        </linearGradient>
+    </defs>
+
+    <g transform="scale(2.327272727)">
+        <g id="flag" transform="translate(60, 40) scale(1.5)">
+            <circle cx="3" cy="0" r="5" fill="#fff" />
+            <rect height="90" width="6" fill="#fff" ry="2" />
+
+            <path fill="red" transform="scale(.3) translate(-30, 0)"
+                d="M75.326,28.49c13.086-7.789,38.851-18.933,66.291-7.511c37.519,15.61,50.872,46.515,107.775,5.635
+                            c4.879-3.508,8.697-1.675,8.697,4.335v106.513c0,6.01-3.307,14.462-7.854,18.389c-9.91,8.561-28.011,21.299-47.429,20.696
+                            c-29.11-0.914-57.311-31.84-83.696-31.84c-16.845,0-33.684,8.153-43.659,14.055c-5.173,3.057-9.1,1.082-9.1-4.922V45.498
+                            C66.357,39.493,70.164,31.563,75.326,28.49z" />
+        </g>
+    </g>
+</svg>

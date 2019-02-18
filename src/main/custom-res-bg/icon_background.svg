@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="codeGrey">
+            <stop offset="0%" stop-color="#606060" />
+        </linearGradient>
+    </defs>
+
+    <g transform="scale(2.327272727)">
+        <g id="background">
+            <rect id="code-bg" x="0" y="0" height="220" width="220" fill="#262626" />
+            <g id="code" transform="translate(10, 10)">
+                <g>
+                    <rect x="0" width="10" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="15" width="80" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(0, 10)">
+                    <rect x="0" width="50" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="55" width="80" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(0, 20)">
+                    <rect x="0" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="35" width="10" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="50" width="70" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 30)">
+                    <rect x="0" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="35" width="70" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 40)">
+                    <rect x="0" width="15" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="20" width="100" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="125" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 50)">
+                    <rect x="0" width="80" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(80, 60)">
+                    <rect x="0" width="50" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(0, 70)">
+                    <rect x="0" width="45" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="50" width="20" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(0, 80)">
+                    <rect x="0" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="35" width="100" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="140" width="15" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(0, 90)">
+                    <rect x="0" width="60" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="65" width="10" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="80" width="25" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(0, 100)">
+                    <rect x="0" width="120" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(0, 110)">
+                    <rect x="0" width="35" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="40" width="60" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="105" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 120)">
+                    <rect x="0" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="35" width="75" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 130)">
+                    <rect x="0" width="50" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="55" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="90" width="15" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 140)">
+                    <rect x="0" width="10" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="15" width="50" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="70" width="25" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(80, 150)">
+                    <rect x="0" width="80" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="85" width="20" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(80, 160)">
+                    <rect x="0" width="40" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="45" width="45" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(80, 170)">
+                    <rect x="0" width="70" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 180)">
+                    <rect x="0" width="30" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="35" width="20" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+                <g transform="translate(40, 190)">
+                    <rect x="0" width="50" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="55" width="10" fill="url('#codeGrey')" height="5" ry="2" />
+                    <rect x="70" width="25" fill="url('#codeGrey')" height="5" ry="2" />
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

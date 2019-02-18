@@ -20,7 +20,14 @@ plugins {
     id 'com.quittle.setup-android-sdk' version '0.1.0'
     id 'com.quittle.svg-2-android-vector' version '0.0.3'
     id 'com.vanniktech.code.quality.tools' version '0.15.0'
+    id 'com.diffplug.gradle.image-grinder' version '2.0.1'
 }
+
+import com.diffplug.gradle.imagegrinder.Size
+
+final File customResDir = new File(buildDir, 'custom-generated/res')
+final File customResDirFg = new File(buildDir, 'custom-generated/res-fg')
+final File customResDirBg = new File(buildDir, 'custom-generated/res-bg')
 
 repositories {
     google()
@@ -71,13 +78,14 @@ android {
     lintOptions {
         warningsAsErrors true
         abortOnError true
-        disable 'GradleDependency', 'AllowBackup', 'GoogleAppIndexingWarning', 'VectorRaster'
+        disable 'GradleDependency', 'AllowBackup', 'GoogleAppIndexingWarning', 'VectorRaster', 'IconLauncherShape'
         // Temporary while SVG 2 Android Vector plugin does not hide the SVGs from the linter
         disable 'UnusedResources'
     }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main.res.srcDirs += [customResDir, customResDirFg, customResDirBg]
         test.java.srcDirs += 'src/test/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
@@ -128,6 +136,48 @@ codeQualityTools {
     findbugs {
         enabled = false // Fails the build without java input
         excludeFilter = 'config/findbugs-exclude-filter.xml'
+    }
+}
+
+imageGrinder {
+    generateIconImages {
+        srcDir = file('src/main/custom-res')
+        dstDir = customResDir
+        grinder { img ->
+            img.renderFull('play/listings/en-US/graphics/icon/icon.png', Size.createSquare(512))
+            img.renderFull("mipmap-xxxhdpi/ic_launcher.png", Size.createSquare(192))
+            img.renderFull("mipmap-xxhdpi/ic_launcher.png", Size.createSquare(144))
+            img.renderFull("mipmap-xhdpi/ic_launcher.png", Size.createSquare(96))
+            img.renderFull("mipmap-hdpi/ic_launcher.png", Size.createSquare(72))
+            img.renderFull("mipmap-mdpi/ic_launcher.png", Size.createSquare(48))
+        }
+        tasks['preBuild'].dependsOn it
+    }
+
+    generateForegroundIconImages {
+        srcDir = file('src/main/custom-res-fg')
+        dstDir = customResDirFg
+        grinder { img ->
+            img.renderFull("mipmap-xxxhdpi/ic_launcher_adaptive_foreground.png", Size.createSquare(432))
+            img.renderFull("mipmap-xxhdpi/ic_launcher_adaptive_foreground.png", Size.createSquare(324))
+            img.renderFull("mipmap-xhdpi/ic_launcher_adaptive_foreground.png", Size.createSquare(216))
+            img.renderFull("mipmap-hdpi/ic_launcher_adaptive_foreground.png", Size.createSquare(162))
+            img.renderFull("mipmap-mdpi/ic_launcher_adaptive_foreground.png", Size.createSquare(108))
+        }
+        tasks['preBuild'].dependsOn it
+    }
+
+    generateBackgroundIconImages {
+        srcDir = file('src/main/custom-res-bg')
+        dstDir = customResDirBg
+        grinder { img ->
+            img.renderFull("mipmap-xxxhdpi/ic_launcher_adaptive_background.png", Size.createSquare(432))
+            img.renderFull("mipmap-xxhdpi/ic_launcher_adaptive_background.png", Size.createSquare(324))
+            img.renderFull("mipmap-xhdpi/ic_launcher_adaptive_background.png", Size.createSquare(216))
+            img.renderFull("mipmap-hdpi/ic_launcher_adaptive_background.png", Size.createSquare(162))
+            img.renderFull("mipmap-mdpi/ic_launcher_adaptive_background.png", Size.createSquare(108))
+        }
+        tasks['preBuild'].dependsOn it
     }
 }
 
