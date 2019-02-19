@@ -140,11 +140,21 @@ codeQualityTools {
 }
 
 imageGrinder {
+    // Unable to add non-src directory for the GPP plugin
+    // https://github.com/Triple-T/gradle-play-publisher/issues/521
+    generatePlayIconHack {
+        srcDir = file('src/main/custom-res')
+        dstDir = file('src/main/play/listings/en-US/graphics/icon')
+        grinder { img ->
+            img.renderFull('icon.png', Size.createSquare(512))
+        }
+        tasks['preBuild'].dependsOn it
+    }
+
     generateIconImages {
         srcDir = file('src/main/custom-res')
         dstDir = customResDir
         grinder { img ->
-            img.renderFull('play/listings/en-US/graphics/icon/icon.png', Size.createSquare(512))
             img.renderFull("mipmap-xxxhdpi/ic_launcher.png", Size.createSquare(192))
             img.renderFull("mipmap-xxhdpi/ic_launcher.png", Size.createSquare(144))
             img.renderFull("mipmap-xhdpi/ic_launcher.png", Size.createSquare(96))
