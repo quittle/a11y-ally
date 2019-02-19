@@ -8,9 +8,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
-        classpath 'com.android.tools.lint:lint-gradle:26.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
+        classpath 'com.android.tools.lint:lint-gradle:26.3.1'
+
+        // Fix bug where upgrading lint-gradle lead to a missing class exception
+        // See https://stackoverflow.com/q/30483255
+        classpath 'org.apache.xmlgraphics:batik-ext:1.11'
     }
 }
 
