@@ -1,4 +1,4 @@
-# A11y Ally [<img alt="Get it on Google Play" src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="50px" align="top" />](https://play.google.com/apps/testing/com.quittle.a11yally) [![Build Status](https://travis-ci.org/quittle/a11y-ally.svg?branch=master)](https://travis-ci.org/quittle/a11y-ally)
+# A11y Ally [<img alt="Get it on Google Play" src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="50px" align="top" />](https://play.google.com/store/apps/details?id=com.quittle.a11yally) [![Build Status](https://travis-ci.org/quittle/a11y-ally.svg?branch=master)](https://travis-ci.org/quittle/a11y-ally)
 
 <img align="left" src="src/main/custom-res/icon.svg" alt="Logo" height="80px" />
 This is a tool intended for developers to detect if the Android application they are developing is
