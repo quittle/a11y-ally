@@ -12,32 +12,33 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.PreferenceProvider
 import com.quittle.a11yally.R
 import com.quittle.a11yally.ifNotNull
 import com.quittle.a11yally.isNotNull
 import com.quittle.a11yally.isNull
 
-@Suppress("deprecation", "TopLevelPropertyNaming")
-private val OVERLAY_TYPE: Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
-} else {
-    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-}
-
-private const val OVERLAY_FLAGS: Int =
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-
-private const val PIXEL_FORMAT: Int = PixelFormat.TRANSLUCENT
-
-private const val TAG: String = "AccessibilityOverlay"
-
 /**
  * Displays accessibility info visibly on the screen.
  */
 class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
         AccessibilityAnalyzer.AccessibilityItemEventListener {
+    private companion object {
+        private const val OVERLAY_FLAGS: Int =
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+
+        private const val PIXEL_FORMAT: Int = PixelFormat.TRANSLUCENT
+
+        @Suppress("deprecation", "TopLevelPropertyNaming")
+        private val OVERLAY_TYPE: Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
+        } else {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        }
+    }
+
     private var drawView: RelativeLayout? = null
     private val mContext: Context = accessibilityAnalyzer.applicationContext
     private var preferenceProvider = PreferenceProvider(mContext)

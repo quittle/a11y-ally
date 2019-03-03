@@ -7,14 +7,13 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
-private const val TAG: String = "AccessibilityItemLogger"
-
 /**
  * Logs accessibility errors to Logcat.
  */
 class AccessibilityItemLogger(context: Context) :
         AccessibilityAnalyzer.AccessibilityItemEventListener {
     private companion object {
+        private const val TAG = "${com.quittle.a11yally.BuildConfig.TAG}::Report"
         private const val RECORDINGS_DIR = "recordings"
         private const val RECORDING_FILE = "recording.json"
     }
