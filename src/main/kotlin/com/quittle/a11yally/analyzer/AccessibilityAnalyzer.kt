@@ -1,8 +1,10 @@
 package com.quittle.a11yally.analyzer
 
 import android.accessibilityservice.AccessibilityService
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import com.quittle.a11yally.BuildConfig.TAG
 
 /**
  * Generic base service class for analyzing the accessibility events.
@@ -86,7 +88,11 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
         listeners.forEach(AccessibilityItemEventListener::onAccessibilityEventStart)
         rootInActiveWindow?.let {
             iterateAccessibilityNodeInfos(it, this::onNodeEvent)
-            it.recycle()
+            try {
+                it.recycle()
+            } catch (e: IllegalStateException) {
+                Log.w(TAG, "Unable to recycle node", e)
+            }
         }
         listeners.forEach(AccessibilityItemEventListener::onAccessibilityEventEnd)
     }
@@ -99,7 +105,11 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
         for (i in 0 until root.childCount) {
             root.getChild(i)?.let {
                 iterateAccessibilityNodeInfos(it, onEachCallback)
-                it.recycle()
+                try {
+                    it.recycle()
+                } catch (e: IllegalStateException) {
+                    Log.w(TAG, "Unable to recycle node", e)
+                }
             }
         }
     }
