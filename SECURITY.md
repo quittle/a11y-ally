@@ -16,3 +16,8 @@ an app that has been granted the custom recording permission
 `com.quittle.a11yally.MANAGE_RECORDING`.
 
 # Report Files
+
+The report files are always generated in the app's internal storage to prevent other apps from
+reading it. The app specifies that it should only be installed on the internal storage so unless the
+device is rooted or developer settings is enabled and the app is explicitly requested to be
+installed on external storage.

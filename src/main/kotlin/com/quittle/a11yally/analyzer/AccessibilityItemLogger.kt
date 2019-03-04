@@ -58,7 +58,7 @@ class AccessibilityItemLogger(context: Context) :
 
     fun stopRecording() {
         if (!mIsRecording) {
-            Log.w(TAG, "Attempting to stop recording when it was previously unstarted")
+            Log.w(TAG, "Attempting to stop recording when it was not previously started")
             return
         }
 
