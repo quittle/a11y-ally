@@ -42,6 +42,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     private var drawView: RelativeLayout? = null
     private val mContext: Context = accessibilityAnalyzer.applicationContext
     private var preferenceProvider = PreferenceProvider(mContext)
+    private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(mContext)
 
     override fun onAccessibilityEventStart() {
         clearDrawView()
@@ -61,10 +62,11 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         }
 
         val textView = buildHighlightNode(drawView!!, node)
-        val nodeContentDescription = getContentDescription(node)
+        val nodeContentDescription = mAccessibilityNodeAnalyzer.getContentDescription(node)
 
         val resourceId: Int
-        if (preferenceProvider.getDisplayAccessibilityIssues() && isUnlabeledNode(node)) {
+        if (preferenceProvider.getDisplayAccessibilityIssues() &&
+                mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
             resourceId = R.color.red
         } else if (preferenceProvider.getDisplayContentDescription() &&
                 nodeContentDescription.isNotNull()) {
@@ -100,7 +102,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         try {
             windowManager.addView(drawView, params)
         } catch (e: WindowManager.BadTokenException) {
-            Log.d(TAG, "Unable to add overlay view to window manager", e)
+            Log.e(TAG, "Unable to add overlay view to window manager", e)
         }
     }
 

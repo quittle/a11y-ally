@@ -3,6 +3,7 @@ package com.quittle.a11yally.analyzer
 import android.content.Context
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
+
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -20,6 +21,7 @@ class AccessibilityItemLogger(context: Context) :
 
     private var mIsRecording = false
     private val mContext = context
+    private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(context)
     private val mOngoingRecording = mutableListOf<Map<String, Any>>()
 
     override fun onPause() {}
@@ -35,7 +37,7 @@ class AccessibilityItemLogger(context: Context) :
             return
         }
 
-        if (isUnlabeledNode(node)) {
+        if (mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
             val summaryMap = AccessibilityNodeSummary(node).getSummary().toMutableMap()
             summaryMap["timestamp"] = System.currentTimeMillis()
             mOngoingRecording.add(summaryMap)
