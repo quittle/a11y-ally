@@ -28,6 +28,7 @@ plugins {
 }
 
 import com.diffplug.gradle.imagegrinder.Size
+import com.github.triplet.gradle.play.internal.PluginsKt
 
 final File customResDir = new File(buildDir, 'custom-generated/res')
 final File customResDirFg = new File(buildDir, 'custom-generated/res-fg')
@@ -143,15 +144,23 @@ codeQualityTools {
 }
 
 imageGrinder {
-    // Unable to add non-src directory for the GPP plugin
+    // Unable to add a non-src directory for the GPP plugin so we have to copy the generated icon
+    // into the expected directory after generating the resources, but before publishing them.
     // https://github.com/Triple-T/gradle-play-publisher/issues/521
-    generatePlayIconHack {
-        srcDir = file('src/main/custom-res')
-        dstDir = file('src/main/play/listings/en-US/graphics/icon')
-        grinder { img ->
-            img.renderFull('icon.png', Size.createSquare(512))
+    afterEvaluate {
+        generatePlayIconHack {
+            final releaseVariant = android.applicationVariants.find { it.name == 'release' }
+            final String releasePlayPath = PluginsKt.getPlayPath(releaseVariant)
+            srcDir = file('src/main/custom-res')
+            dstDir = file("build/${releasePlayPath}/res/listings/en-US/graphics/icon")
+
+            grinder { img ->
+                img.renderFull('icon.png', Size.createSquare(512))
+            }
+
+            tasks['publishReleaseListing'].dependsOn it
+            mustRunAfter('generateReleasePlayResources')
         }
-        tasks['preBuild'].dependsOn it
     }
 
     generateIconImages {
