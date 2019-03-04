@@ -22,6 +22,7 @@
     <string name="confirm">Confirm</string>
     <string name="permission_manage_recording_description">Allows recording of accessibility issues. Results may potentially include sensitive data.</string>
     <string name="permission_manage_recording_label">Manage A11y Ally Recordings</string>
+    <string name="tiny_touch_target_view">Tiny button is too small a touch target</string>
 
     <string-array name="empty_string_array" />
 </resources>
