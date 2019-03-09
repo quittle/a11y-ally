@@ -1,13 +1,13 @@
 package com.quittle.a11yally.view
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Simple base {@link Activity} for displaying a fixed layout with nothing more.
  */
-abstract class FixedContentActivity : Activity() {
+abstract class FixedContentActivity : AppCompatActivity() {
     @get:LayoutRes
     abstract val layoutId: Int
 

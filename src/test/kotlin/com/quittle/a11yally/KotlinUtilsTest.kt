@@ -12,11 +12,23 @@ import kotlin.concurrent.thread
 class KotlinUtilsTest {
     @Test
     fun compilerCheckTest() {
-        val nullable: String? = null
-        var nonNull: String = "value"
+        val nullable: Double? = null
+        var nonNull: Double = 100.0
 
         // The following would cause a compiler failure
         // nonNull = nullable
+
+        if (!nullable.isNullOrZero()) {
+            nonNull = nullable
+        }
+
+        // This should fail to compile if Kotlin fully implemented contracts as it should detect
+        // that it is impossible for z to be null and may be 0. So if the if statement returned true
+        // then it should risk throwing a division by zero exception
+        val z: Int = if (Math.random() > 2) 0 else 1
+        if (z.isNullOrZero()) {
+            1 / z
+        }
 
         if (!nullable.isNull()) {
             nonNull = nullable
@@ -26,12 +38,24 @@ class KotlinUtilsTest {
             nonNull = nullable
         }
 
-        nullable.ifNotNull { value: String ->
+        nullable.ifNotNull { value: Double ->
             nonNull = value
         }
 
         // Do something with the value to stop warnings
-        nonNull.length
+        nonNull.dec()
+    }
+
+    @Test
+    fun isNullOrZero() {
+        assertTrue(0.isNullOrZero())
+        assertTrue(0.toDouble().isNullOrZero())
+        assertFalse(1.isNullOrZero())
+        assertFalse(1f.isNullOrZero())
+        assertFalse((-100).isNullOrZero())
+        assertFalse((-100f).isNullOrZero())
+
+        assertTrue(null.isNullOrZero())
     }
 
     @Test
@@ -77,5 +101,14 @@ class KotlinUtilsTest {
         value = null
         afterRan = true
         testThread!!.join()
+    }
+
+    @Test
+    fun testForEach() {
+        var builder = ""
+        forEach("a", "b", "c") {
+            builder += it
+        }
+        assertEquals("abc", builder)
     }
 }

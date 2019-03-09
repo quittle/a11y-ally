@@ -13,21 +13,28 @@ import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
+import androidx.annotation.XmlRes
 import androidx.appcompat.app.AppCompatActivity
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
+import com.quittle.a11yally.view.CheckableCustomCardView
 import com.quittle.a11yally.view.CustomCardView
 import com.quittle.a11yally.view.MultiAppSelectionDialog
 
 class MainActivity : AppCompatActivity() {
     private companion object {
         private val ANALYZER_CLASS_NAME = A11yAllyAccessibilityAnalyzer::class.simpleName
+        private val FEATURE_SETTINGS_ACTIVITY_CLASS = FeatureSettingsActivity::class.java
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.main_activity)
+
+        // Disable for now to not affect the existing app
+        // convertViewIntoFeaturePreferencesButton(R.id.toggle_highlight_issues,
+        //                                         R.xml.highlight_issues_preferences)
 
         findViewById<View>(R.id.permissions_check).setOnClickListener {
             if (checkForAndRequestPermissions()) {
@@ -88,5 +95,18 @@ class MainActivity : AppCompatActivity() {
         }
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+    }
+
+    private fun convertToFeaturePreferencesButton(view_id: Int, @XmlRes preferences: Int) {
+        findViewById<CheckableCustomCardView>(view_id).let { view ->
+            view.setOnClickListener {
+                startActivity(Intent(applicationContext, FEATURE_SETTINGS_ACTIVITY_CLASS).apply {
+                    putExtra(FeatureSettingsActivity.EXTRA_KEY_IMAGE_RESOURCE_ID,
+                            view.getImageResource())
+                    putExtra(FeatureSettingsActivity.EXTRA_KEY_PREFERENCE_XML_RESOURCE_ID,
+                            preferences)
+                })
+            }
+        }
     }
 }

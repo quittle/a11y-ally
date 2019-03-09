@@ -123,6 +123,11 @@ class CheckableCustomCardView : Checkable, CustomCardView {
         }
     }
 
+    @DrawableRes
+    fun getImageResource(): Int {
+        return mImageResource
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 

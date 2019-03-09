@@ -392,6 +392,8 @@ style:
   ForbiddenComment:
     active: true
     values: 'TODO:,FIXME:,STOPSHIP:'
+  FunctionMaxLength:
+    active: false
   ForbiddenImport:
     active: false
     imports: ''

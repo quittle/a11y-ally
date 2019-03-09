@@ -17,6 +17,19 @@ fun Any?.isNull(): Boolean {
 }
 
 /**
+ * Checks if a number is null or zero, setting up a contract to support smart casting
+ * @return true if the value is either null or equal to 0
+ */
+@UseExperimental(ExperimentalContracts::class)
+fun Number?.isNullOrZero(): Boolean {
+    contract {
+        returns(false) implies (this@isNullOrZero !== null)
+    }
+
+    return this.isNull() || this.toInt() == 0
+}
+
+/**
  * Checks if a value is not null, setting up a contract to support smart casting
  * @return true if the value is nonnull, otherwise false
  */
@@ -36,4 +49,11 @@ inline fun <T> T?.ifNotNull(then: (T) -> Unit) {
     if (this.isNotNull()) {
         then(this)
     }
+}
+
+/**
+ * Enables easy looping over items without explicitly creating a collection
+ */
+fun <T> forEach(vararg args: T, callable: (T) -> Unit) {
+    args.forEach(callable)
 }

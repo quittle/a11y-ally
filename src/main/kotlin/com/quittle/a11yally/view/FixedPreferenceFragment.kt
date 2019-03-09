@@ -8,7 +8,7 @@ import androidx.preference.PreferenceFragmentCompat
  * Preference fragment backed by a fixed resource
  */
 class FixedPreferenceFragment : PreferenceFragmentCompat() {
-    private companion object {
+    companion object {
         private const val PREFERENCE_XML_KEY = "preference xml"
 
         fun newInstance(@XmlRes preferenceXml: Int): FixedPreferenceFragment {

@@ -22,7 +22,27 @@
     <string name="confirm">Confirm</string>
     <string name="permission_manage_recording_description">Allows recording of accessibility issues. Results may potentially include sensitive data.</string>
     <string name="permission_manage_recording_label">Manage A11y Ally Recordings</string>
+
+    <string name="highlight_issues_title">Highlight Issues</string>
     <string name="tiny_touch_target_view">Tiny button is too small a touch target</string>
+    <string name="highlight_missing_labels_title">Missing Content Descriptions</string>
+    <string name="highlight_missing_labels_summary">Highlight views without required labeling. e.g. images or checkboxes</string>
+    <string name="highlight_empty_views_title">Mystery Views</string>
+    <string name="highlight_empty_views_summary">Highlight views that are focusable and without semantic meaning, but have no text indicating what they are</string>
+    <string name="highlight_small_touch_targets_title">Small Touch Targets</string>
+    <string name="highlight_small_touch_targets_summary">Highlight views that may be difficult for some users to accurately press</string>
+    <string name="small_touch_target_size_title">Minimum Touch Target Size</string>
+    <string name="small_touch_target_size_summary">Minimum length of either dimension of a button</string>
+    <string name="pref_category_visual">Visual</string>
+    <string name="pref_category_motor">Motor</string>
+
+    <string-array name="pref_small_touch_target_size_entries">
+        <item>24 dp</item>
+        <item>32 dp</item>
+        <item>40 dp</item>
+        <item>48 dp</item>
+        <item>56 dp</item>
+    </string-array>
 
     <string-array name="empty_string_array" />
 </resources>

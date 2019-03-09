@@ -39,7 +39,9 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
     }
 
     private fun initializePreferences() {
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
+        forEach(R.xml.preferences, R.xml.highlight_issues_preferences) {
+            PreferenceManager.setDefaultValues(this, it, false)
+        }
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this)

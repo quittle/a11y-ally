@@ -1,0 +1,37 @@
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.preference.SwitchPreference
+        android:key="@string/pref_highlight_issues"
+        android:title="@string/highlight_issues_title"
+        android:defaultValue="true" />
+    <androidx.preference.PreferenceCategory
+        android:title="@string/pref_category_visual"
+        android:dependency="@string/pref_highlight_issues">
+        <androidx.preference.CheckBoxPreference
+            android:key="@string/pref_highlight_missing_labels"
+            android:title="@string/highlight_missing_labels_title"
+            android:summary="@string/highlight_missing_labels_summary"
+            android:defaultValue="true" />
+        <androidx.preference.CheckBoxPreference
+            android:key="@string/pref_highlight_empty_views"
+            android:title="@string/highlight_empty_views_title"
+            android:summary="@string/highlight_empty_views_summary"
+            android:defaultValue="true" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
+        android:title="@string/pref_category_motor"
+        android:dependency="@string/pref_highlight_issues">
+        <androidx.preference.CheckBoxPreference
+            android:key="@string/pref_highlight_small_touch_targets"
+            android:title="@string/highlight_small_touch_targets_title"
+            android:summary="@string/highlight_small_touch_targets_summary"
+            android:defaultValue="true" />
+        <androidx.preference.ListPreference
+            android:dependency="@string/pref_highlight_small_touch_targets"
+            android:key="@string/pref_small_touch_target_size"
+            android:title="@string/small_touch_target_size_title"
+            android:summary="@string/small_touch_target_size_summary"
+            android:entries="@array/pref_small_touch_target_size_entries"
+            android:entryValues="@array/pref_small_touch_target_size_values"
+            android:defaultValue="@integer/pref_small_touch_target_size_default" />
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

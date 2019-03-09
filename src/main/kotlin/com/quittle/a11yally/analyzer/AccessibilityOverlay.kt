@@ -67,7 +67,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         val resourceId: Int
         if (preferenceProvider.getDisplayAccessibilityIssues() &&
                 mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
-            resourceId = R.color.red
+            resourceId = R.color.translucent_red
         } else if (preferenceProvider.getDisplayContentDescription() &&
                 nodeContentDescription.isNotNull()) {
             textView.text = nodeContentDescription
