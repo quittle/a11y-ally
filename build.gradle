@@ -212,14 +212,8 @@ task copyAdditionalPlayStoreResources(type: Copy) {
     tasks['preBuild'].dependsOn it
 }
 
-if (IS_IN_TRAVIS) {
-    defaultTasks 'assemble', 'bundle', 'test', 'check'
-} else {
-    defaultTasks 'assemble', 'bundle', 'test', 'check', 'connectedCheck'
-}
-
 tasks.withType(JavaCompile) {
-    options.compilerArgs << '-Xlint:all'
+    options.compilerArgs << '-Xlint:all' << '-Werror'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
@@ -227,4 +221,10 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         allWarningsAsErrors = true
         freeCompilerArgs = ['-Xuse-experimental=kotlin.Experimental']
     }
+}
+
+if (IS_IN_TRAVIS) {
+    defaultTasks 'test', 'check', 'assemble', 'bundle'
+} else {
+    defaultTasks 'assembleDebug', 'check', 'test', 'connectedCheck', 'assemble', 'bundle'
 }
