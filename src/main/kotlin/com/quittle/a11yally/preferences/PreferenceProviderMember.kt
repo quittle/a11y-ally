@@ -1,0 +1,42 @@
+package com.quittle.a11yally.preferences
+
+import android.content.Context
+import android.content.SharedPreferences
+
+/**
+ * Abstraction of a specific preference intended to be consumed only by [PreferenceProvider].
+ * Subclasses are intended to provide the implementation call to retrieve the preferences.
+ * @param context The Android application context
+ * @param prefKeyId The string resource representing the preference key id
+ * @param defaultValue The default value for the preference if not known or initialized
+ * @param getPrefValue The method reference on [SharedPreferences] for getting a preference. e.g.
+ *   [SharedPreferences.getString].
+ */
+internal abstract class PreferenceProviderMember<T>(
+        context: Context,
+        private val prefKeyId: Int,
+        defaultValue: T,
+        private val getPrefValue: (sharedPreferences: SharedPreferences,
+                                   prefKey: String,
+                                   defaultValue: T) -> T) {
+    private val mPrefKey: String by lazy { context.getString(prefKeyId) }
+    private var mValue: T = defaultValue
+
+    fun getValue(): T {
+        return mValue
+    }
+
+    fun getPrefKeyId(): Int {
+        return prefKeyId
+    }
+
+    fun updateValue(sharedPref: SharedPreferences) {
+        mValue = getPrefValue(sharedPref, mPrefKey, mValue)
+    }
+
+    fun possiblyUpdateValue(sharedPref: SharedPreferences, prefKey: String) {
+        if (prefKey == mPrefKey) {
+            updateValue(sharedPref)
+        }
+    }
+}

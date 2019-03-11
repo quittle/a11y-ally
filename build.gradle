@@ -88,6 +88,12 @@ android {
         disable 'UnusedResources'
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         main.res.srcDirs += [customResDir, customResDirFg, customResDirBg]
@@ -107,6 +113,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'

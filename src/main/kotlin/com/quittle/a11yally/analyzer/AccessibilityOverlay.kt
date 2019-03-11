@@ -13,7 +13,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.quittle.a11yally.BuildConfig.TAG
-import com.quittle.a11yally.PreferenceProvider
+import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.R
 import com.quittle.a11yally.ifNotNull
 import com.quittle.a11yally.isNotNull
@@ -65,7 +65,7 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         val nodeContentDescription = mAccessibilityNodeAnalyzer.getContentDescription(node)
 
         val resourceId: Int
-        if (preferenceProvider.getDisplayAccessibilityIssues() &&
+        if (preferenceProvider.getHighlightIssues() &&
                 mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
             resourceId = R.color.translucent_red
         } else if (preferenceProvider.getDisplayContentDescription() &&
