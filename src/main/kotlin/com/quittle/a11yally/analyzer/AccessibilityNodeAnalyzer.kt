@@ -8,11 +8,7 @@ import com.quittle.a11yally.isNotNull
 import com.quittle.a11yally.isNull
 
 class AccessibilityNodeAnalyzer(context: Context) {
-    companion object {
-        private const val MIN_TOUCH_TARGET_DP = 48
-    }
-
-    val mScreenDensity = context.resources.displayMetrics.density
+    private val mScreenDensity = context.resources.displayMetrics.density
 
     /**
      * Determines if a node is unlabeled when it should be
@@ -24,12 +20,12 @@ class AccessibilityNodeAnalyzer(context: Context) {
                 getContentDescription(node).isNull()
     }
 
-    fun isNodeSmallTouchTarget(node: AccessibilityNodeInfo): Boolean {
+    fun isNodeSmallTouchTarget(node: AccessibilityNodeInfo, minTouchTargetSizeDp: Int): Boolean {
         if (node.isClickable || node.isLongClickable || node.isScrollable) {
             val rect = Rect()
             node.getBoundsInParent(rect)
-            return rect.width() / mScreenDensity < MIN_TOUCH_TARGET_DP ||
-                    rect.height() / mScreenDensity < MIN_TOUCH_TARGET_DP
+            return rect.width() / mScreenDensity < minTouchTargetSizeDp ||
+                    rect.height() / mScreenDensity < minTouchTargetSizeDp
         }
         return false
     }

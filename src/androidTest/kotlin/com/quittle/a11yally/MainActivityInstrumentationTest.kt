@@ -21,6 +21,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.toPackage
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertSame
 import org.junit.Before
@@ -45,9 +46,26 @@ class MainActivityInstrumentationTest {
     }
 
     @Test
+    fun pressHighlightIssuesButton() {
+        onView(withId(R.id.toggle_highlight_issues))
+                .perform(scrollTo())
+                .perform(click())
+
+        onView(withId(R.id.hero_image))
+                .check(matches(isDisplayed()))
+                .check(matches(not(isClickable())))
+
+        onView(withId(R.id.settings_holder))
+                .check(matches(isDisplayed()))
+                .check(matches(not(isClickable())))
+
+        assertSame(FeatureSettingsActivity::class.java, getCurrentActivity().javaClass)
+    }
+
+    @Test
     fun pressToggleButtons() {
-        arrayOf(R.id.toggle_highlight_issues,
-                R.id.toggle_display_content_descriptions).forEach { id ->
+        arrayOf(R.id.toggle_display_content_descriptions,
+                R.id.toggle_service_enable).forEach { id ->
             onView(withId(id))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))

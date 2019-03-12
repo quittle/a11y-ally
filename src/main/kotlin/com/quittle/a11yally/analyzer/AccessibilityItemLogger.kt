@@ -3,6 +3,7 @@ package com.quittle.a11yally.analyzer
 import android.content.Context
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
+import com.quittle.a11yally.preferences.PreferenceProvider
 
 import org.json.JSONArray
 import org.json.JSONObject
@@ -22,11 +23,16 @@ class AccessibilityItemLogger(context: Context) :
     private var mIsRecording = false
     private val mContext = context
     private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(context)
+    private val mPreferenceProvider = PreferenceProvider(mContext)
     private val mOngoingRecording = mutableListOf<Map<String, Any>>()
 
-    override fun onPause() {}
+    override fun onPause() {
+        mPreferenceProvider.onPause()
+    }
 
-    override fun onResume() {}
+    override fun onResume() {
+        mPreferenceProvider.onResume()
+    }
 
     override fun onAccessibilityEventStart() {}
 
@@ -37,8 +43,24 @@ class AccessibilityItemLogger(context: Context) :
             return
         }
 
-        if (mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
+        if (mPreferenceProvider.getHighlightIssues()) {
+            val issues = mutableListOf<String>()
+            if (mPreferenceProvider.getHighlightMissingLabels() &&
+                    mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
+                issues.add("UnlabeledNode")
+            }
+            if (mPreferenceProvider.getHighlightSmallTouchTargets() &&
+                    mAccessibilityNodeAnalyzer.isNodeSmallTouchTarget(node,
+                            mPreferenceProvider.getSmallTouchTargetSize())) {
+                issues.add("SmallTouchTarget")
+            }
+
+            if (issues.isEmpty()) {
+                return
+            }
+
             val summaryMap = AccessibilityNodeSummary(node).getSummary().toMutableMap()
+            summaryMap["issues"] = issues
             summaryMap["timestamp"] = System.currentTimeMillis()
             mOngoingRecording.add(summaryMap)
             val nodeSummary = JSONObject(summaryMap).toString(4)

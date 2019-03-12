@@ -25,10 +25,8 @@
 
     <string name="highlight_issues_title">Highlight Issues</string>
     <string name="tiny_touch_target_view">Tiny button is too small a touch target</string>
-    <string name="highlight_missing_labels_title">Missing Content Descriptions</string>
-    <string name="highlight_missing_labels_summary">Highlight views without required labeling. e.g. images or checkboxes</string>
-    <string name="highlight_empty_views_title">Mystery Views</string>
-    <string name="highlight_empty_views_summary">Highlight views that are focusable and without semantic meaning, but have no text indicating what they are</string>
+    <string name="highlight_missing_labels_title">Missing Content Labeling</string>
+    <string name="highlight_missing_labels_summary">Highlight views without required labeling such as images or checkboxes or focusable views without text</string>
     <string name="highlight_small_touch_targets_title">Small Touch Targets</string>
     <string name="highlight_small_touch_targets_summary">Highlight views that may be difficult for some users to accurately press</string>
     <string name="small_touch_target_size_title">Minimum Touch Target Size</string>

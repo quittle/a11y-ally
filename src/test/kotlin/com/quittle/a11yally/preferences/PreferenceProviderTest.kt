@@ -34,11 +34,10 @@ class PreferenceProviderTest {
         assertFalse(preferenceProvider.getDisplayContentDescription())
         assertFalse(preferenceProvider.getHighlightIssues())
         assertFalse(preferenceProvider.getHighlightMissingLabels())
-        assertFalse(preferenceProvider.getHighlightEmptyViews())
         assertFalse(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(0, preferenceProvider.getSmallTouchTargetSize())
 
-        assertKnownGetters(6)
+        assertKnownGetters(5)
     }
 
     @Test
@@ -48,18 +47,17 @@ class PreferenceProviderTest {
                 .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
                 .putBoolean(context.getString(R.string.pref_highlight_issues), true)
                 .putBoolean(context.getString(R.string.pref_highlight_missing_labels), true)
-                .putBoolean(context.getString(R.string.pref_highlight_empty_views), true)
                 .putBoolean(context.getString(R.string.pref_highlight_small_touch_targets), true)
-                .putInt(context.getString(R.string.pref_small_touch_target_size), 123)
+                .putString(context.getString(R.string.pref_small_touch_target_size), "123")
                 .commit()
         assertTrue(preferenceProvider.getDisplayContentDescription())
         assertTrue(preferenceProvider.getHighlightIssues())
         assertTrue(preferenceProvider.getHighlightMissingLabels())
-        assertTrue(preferenceProvider.getHighlightEmptyViews())
         assertTrue(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(123, preferenceProvider.getSmallTouchTargetSize())
 
-        assertKnownGetters(6)
+        assertKnownGetters(5)
+        assertKnownGetters(5)
     }
 
     @Test

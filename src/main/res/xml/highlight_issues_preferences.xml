@@ -11,11 +11,6 @@
             android:title="@string/highlight_missing_labels_title"
             android:summary="@string/highlight_missing_labels_summary"
             android:defaultValue="true" />
-        <androidx.preference.CheckBoxPreference
-            android:key="@string/pref_highlight_empty_views"
-            android:title="@string/highlight_empty_views_title"
-            android:summary="@string/highlight_empty_views_summary"
-            android:defaultValue="true" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/pref_category_motor"

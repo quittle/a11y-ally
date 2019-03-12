@@ -39,9 +39,9 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         }
     }
 
-    private var drawView: RelativeLayout? = null
+    private var mDrawView: RelativeLayout? = null
     private val mContext: Context = accessibilityAnalyzer.applicationContext
-    private var preferenceProvider = PreferenceProvider(mContext)
+    private val mPreferenceProvider = PreferenceProvider(mContext)
     private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(mContext)
 
     override fun onAccessibilityEventStart() {
@@ -57,18 +57,24 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
-        if (drawView.isNull()) {
+        if (mDrawView.isNull()) {
             return
         }
 
-        val textView = buildHighlightNode(drawView!!, node)
+        val textView = buildHighlightNode(mDrawView!!, node)
         val nodeContentDescription = mAccessibilityNodeAnalyzer.getContentDescription(node)
 
         val resourceId: Int
-        if (preferenceProvider.getHighlightIssues() &&
+        if (mPreferenceProvider.getHighlightIssues() &&
+                mPreferenceProvider.getHighlightMissingLabels() &&
                 mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
-            resourceId = R.color.translucent_red
-        } else if (preferenceProvider.getDisplayContentDescription() &&
+                resourceId = R.color.highlight_issue_unlabeled_node
+        } else if (mPreferenceProvider.getHighlightIssues() &&
+                mPreferenceProvider.getHighlightSmallTouchTargets() &&
+                mAccessibilityNodeAnalyzer.isNodeSmallTouchTarget(
+                        node, mPreferenceProvider.getSmallTouchTargetSize())) {
+            resourceId = R.drawable.small_touch_target_background
+        } else if (mPreferenceProvider.getDisplayContentDescription() &&
                 nodeContentDescription.isNotNull()) {
             textView.text = nodeContentDescription
             resourceId = R.drawable.content_description_background
@@ -87,9 +93,9 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     override fun onResume() {
-        preferenceProvider.onResume()
+        mPreferenceProvider.onResume()
 
-        drawView = buildDrawView()
+        mDrawView = buildDrawView()
         val params: WindowManager.LayoutParams = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -100,19 +106,19 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
                 mContext.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
 
         try {
-            windowManager.addView(drawView, params)
+            windowManager.addView(mDrawView, params)
         } catch (e: WindowManager.BadTokenException) {
             Log.e(TAG, "Unable to add overlay view to window manager", e)
         }
     }
 
     override fun onPause() {
-        preferenceProvider.onPause()
+        mPreferenceProvider.onPause()
 
-        drawView.ifNotNull {
+        mDrawView.ifNotNull {
             (mContext.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager)
                     .removeView(it)
-            drawView = null
+            mDrawView = null
         }
     }
 
@@ -144,6 +150,6 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
     }
 
     private fun clearDrawView() {
-        drawView?.removeAllViews()
+        mDrawView?.removeAllViews()
     }
 }

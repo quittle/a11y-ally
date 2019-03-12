@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         // Disable for now to not affect the existing app
-        // convertViewIntoFeaturePreferencesButton(R.id.toggle_highlight_issues,
-        //                                         R.xml.highlight_issues_preferences)
+        convertViewIntoFeaturePreferencesButton(
+                R.id.toggle_highlight_issues, R.xml.highlight_issues_preferences)
 
         findViewById<View>(R.id.permissions_check).setOnClickListener {
             if (checkForAndRequestPermissions()) {
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun convertToFeaturePreferencesButton(view_id: Int, @XmlRes preferences: Int) {
+    private fun convertViewIntoFeaturePreferencesButton(view_id: Int, @XmlRes preferences: Int) {
         findViewById<CheckableCustomCardView>(view_id).let { view ->
             view.setOnClickListener {
                 startActivity(Intent(applicationContext, FEATURE_SETTINGS_ACTIVITY_CLASS).apply {

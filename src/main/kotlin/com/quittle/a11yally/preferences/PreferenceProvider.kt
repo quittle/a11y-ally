@@ -15,9 +15,8 @@ class PreferenceProvider(context: Context) {
             PreferenceProviderBooleanMember(context, R.string.pref_display_content_descriptions),
             PreferenceProviderBooleanMember(context, R.string.pref_highlight_issues),
             PreferenceProviderBooleanMember(context, R.string.pref_highlight_missing_labels),
-            PreferenceProviderBooleanMember(context, R.string.pref_highlight_empty_views),
             PreferenceProviderBooleanMember(context, R.string.pref_highlight_small_touch_targets),
-            PreferenceProviderIntMember(context, R.string.pref_small_touch_target_size)
+            PreferenceProviderStringIntMember(context, R.string.pref_small_touch_target_size)
     )
 
     /**
@@ -69,10 +68,6 @@ class PreferenceProvider(context: Context) {
 
     fun getHighlightMissingLabels(): Boolean {
         return getPreferenceProviderByPrefKey(R.string.pref_highlight_missing_labels)
-    }
-
-    fun getHighlightEmptyViews(): Boolean {
-        return getPreferenceProviderByPrefKey(R.string.pref_highlight_empty_views)
     }
 
     fun getHighlightSmallTouchTargets(): Boolean {
