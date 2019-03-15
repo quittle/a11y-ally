@@ -64,7 +64,7 @@ class AccessibilityItemLogger(context: Context) :
             summaryMap["timestamp"] = System.currentTimeMillis()
             mOngoingRecording.add(summaryMap)
             val nodeSummary = JSONObject(summaryMap).toString(4)
-            Log.i(TAG, "Unlabeled node found: $nodeSummary")
+            Log.i(TAG, "Issue found: $nodeSummary")
         }
     }
 
