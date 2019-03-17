@@ -1,98 +1,38 @@
 [
-  {
-    "boundsInScreen":"[240,379][304,430]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.widget.CheckBox"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  },
-  {
-    "boundsInScreen":"[240,488][304,480]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.widget.ImageButton"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  },
-  {
-    "boundsInScreen":"[16,792][304,480]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.view.View"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  },
-  {
-    "boundsInScreen":"[304,1011][320,480]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.widget.Button"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  },
-  {
-    "boundsInScreen":"[240,379][304,430]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.widget.CheckBox"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  },
-  {
-    "boundsInScreen":"[240,488][304,480]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.widget.ImageButton"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  },
-  {
-    "boundsInScreen":"[16,792][304,480]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.view.View"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  },
-  {
-    "boundsInScreen":"[304,1011][320,480]",
-    "nodeClassPath":[
-      "android.widget.FrameLayout",
-      "android.widget.ScrollView",
-      "android.widget.Button"
-    ],
-    "packageName":"com.quittle.a11yally",
-    "issues":[
-      "UnlabeledNode"
-    ]
-  }
+    {
+        "boundsInScreen": "[240,379][304,430]",
+        "nodeClassPath": [
+            "android.widget.FrameLayout",
+            "android.widget.ScrollView",
+            "android.widget.CheckBox"
+        ],
+        "packageName": "com.quittle.a11yally",
+        "issues": [
+            "UnlabeledNode"
+        ]
+    },
+    {
+        "boundsInScreen": "[240,488][304,480]",
+        "nodeClassPath": [
+            "android.widget.FrameLayout",
+            "android.widget.ScrollView",
+            "android.widget.ImageButton"
+        ],
+        "packageName": "com.quittle.a11yally",
+        "issues": [
+            "UnlabeledNode"
+        ]
+    },
+    {
+        "boundsInScreen": "[16,792][304,480]",
+        "nodeClassPath": [
+            "android.widget.FrameLayout",
+            "android.widget.ScrollView",
+            "android.view.View"
+        ],
+        "packageName": "com.quittle.a11yally",
+        "issues": [
+            "UnlabeledNode"
+        ]
+    }
 ]

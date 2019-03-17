@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_activity_button_switch_divider_width">2dp</dimen>
+    <dimen name="main_activity_button_switch_padding">30dp</dimen>
+    <!-- This value should be roughly double main_activity_button_switch_padding -->
+    <dimen name="main_activity_button_switch_padding_x2">50dp</dimen>
+</resources>

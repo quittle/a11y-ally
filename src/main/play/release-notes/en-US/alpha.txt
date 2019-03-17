@@ -1,1 +1,2 @@
-Initial Alpha release
+Added support for small touch target detection
+New, more readable UI

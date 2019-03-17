@@ -7,7 +7,7 @@
     <string name="checkbox_feature_content_description">Display Content Description</string>
     <string name="missing_checkbox_label">Missing CheckBox label</string>
     <string name="missing_image_button_label">Missing ImageButton Label</string>
-    <string name="open_unfriendly_activity_button_label">Preview Accessibility Overlay</string>
+    <string name="open_unfriendly_activity_button_label">Accessibility Issue\nPlayground</string>
     <string name="text_view_with_content_description">This view has a Content Description…\n\n\n</string>
     <string name="text_view_content_description">…so the screen reader only reads this</string>
     <string name="explore_unfriendly_activity">Explore this screen for the types of things the Accessibility Overlay can detect and display.\n\nRed highlighting indicates elements with screen reader issues. If content description displaying is enabled, certain unexpected labelling issues may be more noticeable.</string>

@@ -1,0 +1,6 @@
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.preference.SwitchPreference
+        android:key="@string/pref_display_content_descriptions"
+        android:title="@string/display_content_descriptions_toggle_label"
+        android:defaultValue="true" />
+</androidx.preference.PreferenceScreen>

@@ -86,13 +86,17 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
         }
 
         listeners.forEach(AccessibilityItemEventListener::onAccessibilityEventStart)
-        rootInActiveWindow?.let {
+
+        var rootNode: AccessibilityNodeInfo? = null
+        try {
+            // rootInActiveWindow may itself be null
+            rootNode = rootInActiveWindow
+        } catch (e: IllegalStateException) {
+            Log.w(TAG, "Unable to get rootInActiveWindow", e)
+        }
+        rootNode?.let {
             iterateAccessibilityNodeInfos(it, this::onNodeEvent)
-            try {
-                it.recycle()
-            } catch (e: IllegalStateException) {
-                Log.w(TAG, "Unable to recycle node", e)
-            }
+            it.recycle()
         }
         listeners.forEach(AccessibilityItemEventListener::onAccessibilityEventEnd)
     }

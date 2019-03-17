@@ -12,8 +12,10 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.times
 import androidx.test.espresso.intent.matcher.IntentMatchers.toPackage
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
+import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertSame
@@ -40,7 +42,7 @@ class MainActivityInstrumentationTest {
 
     @Test
     fun pressHighlightIssuesButton() {
-        onView(withId(R.id.toggle_highlight_issues))
+        onView(withId(R.id.highlight_issues))
                 .perform(scrollTo())
                 .perform(click())
 
@@ -57,9 +59,9 @@ class MainActivityInstrumentationTest {
 
     @Test
     fun pressToggleButtons() {
-        arrayOf(R.id.toggle_display_content_descriptions,
-                R.id.toggle_service_enable).forEach { id ->
-            onView(withId(id))
+        arrayOf(R.id.highlight_issues,
+                R.id.display_content_descriptions).forEach { id ->
+            onView(allOf(withId(R.id.switch_compat), isDescendantOfA(withId(id))))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
                     .check(matches(isClickable()))
@@ -75,7 +77,7 @@ class MainActivityInstrumentationTest {
     @Test
     fun pressPermissionsCheck_none() {
         recordingIntents {
-            onView(withId(R.id.permissions_check))
+            onView(withId(R.id.status_button))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
                     .check(matches(isClickable()))
@@ -90,7 +92,7 @@ class MainActivityInstrumentationTest {
         grantPermissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
 
         recordingIntents {
-            onView(withId(R.id.permissions_check))
+            onView(withId(R.id.status_button))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
                     .check(matches(isClickable()))
@@ -105,7 +107,7 @@ class MainActivityInstrumentationTest {
         enableAccessibilityService()
 
         recordingIntents {
-            onView(withId(R.id.permissions_check))
+            onView(withId(R.id.status_button))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
                     .check(matches(isClickable()))
@@ -121,7 +123,7 @@ class MainActivityInstrumentationTest {
         enableAccessibilityService()
 
         recordingIntents {
-            onView(withId(R.id.permissions_check))
+            onView(withId(R.id.status_button))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
                     .check(matches(isClickable()))

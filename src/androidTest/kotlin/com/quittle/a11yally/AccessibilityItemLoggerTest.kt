@@ -8,6 +8,8 @@ import androidx.annotation.RawRes
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.swipeDown
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -78,11 +80,14 @@ class AccessibilityItemLoggerTest {
                         setOf(targetContext.applicationInfo.packageName))
                 .commit()
 
-        startRecording()
-
         openUnfriendlyActivity()
 
-        onView(withText("Explore"))
+        onView(withText(R.string.app_label))
+
+        startRecording()
+
+        onView(withText(R.string.app_label))
+                .perform(swipeDown(), swipeUp())
 
         // Allow time for the asynchronous accessibility service to send an event to the app
         sleep(1000)
