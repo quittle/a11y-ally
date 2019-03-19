@@ -1,4 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="CustomCardView">
+        <attr name="image" format="reference" />
+        <attr name="imageBackgroundColor" format="color" />
+        <attr name="text" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="CheckableCustomCardView">
         <attr name="checked" format="boolean" />
         <attr name="imageUnchecked" format="reference" />
