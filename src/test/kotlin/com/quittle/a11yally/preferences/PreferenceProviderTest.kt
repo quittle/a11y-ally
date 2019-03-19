@@ -31,33 +31,54 @@ class PreferenceProviderTest {
 
     @Test
     fun testDefaultGetters() {
+        assertFalse(preferenceProvider.getServiceEnabled())
         assertFalse(preferenceProvider.getDisplayContentDescription())
         assertFalse(preferenceProvider.getHighlightIssues())
         assertFalse(preferenceProvider.getHighlightMissingLabels())
         assertFalse(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(0, preferenceProvider.getSmallTouchTargetSize())
 
-        assertKnownGetters(5)
+        assertKnownGetters(6)
     }
 
     @Test
-    fun testValues() {
+    fun testGetValues() {
         preferenceProvider.onResume()
         sharedPreferences.edit()
+                .putBoolean(context.getString(R.string.pref_service_enabled), true)
                 .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
                 .putBoolean(context.getString(R.string.pref_highlight_issues), true)
                 .putBoolean(context.getString(R.string.pref_highlight_missing_labels), true)
                 .putBoolean(context.getString(R.string.pref_highlight_small_touch_targets), true)
                 .putString(context.getString(R.string.pref_small_touch_target_size), "123")
                 .commit()
+        assertTrue(preferenceProvider.getServiceEnabled())
         assertTrue(preferenceProvider.getDisplayContentDescription())
         assertTrue(preferenceProvider.getHighlightIssues())
         assertTrue(preferenceProvider.getHighlightMissingLabels())
         assertTrue(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(123, preferenceProvider.getSmallTouchTargetSize())
 
-        assertKnownGetters(5)
-        assertKnownGetters(5)
+        assertKnownGetters(6)
+    }
+
+    @Test
+    fun testPutValues() {
+        preferenceProvider.onResume()
+        assertFalse(preferenceProvider.getServiceEnabled())
+        preferenceProvider.setServiceEnabled(true)
+
+        assertTrue(preferenceProvider.getServiceEnabled())
+
+        PreferenceProvider(context).run {
+            onResume()
+            assertTrue(getServiceEnabled())
+        }
+
+        assertTrue(sharedPreferences.getBoolean(
+                context.getString(R.string.pref_service_enabled), false))
+
+        assertKnownSetters(1)
     }
 
     @Test
@@ -106,6 +127,15 @@ class PreferenceProviderTest {
 
         preferenceProvider.onPause()
         preferenceProvider.onPause()
+    }
+
+    private fun assertKnownSetters(curKnownGetters: Int) {
+        assertEquals("When this test fails, you should update it with the new method added",
+                curKnownGetters,
+                PreferenceProvider::class.memberFunctions
+                        .filter { it.visibility == KVisibility.PUBLIC }
+                        .filter { it.name.startsWith("set") }
+                        .count())
     }
 
     private fun assertKnownGetters(curKnownGetters: Int) {

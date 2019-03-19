@@ -4,4 +4,5 @@ import android.content.Context
 import android.content.SharedPreferences
 
 internal class PreferenceProviderBooleanMember(context: Context, prefKeyId: Int) :
-        PreferenceProviderMember<Boolean>(context, prefKeyId, false, SharedPreferences::getBoolean)
+        PreferenceProviderMember<Boolean>(context, prefKeyId, false,
+                SharedPreferences::getBoolean, SharedPreferences.Editor::putBoolean)

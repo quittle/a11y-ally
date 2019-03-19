@@ -1,5 +1,6 @@
 package com.quittle.a11yally.preferences
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -18,12 +19,24 @@ internal abstract class PreferenceProviderMember<T>(
         defaultValue: T,
         private val getPrefValue: (sharedPreferences: SharedPreferences,
                                    prefKey: String,
-                                   defaultValue: T) -> T) {
+                                   defaultValue: T) -> T,
+        private val putPrefValue: (sharedPreferences: SharedPreferences.Editor,
+                                   prefKey: String,
+                                   value: T) -> SharedPreferences.Editor) {
     private val mPrefKey: String by lazy { context.getString(prefKeyId) }
     private var mValue: T = defaultValue
 
     fun getValue(): T {
         return mValue
+    }
+
+    // This needs to be suppressed because Lint will not recognize the invocation as part of
+    // the chain and will think the changes were not committed or applied.
+    @SuppressLint("CommitPrefEdits")
+    fun setValue(sharedPreferences: SharedPreferences, value: T) {
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        putPrefValue.invoke(editor, mPrefKey, value)
+        editor.apply()
     }
 
     fun getPrefKeyId(): Int {

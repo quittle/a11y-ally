@@ -4,4 +4,5 @@ import android.content.Context
 import android.content.SharedPreferences
 
 internal class PreferenceProviderIntMember(context: Context, prefKeyId: Int) :
-        PreferenceProviderMember<Int>(context, prefKeyId, 0, SharedPreferences::getInt)
+        PreferenceProviderMember<Int>(context, prefKeyId, 0,
+                SharedPreferences::getInt, SharedPreferences.Editor::putInt)

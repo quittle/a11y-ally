@@ -11,12 +11,14 @@ import java.util.Arrays.asList
  * events when appropriate in the consumer.
  */
 class PreferenceProvider(context: Context) {
+    private val mContext = context.applicationContext
     private val preferenceProviderMembers = asList(
-            PreferenceProviderBooleanMember(context, R.string.pref_display_content_descriptions),
-            PreferenceProviderBooleanMember(context, R.string.pref_highlight_issues),
-            PreferenceProviderBooleanMember(context, R.string.pref_highlight_missing_labels),
-            PreferenceProviderBooleanMember(context, R.string.pref_highlight_small_touch_targets),
-            PreferenceProviderStringIntMember(context, R.string.pref_small_touch_target_size)
+            PreferenceProviderBooleanMember(mContext, R.string.pref_service_enabled),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_display_content_descriptions),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_issues),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_missing_labels),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_small_touch_targets),
+            PreferenceProviderStringIntMember(mContext, R.string.pref_small_touch_target_size)
     )
 
     /**
@@ -34,6 +36,15 @@ class PreferenceProvider(context: Context) {
         return member!!.getValue() as T
     }
 
+    private fun <T> putPreferenceProviderByPrefKey(prefKey: Int, value: T) {
+        val member = preferenceProviderMembers.find {
+            it.getPrefKeyId() == prefKey
+        }
+
+        @Suppress("unchecked_cast")
+        (member as PreferenceProviderMember<T>).setValue(sharedPreferences, value)
+    }
+
     private val mListener =
             SharedPreferences.OnSharedPreferenceChangeListener {
                     sharedPreferences: SharedPreferences, key: String ->
@@ -42,20 +53,27 @@ class PreferenceProvider(context: Context) {
                 }
             }
 
-    private val mContext = context
-
     fun onResume() {
-        val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext)
-        sharedPref.registerOnSharedPreferenceChangeListener(mListener)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(mListener)
 
         preferenceProviderMembers.forEach {
-            it.updateValue(sharedPref)
+            it.updateValue(sharedPreferences)
         }
     }
 
     fun onPause() {
-        val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext)
-        sharedPref.unregisterOnSharedPreferenceChangeListener(mListener)
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(mListener)
+    }
+
+    val sharedPreferences: SharedPreferences
+        get() = PreferenceManager.getDefaultSharedPreferences(mContext)
+
+    fun getServiceEnabled(): Boolean {
+        return getPreferenceProviderByPrefKey(R.string.pref_service_enabled)
+    }
+
+    fun setServiceEnabled(enabled: Boolean) {
+        putPreferenceProviderByPrefKey(R.string.pref_service_enabled, enabled)
     }
 
     fun getDisplayContentDescription(): Boolean {

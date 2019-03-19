@@ -97,11 +97,12 @@ fun waitForFile(file: File) {
     while (!isFileClosed(file)) {
         onIdle()
     }
+    onIdle()
 }
 
 private fun isFileClosed(file: File): Boolean {
     try {
-        RandomAccessFile(file, "r").close()
+        RandomAccessFile(file, "rws").close()
         return true
     } catch (e: IOException) {
         return false
