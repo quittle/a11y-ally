@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/wrapper"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="start|center"
+            android:labelFor="@id/switch_compat" />
+        <!-- This must be a ViewGroup of some sort to support margins -->
+        <LinearLayout
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_compat"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</merge>

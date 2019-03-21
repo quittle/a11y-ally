@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="text" format="string" />
+
+    <declare-styleable name="ButtonSwitch">
+        <attr name="dividerPadding" format="dimension" />
+        <attr name="layoutPadding" format="dimension" />
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="dividerDrawable" format="reference" />
+        <attr name="text" />
+        <attr name="switchPreference" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="CustomCardView">
         <attr name="image" format="reference" />
         <attr name="imageBackgroundColor" format="color" />
-        <attr name="text" format="string" />
+        <attr name="text" />
     </declare-styleable>
 
     <declare-styleable name="CheckableCustomCardView">

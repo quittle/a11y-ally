@@ -18,7 +18,8 @@
             android:label="@string/app_label"
             android:icon="@mipmap/ic_launcher"
             android:allowBackup="true"
-            android:theme="@style/MainTheme">
+            android:theme="@style/MainTheme"
+            android:supportsRtl="false">
         <activity android:name=".MainActivity"
                 android:screenOrientation="userPortrait">
             <intent-filter>
