@@ -1,9 +1,10 @@
 package com.quittle.a11yally
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import androidx.annotation.XmlRes
+import androidx.annotation.RawRes
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
@@ -27,6 +28,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode
 import java.lang.Thread.sleep
 
 @RunWith(AndroidJUnit4::class)
+@SuppressLint("ApplySharedPref")
 class AccessibilityItemLoggerTest {
     private lateinit var targetContext: Context
     private lateinit var testContext: Context
@@ -54,12 +56,13 @@ class AccessibilityItemLoggerTest {
         startRecording()
         stopRecording()
 
-        waitForFile(recordingFile)
+        waitForJsonArrayFile(recordingFile)
 
         assertEquals("[]", recordingFile.readText())
     }
 
     @Test
+    @SuppressLint("RestrictedApi") // Setting preferences of another context is considered forbidden
     fun testRecordingUnfriendlyActivity() {
         assertFalse(recordingFile.exists())
 
@@ -70,6 +73,9 @@ class AccessibilityItemLoggerTest {
                 .putBoolean(targetContext.getString(R.string.pref_highlight_missing_labels), true)
                 .putBoolean(
                         targetContext.getString(R.string.pref_highlight_small_touch_targets), true)
+                .putBoolean(targetContext.getString(R.string.pref_enable_all_apps), false)
+                .putStringSet(targetContext.getString(R.string.pref_enabled_apps),
+                        setOf(targetContext.applicationInfo.packageName))
                 .commit()
 
         startRecording()
@@ -84,15 +90,15 @@ class AccessibilityItemLoggerTest {
 
         stopRecording()
 
-        waitForFile(recordingFile)
-        val expectedReport =
-                readReportToJSONArray(TestR.raw.unfriendly_activity_report)
+        waitForJsonArrayFile(recordingFile)
 
         val actualReport = JSONArray(recordingFile.readText())
         for (i in 0 until actualReport.length()) {
             val entry = actualReport[i] as? JSONObject
             entry?.remove("timestamp")
         }
+
+        val expectedReport = readReportToJSONArray(TestR.raw.unfriendly_activity_report)
 
         JSONAssert.assertEquals(expectedReport, actualReport, JSONCompareMode.STRICT)
     }
@@ -106,7 +112,7 @@ class AccessibilityItemLoggerTest {
                 )
     }
 
-    private fun readReportToJSONArray(@XmlRes resourceId: Int): JSONArray {
+    private fun readReportToJSONArray(@RawRes resourceId: Int): JSONArray {
         return JSONArray(testContext.resources
                 .openRawResource(resourceId)
                 .readBytes()

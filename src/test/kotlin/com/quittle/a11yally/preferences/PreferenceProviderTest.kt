@@ -1,5 +1,6 @@
 package com.quittle.a11yally.preferences
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
@@ -16,6 +17,7 @@ import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberFunctions
 
 @RunWith(RobolectricTestRunner::class)
+@SuppressLint("ApplySharedPref")
 class PreferenceProviderTest {
     lateinit var context: Context
     lateinit var preferenceProvider: PreferenceProvider

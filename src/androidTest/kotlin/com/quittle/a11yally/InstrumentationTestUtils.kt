@@ -10,6 +10,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.runner.permission.PermissionRequester
+import org.json.JSONArray
+import org.json.JSONException
 import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
@@ -98,6 +100,25 @@ fun waitForFile(file: File) {
         onIdle()
     }
     onIdle()
+}
+
+fun waitForJsonArrayFile(file: File) {
+    waitForFile(file)
+
+    while (!isFileJsonArray(file)) {
+        onIdle()
+    }
+}
+
+private fun isFileJsonArray(file: File): Boolean {
+    @Suppress("EmptyCatchBlock")
+    try {
+        JSONArray(file.readText())
+        return true
+    } catch (e: IOException) {
+    } catch (e: JSONException) {
+    }
+    return false
 }
 
 private fun isFileClosed(file: File): Boolean {
