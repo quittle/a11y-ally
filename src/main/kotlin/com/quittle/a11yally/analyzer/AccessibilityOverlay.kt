@@ -135,6 +135,10 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
 
     private fun buildHighlightNode(parentView: RelativeLayout,
                                    node: AccessibilityNodeInfo): TextView {
+        val drawViewOffset = IntArray(2)
+        mDrawView?.getLocationOnScreen(drawViewOffset)
+        val (drawViewOffsetX, drawViewOffsetY) = drawViewOffset
+
         val rect = Rect()
         node.getBoundsInScreen(rect)
         val textView = TextView(mContext)
@@ -143,8 +147,8 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         textView.gravity = Gravity.CENTER
         textView.setShadowLayer(4f, 1f, 1f, R.color.white)
         val params = RelativeLayout.LayoutParams(rect.width(), rect.height())
-        params.leftMargin = rect.left
-        params.topMargin = rect.top
+        params.leftMargin = rect.left - drawViewOffsetX
+        params.topMargin = rect.top - drawViewOffsetY
         parentView.addView(textView, params)
         return textView
     }
