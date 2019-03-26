@@ -7,10 +7,6 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.annotation.RawRes
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.swipeDown
-import androidx.test.espresso.action.ViewActions.swipeUp
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.quittle.a11yally.RecordingService.Companion.START_RECORDING_INTENT_ACTION
@@ -42,11 +38,15 @@ class AccessibilityItemLoggerTest {
         testContext = InstrumentationRegistry.getInstrumentation().context
         recordingFile = File(targetContext.filesDir, "recordings/recording.json")
         recordingFile.delete()
+        clearSharedPreferences()
+        fullySetUpPermissions()
     }
 
     @After
     fun tearDown() {
         recordingFile.delete()
+        fullyTearDownPermissions()
+        clearSharedPreferences()
     }
 
     @Test
@@ -68,7 +68,14 @@ class AccessibilityItemLoggerTest {
     fun testRecordingUnfriendlyActivity() {
         assertFalse(recordingFile.exists())
 
-        fullySetUpPermissions()
+        // Open the activity and wait for everything to settle
+        openUnfriendlyActivity()
+        sleep(100)
+        onIdle()
+
+        startRecording()
+
+        // Enable the necessary preferences
         PreferenceManager(targetContext).sharedPreferences.edit()
                 .putBoolean(targetContext.getString(R.string.pref_service_enabled), true)
                 .putBoolean(targetContext.getString(R.string.pref_highlight_issues), true)
@@ -80,15 +87,6 @@ class AccessibilityItemLoggerTest {
                         setOf(targetContext.applicationInfo.packageName))
                 .commit()
 
-        openUnfriendlyActivity()
-
-        onView(withText(R.string.app_label))
-
-        startRecording()
-
-        onView(withText(R.string.app_label))
-                .perform(swipeDown(), swipeUp())
-
         // Allow time for the asynchronous accessibility service to send an event to the app
         sleep(1000)
         onIdle()
@@ -99,8 +97,8 @@ class AccessibilityItemLoggerTest {
 
         val actualReport = JSONArray(recordingFile.readText())
         for (i in 0 until actualReport.length()) {
-            val entry = actualReport[i] as? JSONObject
-            entry?.remove("timestamp")
+            val entry = actualReport[i] as JSONObject
+            entry.remove("timestamp")
         }
 
         val expectedReport = readReportToJSONArray(TestR.raw.unfriendly_activity_report)

@@ -1,9 +1,11 @@
 package com.quittle.a11yally
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.UiAutomation
 import android.os.ParcelFileDescriptor
+import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
@@ -90,6 +92,27 @@ fun disableAccessibilityService() {
 fun fullySetUpPermissions() {
     grantPermissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
     enableAccessibilityService()
+}
+
+/**
+ * Disables all the permission granted to {@code A11yAlly}. Helpful for tests that need to start in
+ * a clean state.
+ */
+fun fullyTearDownPermissions() {
+    revokePermissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
+    disableAccessibilityService()
+}
+
+/**
+ * Wipes all shared preferences of the application under test
+ */
+// Setting preferences of another context is restricted
+@SuppressLint("RestrictedApi", "ApplySharedPref")
+fun clearSharedPreferences() {
+    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+    PreferenceManager(targetContext).sharedPreferences.edit()
+            .clear()
+            .commit()
 }
 
 /**
