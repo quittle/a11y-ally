@@ -41,6 +41,8 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
 
     private var mDrawView: RelativeLayout? = null
     private val mContext: Context = accessibilityAnalyzer.applicationContext
+    private val mWindowManager =
+            mContext.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
     private val mPreferenceProvider = PreferenceProvider(mContext)
     private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(mContext)
 
@@ -102,11 +104,9 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
                 OVERLAY_TYPE,
                 OVERLAY_FLAGS or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PIXEL_FORMAT)
-        val windowManager: WindowManager =
-                mContext.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
 
         try {
-            windowManager.addView(mDrawView, params)
+            mWindowManager.addView(mDrawView, params)
         } catch (e: WindowManager.BadTokenException) {
             Log.e(TAG, "Unable to add overlay view to window manager", e)
         }
@@ -116,8 +116,14 @@ class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer)
         mPreferenceProvider.onPause()
 
         mDrawView.ifNotNull {
-            (mContext.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager)
-                    .removeView(it)
+            try {
+                // It is possible for a race-condition to occur where the drawView isn't null but
+                // is not attached to the window. In such cases, removing the view that is not
+                // attached throws an exception.
+                mWindowManager.removeView(it)
+            } catch (e: IllegalArgumentException) {
+                Log.w(TAG, "Unable to remove view from window", e)
+            }
             mDrawView = null
         }
     }
