@@ -42,6 +42,8 @@ class KotlinUtilsTest {
             nonNull = value
         }
 
+        nonNull = nullable.orElse(nonNull)
+
         // Do something with the value to stop warnings
         nonNull.dec()
     }
@@ -110,5 +112,12 @@ class KotlinUtilsTest {
             builder += it
         }
         assertEquals("abc", builder)
+    }
+
+    @Test
+    fun testOrElse() {
+        assertTrue(null.orElse(true))
+        assertNull(null.orElse(null))
+        assertTrue(true.orElse(false))
     }
 }

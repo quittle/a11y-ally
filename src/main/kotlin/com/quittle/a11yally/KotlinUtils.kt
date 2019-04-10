@@ -57,3 +57,16 @@ inline fun <T> T?.ifNotNull(then: (T) -> Unit) {
 fun <T> forEach(vararg args: T, callable: (T) -> Unit) {
     args.forEach(callable)
 }
+
+/**
+ * Helper method for handling nullable types to provide a default value
+ * @param default The value to return if [this] is null
+ * @return [this] if not null, otherwise [default]
+ */
+fun <T> T?.orElse(default: T): T {
+    if (this.isNull()) {
+        return default
+    } else {
+        return this
+    }
+}
