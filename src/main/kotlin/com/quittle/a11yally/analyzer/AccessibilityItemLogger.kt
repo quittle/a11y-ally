@@ -12,8 +12,7 @@ import java.io.File
 /**
  * Logs accessibility errors to Logcat.
  */
-class AccessibilityItemLogger(context: Context) :
-        AccessibilityAnalyzer.AccessibilityItemEventListener {
+class AccessibilityItemLogger(context: Context) : AccessibilityItemEventListener {
     private companion object {
         private const val TAG = "${com.quittle.a11yally.BuildConfig.TAG}::Report"
         private const val RECORDINGS_DIR = "recordings"

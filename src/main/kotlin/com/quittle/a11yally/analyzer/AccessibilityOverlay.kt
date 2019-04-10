@@ -23,7 +23,7 @@ import com.quittle.a11yally.isNull
  * Displays accessibility info visibly on the screen.
  */
 class AccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
-        AccessibilityAnalyzer.AccessibilityItemEventListener {
+        AccessibilityItemEventListener {
     private companion object {
         private const val OVERLAY_FLAGS: Int =
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
