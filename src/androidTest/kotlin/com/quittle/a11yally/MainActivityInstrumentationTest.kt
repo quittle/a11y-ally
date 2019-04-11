@@ -133,7 +133,7 @@ class MainActivityInstrumentationTest {
     }
 
     @Test
-    fun pressUnfiendlyActivityButton() {
+    fun pressUnfriendlyActivityButton() {
         onView(withId(R.id.open_unfriendly_activity_button))
                 .perform(scrollTo())
                 .check(matches(isDisplayed()))
