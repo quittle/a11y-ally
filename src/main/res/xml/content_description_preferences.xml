@@ -2,5 +2,5 @@
     <androidx.preference.SwitchPreference
         android:key="@string/pref_display_content_descriptions"
         android:title="@string/display_content_descriptions_toggle_label"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
 </androidx.preference.PreferenceScreen>

@@ -2,7 +2,7 @@
     <CheckBoxPreference
         android:key="@string/pref_display_content_descriptions"
         android:title="@string/checkbox_feature_content_description"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
     <MultiSelectListPreference
         android:key="packages_to_analyze"
         android:title="Packages to analyze"
