@@ -11,6 +11,34 @@ import com.quittle.a11yally.BuildConfig.TAG
  */
 abstract class AccessibilityAnalyzer : AccessibilityService() {
     /**
+     * Holds the state of if the analyzer is paused due to focus being on a non-whitelisted app
+     */
+    private var mIsPaused = false
+
+    private val mPausedListeners: MutableSet<AccessibilityItemEventListener> = mutableSetOf()
+
+    private val activeListeners: Collection<AccessibilityItemEventListener>
+        get() = listeners.minus(mPausedListeners)
+
+    /**
+     * In order to support [LinearNavigationAccessibilityOverlay], accessibility nodes cannot be
+     * recycled immediately. Failing to recycle them can lead to a memory leak.
+     */
+    private val mCachedNodes: MutableCollection<AccessibilityNodeInfo> = mutableListOf()
+
+    fun pauseListener(listener: AccessibilityItemEventListener) {
+        if (mPausedListeners.add(listener)) {
+            listener.onPause()
+        }
+    }
+
+    fun resumeListener(listener: AccessibilityItemEventListener) {
+        if (mPausedListeners.remove(listener)) {
+            listener.onResume()
+        }
+    }
+
+    /**
      * Subclasses must provide the listeners registered. This cannot be composed because the way
      * Android services work. They are started by an intent and can only be communicated via IPC.
      * The only alternative would be if the instances were serialized in some way, which is much
@@ -28,22 +56,40 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
     protected abstract fun getAppWhitelist(): Iterable<String>?
 
     protected fun pauseListeners() {
-        listeners.forEach(AccessibilityItemEventListener::onPause)
+        activeListeners.forEach(AccessibilityItemEventListener::onPause)
     }
 
     protected fun resumeListeners() {
-        listeners.forEach(AccessibilityItemEventListener::onResume)
+        activeListeners.forEach(AccessibilityItemEventListener::onResume)
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
+        // Clear recycle nodes when events start
+        mCachedNodes.forEach {
+            try {
+                it.recycle()
+            } catch (e: IllegalStateException) {
+                Log.w(TAG, "Unable to recycle node", e)
+            }
+        }
+        mCachedNodes.clear()
+
         val whitelist = getAppWhitelist()
         if (whitelist !== null && !whitelist.contains(rootInActiveWindow?.packageName)) {
-            listeners.forEach(AccessibilityItemEventListener::onNonWhitelistedApp)
+            activeListeners.forEach(AccessibilityItemEventListener::onNonWhitelistedApp)
+            if (!mIsPaused) {
+                mIsPaused = true
+                pauseListeners()
+            }
             // Return early if not whitelisted
             return
         }
+        if (mIsPaused) {
+            mIsPaused = false
+            resumeListeners()
+        }
 
-        listeners.forEach(AccessibilityItemEventListener::onAccessibilityEventStart)
+        activeListeners.forEach(AccessibilityItemEventListener::onAccessibilityEventStart)
 
         var rootNode: AccessibilityNodeInfo? = null
         try {
@@ -54,9 +100,9 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
         }
         rootNode?.let {
             iterateAccessibilityNodeInfos(it, this::onNodeEvent)
-            it.recycle()
+            mCachedNodes.add(it)
         }
-        listeners.forEach(AccessibilityItemEventListener::onAccessibilityEventEnd)
+        activeListeners.forEach(AccessibilityItemEventListener::onAccessibilityEventEnd)
     }
 
     override fun onInterrupt() {}
@@ -67,11 +113,7 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
         for (i in 0 until root.childCount) {
             root.getChild(i)?.let {
                 iterateAccessibilityNodeInfos(it, onEachCallback)
-                try {
-                    it.recycle()
-                } catch (e: IllegalStateException) {
-                    Log.w(TAG, "Unable to recycle node", e)
-                }
+                mCachedNodes.add(it)
             }
         }
     }

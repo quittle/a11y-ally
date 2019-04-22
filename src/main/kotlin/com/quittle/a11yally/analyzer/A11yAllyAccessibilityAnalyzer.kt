@@ -7,7 +7,7 @@ import com.quittle.a11yally.R
 
 /**
  * App-specific implementation of an {@link AccessibilityAnalyzer}. It implements
- * {@link LifecycleOwner} for {@link AccessibilityOverlay} to consume its events for drawing, using
+ * {@link LifecycleOwner} for {@link AccessibilityOverlay}s to consume its events for drawing, using
  * this service's context.
  */
 class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenceChangeListener {
@@ -78,12 +78,13 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
     /**
      * {@inheritDoc}
      *
-     * This must be lazy because the constructor for {@link AccessibilityOverlay} must run after
+     * This must be lazy because the constructor for {@link AccessibilityOverlay}s must run after
      * {@link AccessibilityAnalyzer} is initialized fully.
      */
     override val listeners: Collection<AccessibilityItemEventListener> by lazy { setOf(
             mAccessibilityItemLogger,
-            AccessibilityOverlay(this)
+            HighlighterAccessibilityOverlay(this),
+            LinearNavigationAccessibilityOverlay(this)
     ) }
 
     private fun updateAppWhitelist(preferences: SharedPreferences) {

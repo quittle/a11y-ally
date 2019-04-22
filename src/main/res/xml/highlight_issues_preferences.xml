@@ -2,7 +2,7 @@
     <androidx.preference.SwitchPreference
         android:key="@string/pref_highlight_issues"
         android:title="@string/highlight_issues_title"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
     <androidx.preference.PreferenceCategory
         android:title="@string/pref_category_visual"
         android:dependency="@string/pref_highlight_issues">

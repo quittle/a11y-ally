@@ -1,9 +1,11 @@
 package com.quittle.a11yally.preferences
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import androidx.test.core.app.ApplicationProvider
 import com.quittle.a11yally.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -12,21 +14,23 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberFunctions
 
 @RunWith(RobolectricTestRunner::class)
 @SuppressLint("ApplySharedPref")
+// This must not be the real application to prevent
+// A11yAllyApplication::initializePreferenceController
+@Config(application = Application::class)
 class PreferenceProviderTest {
-    lateinit var context: Context
-    lateinit var preferenceProvider: PreferenceProvider
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var context: Context
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var preferenceProvider: PreferenceProvider
 
     @Before
     fun setUp() {
-        @Suppress("deprecation")
-        context = RuntimeEnvironment.application.applicationContext
+        context = ApplicationProvider.getApplicationContext()
         preferenceProvider = PreferenceProvider(context)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     }
@@ -35,12 +39,13 @@ class PreferenceProviderTest {
     fun testDefaultGetters() {
         assertFalse(preferenceProvider.getServiceEnabled())
         assertFalse(preferenceProvider.getDisplayContentDescription())
+        assertFalse(preferenceProvider.getLinearNavigationEnabled())
         assertFalse(preferenceProvider.getHighlightIssues())
         assertFalse(preferenceProvider.getHighlightMissingLabels())
         assertFalse(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(0, preferenceProvider.getSmallTouchTargetSize())
 
-        assertKnownGetters(6)
+        assertKnownGetters(7)
     }
 
     @Test
@@ -49,6 +54,7 @@ class PreferenceProviderTest {
         sharedPreferences.edit()
                 .putBoolean(context.getString(R.string.pref_service_enabled), true)
                 .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
+                .putBoolean(context.getString(R.string.pref_linear_navigation_enabled), true)
                 .putBoolean(context.getString(R.string.pref_highlight_issues), true)
                 .putBoolean(context.getString(R.string.pref_highlight_missing_labels), true)
                 .putBoolean(context.getString(R.string.pref_highlight_small_touch_targets), true)
@@ -56,31 +62,51 @@ class PreferenceProviderTest {
                 .commit()
         assertTrue(preferenceProvider.getServiceEnabled())
         assertTrue(preferenceProvider.getDisplayContentDescription())
+        assertTrue(preferenceProvider.getLinearNavigationEnabled())
         assertTrue(preferenceProvider.getHighlightIssues())
         assertTrue(preferenceProvider.getHighlightMissingLabels())
         assertTrue(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(123, preferenceProvider.getSmallTouchTargetSize())
 
-        assertKnownGetters(6)
+        assertKnownGetters(7)
     }
 
     @Test
     fun testPutValues() {
         preferenceProvider.onResume()
         assertFalse(preferenceProvider.getServiceEnabled())
+        assertFalse(preferenceProvider.getDisplayContentDescription())
+        assertFalse(preferenceProvider.getLinearNavigationEnabled())
+        assertFalse(preferenceProvider.getHighlightIssues())
+
         preferenceProvider.setServiceEnabled(true)
+        preferenceProvider.setDisplayContentDescription(true)
+        preferenceProvider.setLinearNavigationEnabled(true)
+        preferenceProvider.setHighlightIssues(true)
 
         assertTrue(preferenceProvider.getServiceEnabled())
+        assertTrue(preferenceProvider.getDisplayContentDescription())
+        assertTrue(preferenceProvider.getLinearNavigationEnabled())
+        assertTrue(preferenceProvider.getHighlightIssues())
 
         PreferenceProvider(context).run {
             onResume()
             assertTrue(getServiceEnabled())
+            assertTrue(getDisplayContentDescription())
+            assertTrue(getLinearNavigationEnabled())
+            assertTrue(getHighlightIssues())
         }
 
         assertTrue(sharedPreferences.getBoolean(
                 context.getString(R.string.pref_service_enabled), false))
+        assertTrue(sharedPreferences.getBoolean(
+                context.getString(R.string.pref_display_content_descriptions), false))
+        assertTrue(sharedPreferences.getBoolean(
+                context.getString(R.string.pref_linear_navigation_enabled), false))
+        assertTrue(sharedPreferences.getBoolean(
+                context.getString(R.string.pref_highlight_issues), false))
 
-        assertKnownSetters(1)
+        assertKnownSetters(4)
     }
 
     @Test

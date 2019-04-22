@@ -46,8 +46,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.display_content_descriptions,
                 R.xml.content_description_preferences,
                 R.drawable.display_content_descriptions_icon)
+        // Note: The feature preferences screen has an issue where the icon appears below the only
+        // entry
+        setUpButtonSwitchAsFeaturePreferencesButton(
+                R.id.linear_navigation,
+                R.xml.linear_navigation_preferences,
+                R.drawable.linear_navigation_icon)
 
-        mStatusButton = findViewById<ImageButton>(R.id.status_button)
+        mStatusButton = findViewById(R.id.status_button)
 
         findViewById<View>(R.id.open_unfriendly_activity_button).setOnClickListener {
             startActivity(Intent(this, UnfriendlyActivity::class.java))

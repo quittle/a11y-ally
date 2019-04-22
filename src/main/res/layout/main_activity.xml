@@ -49,6 +49,20 @@
             app:switchPreference="@string/pref_display_content_descriptions"
             app:text="@string/display_content_descriptions_toggle_label" />
 
+        <com.quittle.a11yally.view.ButtonSwitch
+            android:id="@+id/linear_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/left_to_right_gradient"
+            android:backgroundTint="#8b23cc"
+            tools:ignore="UnusedAttribute"
+            app:dividerDrawable="@drawable/vertical_divider"
+            app:dividerPadding="@dimen/main_activity_button_switch_padding"
+            app:dividerWidth="@dimen/main_activity_button_switch_divider_width"
+            app:layoutPadding="@dimen/main_activity_button_switch_padding"
+            app:switchPreference="@string/pref_linear_navigation_enabled"
+            app:text="@string/linear_navigation_toggle_label" />
+
         <!--
             For some reason ButtonSwitches double the computed pixel value for vertical padding but
             not horizontal. This is a known bug and should be fixed later but is predictable and

@@ -18,7 +18,8 @@ class PreferenceProvider(context: Context) {
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_issues),
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_missing_labels),
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_small_touch_targets),
-            PreferenceProviderStringIntMember(mContext, R.string.pref_small_touch_target_size)
+            PreferenceProviderStringIntMember(mContext, R.string.pref_small_touch_target_size),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_linear_navigation_enabled)
     )
 
     /**
@@ -27,22 +28,20 @@ class PreferenceProvider(context: Context) {
      * getters. It is the responsibility of the caller to ensure the preference is mapped and is the
      * correct type.
      */
-    private fun <T> getPreferenceProviderByPrefKey(prefKey: Int): T {
-        val member = preferenceProviderMembers.find {
-            it.getPrefKeyId() == prefKey
-        }
+    private fun <T> getPreferenceProviderValueByPrefKey(prefKey: Int): T {
+        return getPreferenceProviderMemberByPrefKey<T>(prefKey).getValue()
+    }
 
+    private fun <T> getPreferenceProviderMemberByPrefKey(prefKey: Int):
+            PreferenceProviderMember<T> {
         @Suppress("unchecked_cast")
-        return member!!.getValue() as T
+        return preferenceProviderMembers.find {
+            it.getPrefKeyId() == prefKey
+        } as PreferenceProviderMember<T>
     }
 
     private fun <T> putPreferenceProviderByPrefKey(prefKey: Int, value: T) {
-        val member = preferenceProviderMembers.find {
-            it.getPrefKeyId() == prefKey
-        }
-
-        @Suppress("unchecked_cast")
-        (member as PreferenceProviderMember<T>).setValue(sharedPreferences, value)
+        getPreferenceProviderMemberByPrefKey<T>(prefKey).setValue(sharedPreferences, value)
     }
 
     private val mListener =
@@ -69,7 +68,7 @@ class PreferenceProvider(context: Context) {
         get() = PreferenceManager.getDefaultSharedPreferences(mContext)
 
     fun getServiceEnabled(): Boolean {
-        return getPreferenceProviderByPrefKey(R.string.pref_service_enabled)
+        return getPreferenceProviderValueByPrefKey(R.string.pref_service_enabled)
     }
 
     fun setServiceEnabled(enabled: Boolean) {
@@ -77,22 +76,58 @@ class PreferenceProvider(context: Context) {
     }
 
     fun getDisplayContentDescription(): Boolean {
-        return getPreferenceProviderByPrefKey(R.string.pref_display_content_descriptions)
+        return getPreferenceProviderValueByPrefKey(R.string.pref_display_content_descriptions)
+    }
+
+    fun setDisplayContentDescription(enabled: Boolean) {
+        putPreferenceProviderByPrefKey(R.string.pref_display_content_descriptions, enabled)
     }
 
     fun getHighlightIssues(): Boolean {
-        return getPreferenceProviderByPrefKey(R.string.pref_highlight_issues)
+        return getPreferenceProviderValueByPrefKey(R.string.pref_highlight_issues)
+    }
+
+    fun setHighlightIssues(enabled: Boolean) {
+        putPreferenceProviderByPrefKey(R.string.pref_highlight_issues, enabled)
     }
 
     fun getHighlightMissingLabels(): Boolean {
-        return getPreferenceProviderByPrefKey(R.string.pref_highlight_missing_labels)
+        return getPreferenceProviderValueByPrefKey(R.string.pref_highlight_missing_labels)
     }
 
     fun getHighlightSmallTouchTargets(): Boolean {
-        return getPreferenceProviderByPrefKey(R.string.pref_highlight_small_touch_targets)
+        return getPreferenceProviderValueByPrefKey(R.string.pref_highlight_small_touch_targets)
     }
 
     fun getSmallTouchTargetSize(): Int {
-        return getPreferenceProviderByPrefKey(R.string.pref_small_touch_target_size)
+        return getPreferenceProviderValueByPrefKey(R.string.pref_small_touch_target_size)
+    }
+
+    fun getLinearNavigationEnabled(): Boolean {
+        return getPreferenceProviderValueByPrefKey(R.string.pref_linear_navigation_enabled)
+    }
+
+    fun setLinearNavigationEnabled(enabled: Boolean) {
+        putPreferenceProviderByPrefKey(R.string.pref_linear_navigation_enabled, enabled)
+    }
+
+    fun onServiceEnabledUpdate(callback: (Boolean) -> Unit) {
+        getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_service_enabled)
+                .addListener(callback)
+    }
+
+    fun onLinearNavigationEnabledUpdate(callback: (Boolean) -> Unit) {
+        getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_linear_navigation_enabled)
+                .addListener(callback)
+    }
+
+    fun onHighlightIssuesUpdate(callback: (Boolean) -> Unit) {
+        getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_highlight_issues)
+                .addListener(callback)
+    }
+
+    fun onDisplayContentDescriptionUpdate(callback: (Boolean) -> Unit) {
+        getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_display_content_descriptions)
+                .addListener(callback)
     }
 }

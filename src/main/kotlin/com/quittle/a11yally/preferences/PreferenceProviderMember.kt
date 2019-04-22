@@ -25,6 +25,7 @@ internal abstract class PreferenceProviderMember<T>(
                                    value: T) -> SharedPreferences.Editor) {
     private val mPrefKey: String by lazy { context.getString(prefKeyId) }
     private var mValue: T = defaultValue
+    private val mListeners: MutableList<(T) -> Unit> = mutableListOf()
 
     fun getValue(): T {
         return mValue
@@ -39,12 +40,17 @@ internal abstract class PreferenceProviderMember<T>(
         editor.apply()
     }
 
+    fun addListener(listener: (T) -> Unit) {
+        mListeners.add(listener)
+    }
+
     fun getPrefKeyId(): Int {
         return prefKeyId
     }
 
     fun updateValue(sharedPref: SharedPreferences) {
         mValue = getPrefValue(sharedPref, mPrefKey, mValue)
+        mListeners.forEach { it(mValue) }
     }
 
     fun possiblyUpdateValue(sharedPref: SharedPreferences, prefKey: String) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.preference.SwitchPreference
-        android:key="@string/pref_display_content_descriptions"
-        android:title="@string/display_content_descriptions_toggle_label"
+        android:key="@string/pref_linear_navigation_enabled"
+        android:title="@string/linear_navigation_toggle_label"
         android:defaultValue="false" />
 </androidx.preference.PreferenceScreen>

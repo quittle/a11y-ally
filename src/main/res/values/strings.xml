@@ -15,6 +15,7 @@
     <string name="all_permissions_granted">All necessary permissions already granted.</string>
     <string name="check_permissions_button_label">Check Permissions</string>
     <string name="display_content_descriptions_toggle_label">Display Content Descriptions</string>
+    <string name="linear_navigation_toggle_label">Display Linear Navigation Overlay</string>
     <string name="highlight_accessibility_issues_toggle_button">Highlight Issues</string>
     <string name="select_all">Select all</string>
     <string name="app_picker_title">Apps to inspect</string>
@@ -33,6 +34,8 @@
     <string name="small_touch_target_size_summary">Minimum length of either dimension of a button</string>
     <string name="pref_category_visual">Visual</string>
     <string name="pref_category_motor">Motor</string>
+    <string name="linear_navigation_abort_button_label">Get me out of here</string>
+    <string name="linear_navigation_overlay_unavailable_dialog_message">The Linear Navigation Overlay is not available prior to Android Oreo (API level 26).</string>
 
     <string-array name="pref_small_touch_target_size_entries">
         <item>24 dp</item>

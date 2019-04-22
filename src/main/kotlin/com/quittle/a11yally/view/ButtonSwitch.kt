@@ -100,6 +100,10 @@ class ButtonSwitch : LinearLayout {
         return mTitleButton
     }
 
+    fun getPreference(): String? {
+        return mPreference
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -121,7 +125,7 @@ class ButtonSwitch : LinearLayout {
                 setBackgroundResource(mDividerDrawableResource)
             }
         }
-        findViewById<View>(R.id.wrapper)?.apply {
+        findViewById<View>(R.id.wrapper).apply {
             setPadding(mLayoutPadding, mLayoutPadding, mLayoutPadding, mLayoutPadding)
         }
 

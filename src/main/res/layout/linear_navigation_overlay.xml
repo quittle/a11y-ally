@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The overdraw lint warning comes from the assumption that the top view group will be used in an
+    activity with a theme, thereby making the background useless. This does not apply here as it is
+    added directly to a WindowManager, which does not support themes as far as I can tell.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/linear_navigation_background"
+    android:orientation="vertical"
+    tools:ignore="Overdraw">
+    <Button
+        android:id="@+id/disable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/linear_navigation_abort_button_label"
+        android:textColor="#fff"
+        android:background="#E74C63"/>
+    <!--
+        On FireOS or maybe just KitKat, if the ScrollView is the outermost ViewGroup, the scrolling
+        takes place on a layer above the view attached to the window. For some reason, the
+        ScrollView stays they height of the window, but does not scroll, while the background layer
+        scrolls inversely to swipes, giving a sort of clunky, parallax effect of the background.
+        Touching the contents of the ScrollView is then offset by how much this outer layer is
+        scrolled.
+
+        Basically, this needs an outer layer even if it seems unnecessary.
+    -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+        <LinearLayout
+            android:id="@+id/navigation_items_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?android:dividerHorizontal"
+            android:showDividers="middle"
+            android:orientation="vertical" />
+    </ScrollView>
+</LinearLayout>

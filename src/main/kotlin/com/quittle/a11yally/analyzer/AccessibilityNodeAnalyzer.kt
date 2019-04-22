@@ -35,7 +35,7 @@ class AccessibilityNodeAnalyzer(context: Context) {
      */
     fun isNodeLikelyFocusable(node: AccessibilityNodeInfo): Boolean {
         return node.text.isNotNull() ||
-                node.isFocusable ||
+                (node.isFocusable && node.childCount == 0) ||
                 getContentDescription(node).isNotNull()
     }
 

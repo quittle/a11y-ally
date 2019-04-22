@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient id="shadow" x1="0%" x2="100%" y1="0%" y2="100%">
+            <stop offset="30%" stop-color="#fff" />
+            <stop offset="80%" stop-color="#606060" />
+        </linearGradient>
+
+        <g id="block">
+            <rect x="20" width="562" height="102" fill="url(#shadow)" />
+            <rect x="20" width="560" height="100" fill="#fff" />
+            <rect x="40" y="30" width="400" height="40" rx="10" ry="10" fill="#bbb" />
+        </g>
+    </defs>
+
+    <g>
+        <rect id="bg" x="0" y="0" width="600" height="860" fill="#bbb" />
+        <g>
+            <use xlink:href="#block" y="20" />
+            <use xlink:href="#block" y="140" />
+            <use xlink:href="#block" y="260" />
+            <use xlink:href="#block" y="380" />
+            <use xlink:href="#block" y="500" />
+            <use xlink:href="#block" y="620" />
+            <use xlink:href="#block" y="740" />
+        </g>
+    </g>
+</svg>

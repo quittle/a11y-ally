@@ -53,8 +53,6 @@ class AccessibilityItemLoggerTest {
     fun testRecordingEmpty() {
         assertFalse(recordingFile.exists())
 
-        fullySetUpPermissions()
-
         startRecording()
         stopRecording()
 
@@ -68,13 +66,6 @@ class AccessibilityItemLoggerTest {
     fun testRecordingUnfriendlyActivity() {
         assertFalse(recordingFile.exists())
 
-        // Open the activity and wait for everything to settle
-        openUnfriendlyActivity()
-        sleep(100)
-        onIdle()
-
-        startRecording()
-
         // Enable the necessary preferences
         PreferenceManager(targetContext).sharedPreferences.edit()
                 .putBoolean(targetContext.getString(R.string.pref_service_enabled), true)
@@ -87,7 +78,15 @@ class AccessibilityItemLoggerTest {
                         setOf(targetContext.applicationInfo.packageName))
                 .commit()
 
-        // Allow time for the asynchronous accessibility service to send an event to the app
+        sleep(100)
+        onIdle()
+
+        startRecording()
+
+        openUnfriendlyActivity()
+
+        // It is up to the OS to send accessibility events, which do not have a guaranteed
+        // "frame rate". Wait until at least one should get triggered.
         sleep(1000)
         onIdle()
 
@@ -95,24 +94,46 @@ class AccessibilityItemLoggerTest {
 
         waitForJsonArrayFile(recordingFile)
 
-        val actualReport = JSONArray(recordingFile.readText())
+        var actualReport = JSONArray(recordingFile.readText())
         for (i in 0 until actualReport.length()) {
             val entry = actualReport[i] as JSONObject
             entry.remove("timestamp")
         }
 
+        // Multiple may have been triggered but they should all be duplicates. De-dup them as it is
+        // okay to receive multiple accessibility events.
+        if (actualReport.length() == 6) {
+            for (i in 0 until 3) {
+                JSONAssert.assertEquals(actualReport.getJSONObject(i),
+                                        actualReport.getJSONObject(i + 3),
+                                        JSONCompareMode.STRICT)
+            }
+            actualReport = actualReport.range(0, 3)
+        } else if (actualReport.length() == 9) {
+            for (i in 0 until 3) {
+                JSONAssert.assertEquals(actualReport.getJSONObject(i),
+                                        actualReport.getJSONObject(i + 3),
+                                        JSONCompareMode.STRICT)
+                JSONAssert.assertEquals(actualReport.getJSONObject(i),
+                                        actualReport.getJSONObject(i + 6),
+                                        JSONCompareMode.STRICT)
+            }
+            actualReport = actualReport.range(0, 3)
+        }
+
         val expectedReport = readReportToJSONArray(TestR.raw.unfriendly_activity_report)
 
-        JSONAssert.assertEquals(expectedReport, actualReport, JSONCompareMode.STRICT)
+        JSONAssert.assertEquals(
+                actualReport.toString(4), expectedReport, actualReport, JSONCompareMode.STRICT)
     }
 
-    private fun openUnfriendlyActivity() {
-        InstrumentationRegistry.getInstrumentation()
+    private fun openUnfriendlyActivity(): UnfriendlyActivity {
+        return InstrumentationRegistry.getInstrumentation()
                 .startActivitySync(
                         Intent(targetContext, UnfriendlyActivity::class.java).apply {
                             flags += FLAG_ACTIVITY_NEW_TASK
                         }
-                )
+                ) as UnfriendlyActivity
     }
 
     private fun readReportToJSONArray(@RawRes resourceId: Int): JSONArray {
@@ -133,4 +154,15 @@ class AccessibilityItemLoggerTest {
                 STOP_RECORDING_INTENT_ACTION, null, targetContext, RecordingService::class.java))
         onIdle()
     }
+}
+
+/**
+ * Helper function to extract a subset of the [JSONArray] as a new [JSONArray].
+ */
+private fun JSONArray.range(start: Int, end: Int): JSONArray {
+    val ret = JSONArray()
+    for (i in start until end) {
+        ret.put(this[i])
+    }
+    return ret
 }
