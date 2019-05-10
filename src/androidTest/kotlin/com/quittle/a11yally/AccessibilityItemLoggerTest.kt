@@ -95,28 +95,21 @@ class AccessibilityItemLoggerTest {
         waitForJsonArrayFile(recordingFile)
 
         var actualReport = JSONArray(recordingFile.readText())
-        for (i in 0 until actualReport.length()) {
+        val originalReportLength = actualReport.length()
+        for (i in 0 until originalReportLength) {
             val entry = actualReport[i] as JSONObject
             entry.remove("timestamp")
         }
 
         // Multiple may have been triggered but they should all be duplicates. De-dup them as it is
         // okay to receive multiple accessibility events.
-        if (actualReport.length() == 6) {
+        if (originalReportLength % 3 == 0) {
             for (i in 0 until 3) {
-                JSONAssert.assertEquals(actualReport.getJSONObject(i),
-                                        actualReport.getJSONObject(i + 3),
-                                        JSONCompareMode.STRICT)
-            }
-            actualReport = actualReport.range(0, 3)
-        } else if (actualReport.length() == 9) {
-            for (i in 0 until 3) {
-                JSONAssert.assertEquals(actualReport.getJSONObject(i),
-                                        actualReport.getJSONObject(i + 3),
-                                        JSONCompareMode.STRICT)
-                JSONAssert.assertEquals(actualReport.getJSONObject(i),
-                                        actualReport.getJSONObject(i + 6),
-                                        JSONCompareMode.STRICT)
+                for (j in 0 until originalReportLength / 3) {
+                    JSONAssert.assertEquals(actualReport.getJSONObject(i),
+                            actualReport.getJSONObject(3 * j + i),
+                            JSONCompareMode.STRICT)
+                }
             }
             actualReport = actualReport.range(0, 3)
         }
