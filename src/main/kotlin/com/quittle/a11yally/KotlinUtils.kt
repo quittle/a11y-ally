@@ -70,3 +70,16 @@ fun <T> T?.orElse(default: T): T {
         return this
     }
 }
+
+/**
+ * Replacement for the hook statement. Example usage:
+ * ```
+ * val messageColor: Color = isError.ifElse(Color.Red, Color.Green)
+ * ```
+ * @param trueCase The return value if true
+ * @param falseCase The return value if false
+ * @return Either [trueCase] or [falseCase], depending on the value
+ */
+fun <T> Boolean.ifElse(trueCase: T, falseCase: T): T {
+    return if (this) trueCase else falseCase
+}

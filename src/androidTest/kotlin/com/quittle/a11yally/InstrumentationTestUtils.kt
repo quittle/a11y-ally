@@ -4,19 +4,42 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.UiAutomation
+import android.content.Intent
 import android.os.ParcelFileDescriptor
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.runner.permission.PermissionRequester
 import org.json.JSONArray
 import org.json.JSONException
+import org.junit.rules.TestRule
+import org.junit.runner.Description
+import org.junit.runners.model.Statement
 import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
+import kotlin.reflect.KClass
+
+/**
+ * Sets up and tears down permissions around a test
+ */
+class PermissionsRule : TestRule {
+    override fun apply(base: Statement?, description: Description?): Statement =
+            object : Statement() {
+        override fun evaluate() {
+            try {
+                fullySetUpPermissions()
+                base?.evaluate()
+            } finally {
+                fullyTearDownPermissions()
+            }
+        }
+    }
+}
 
 /**
  * Wrapper for auto-releasing the espress [Intents] recorder.
@@ -76,6 +99,7 @@ fun revokePermissions(vararg permissions: String) {
 fun enableAccessibilityService() {
     runShellCommand("settings put secure enabled_accessibility_services " +
             getPackageName() + "/.analyzer.A11yAllyAccessibilityAnalyzer")
+    onIdle()
 }
 
 /**
@@ -170,3 +194,25 @@ private fun runShellCommand(command: String) {
 private fun getPackageName(): String {
     return InstrumentationRegistry.getInstrumentation().targetContext.packageName
 }
+
+/**
+ * Extension function to launch an activity without parameters
+ */
+fun <T : Activity> ActivityTestRule<T>.launchActivity(): T {
+    return this.launchActivity(Intent())
+}
+
+/**
+ * Extension function to stop and re-start the activity of a rule
+ */
+fun <T : Activity> ActivityTestRule<T>.relaunchActivity(): T {
+    this.activity.finish()
+    return this.launchActivity()
+}
+
+/**
+ * An [ActivityTestRule] that does not launch the activity at startup
+ * @param activity The activity to launch
+ */
+class DelayedActivityTestRule<T : Activity>(activity: KClass<T>) :
+        ActivityTestRule<T>(activity.java, true, false)

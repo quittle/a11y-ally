@@ -1,0 +1,186 @@
+package com.quittle.a11yally
+
+import android.Manifest
+import androidx.test.espresso.Espresso.onIdle
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.PositionAssertions.isBottomAlignedWith
+import androidx.test.espresso.assertion.PositionAssertions.isCompletelyRightOf
+import androidx.test.espresso.assertion.PositionAssertions.isTopAlignedWith
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
+import androidx.test.espresso.intent.matcher.IntentMatchers.toPackage
+import androidx.test.espresso.matcher.ViewMatchers.hasTextColor
+import androidx.test.espresso.matcher.ViewMatchers.isClickable
+import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import java.lang.Thread.sleep
+
+class PermissionsActivityInstrumentationTest {
+    @get:Rule
+    val mActivityRule = DelayedActivityTestRule(PermissionsActivity::class)
+
+    @After
+    fun tearDown() {
+        fullyTearDownPermissions()
+    }
+
+    @Before
+    fun setUp() {
+        fullyTearDownPermissions()
+        mActivityRule.launchActivity()
+    }
+
+    @Test
+    fun continueButtonStatus() {
+        onView(withId(R.id.continue_button))
+                .perform(scrollTo())
+                .check(matches(isCompletelyDisplayed()))
+                .check(matches(not(isEnabled())))
+                .perform(click())
+        onIdle()
+
+        assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
+
+        fullySetUpPermissions()
+
+        mActivityRule.relaunchActivity()
+
+        onView(withId(R.id.continue_button))
+                .perform(scrollTo())
+                .check(matches(isCompletelyDisplayed()))
+                .check(matches(isEnabled()))
+                .perform(click())
+
+        onIdle()
+
+        assertEquals(MainActivity::class.java, getCurrentActivity().javaClass)
+    }
+
+    @Test
+    fun overlayStatus() {
+        verifyStatusViews(
+                textViewId = R.id.permission_overlay_text,
+                imageViewId = R.id.permission_overlay_image,
+                statusViewId = R.id.permission_overlay_status,
+                statusOk = false)
+
+        recordingIntents {
+            onView(withId(R.id.permission_overlay_status))
+                    .perform(click())
+
+            Intents.intended(allOf(
+                    toPackage("com.android.settings"),
+                    hasAction("android.settings.action.MANAGE_OVERLAY_PERMISSION"),
+                    hasData("package:com.quittle.a11yally")),
+                            Intents.times(1))
+        }
+
+        grantPermissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
+
+        mActivityRule.relaunchActivity()
+
+        // Wait for the permission to propagate
+        sleep(1500)
+
+        verifyStatusViews(
+                textViewId = R.id.permission_overlay_text,
+                imageViewId = R.id.permission_overlay_image,
+                statusViewId = R.id.permission_overlay_status,
+                statusOk = true)
+    }
+
+    @Test
+    fun serviceStatus() {
+        verifyStatusViews(
+                textViewId = R.id.permission_service_text,
+                imageViewId = R.id.permission_service_image,
+                statusViewId = R.id.permission_service_status,
+                statusOk = false)
+
+        recordingIntents {
+            onView(withId(R.id.permission_service_status))
+                    .perform(click())
+
+            Intents.intended(allOf(
+                    hasAction("android.settings.ACCESSIBILITY_SETTINGS"),
+                    hasData("package:com.quittle.a11yally")),
+                    Intents.times(1))
+            Intents.intended(allOf(
+                    toPackage("com.android.settings"),
+                    hasAction("android.settings.ACCESSIBILITY_SETTINGS")),
+                    Intents.times(1))
+        }
+
+        enableAccessibilityService()
+
+        mActivityRule.relaunchActivity()
+
+        verifyStatusViews(
+                textViewId = R.id.permission_service_text,
+                imageViewId = R.id.permission_service_image,
+                statusViewId = R.id.permission_service_status,
+                statusOk = true)
+    }
+
+    /**
+     * Verifies that the status views are displaying correctly and do nothing if [statusOk] is true.
+     */
+    private fun verifyStatusViews(
+            textViewId: Int, imageViewId: Int, statusViewId: Int, statusOk: Boolean) {
+        val textView = withId(textViewId)
+        val imageView = withId(imageViewId)
+        val statusView = withId(statusViewId)
+
+        onView(textView)
+                .perform(scrollTo())
+                .check(matches(isCompletelyDisplayed()))
+                .check(matches(isClickable()))
+        onView(imageView)
+                .check(matches(isCompletelyDisplayed()))
+                .check(matches(isClickable()))
+                .check(isCompletelyRightOf(textView))
+                .check(isTopAlignedWith(textView))
+                .check(isBottomAlignedWith(textView))
+        onView(statusView)
+                .check(matches(isCompletelyDisplayed()))
+                .check(matches(isClickable()))
+                .check(matches(withText(statusOk.ifElse(
+                        R.string.permissions_activity_status_ok,
+                        R.string.permissions_activity_status_fix))))
+                .check(matches(hasTextColor(statusOk.ifElse(
+                        R.color.permissions_activity_status_ok,
+                        R.color.permissions_activity_status_fix))))
+                .check(isCompletelyRightOf(imageView))
+                .check(isTopAlignedWith(imageView))
+                .check(isBottomAlignedWith(imageView))
+
+        if (statusOk) {
+            verifyViewInert(textViewId)
+            verifyViewInert(imageViewId)
+            verifyViewInert(statusViewId)
+        }
+    }
+
+    /**
+     * Clicks a view and verifies that clicking it doesn't leave the activity
+     */
+    private fun verifyViewInert(viewId: Int) {
+        onView(withId(viewId))
+                .perform(click())
+        onIdle()
+        assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
+    }
+}

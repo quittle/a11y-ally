@@ -10,5 +10,5 @@
     <color name="linear_navigation_background">#fff</color>
     <color name="linear_navigation_entry">@color/linear_navigation_background</color>
     <color name="linear_navigation_entry_text">#000</color>
-    <color name="linear_navigation_entry_pressed">#A7A7A7</color>
+    <color name="linear_navigation_entry_pressed">#a7a7a7</color>
 </resources>

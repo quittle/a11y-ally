@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="40sp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/permissions_activity_primary_header"
+            android:textSize="60sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="60sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="20sp"
+            android:text="@string/permissions_activity_secondary_header"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="80sp"
+            app:autoSizeMinTextSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="fill"
+            android:text="@string/permissions_activity_intro"
+            android:textSize="20sp"
+            app:autoSizeMaxTextSize="80sp"
+            app:autoSizeMinTextSize="20sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/permission_overlay_text"
+                android:layout_width="0dp"
+                android:layout_height="60sp"
+                android:gravity="center_vertical"
+                android:text="@string/permissions_activity_display_over_other_apps"
+                app:layout_constraintEnd_toStartOf="@+id/permission_overlay_image"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/permission_overlay_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/permission_overlay_text"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/permission_overlay_status"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/permission_overlay_text"
+                app:layout_constraintTop_toTopOf="@id/permission_overlay_text"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/permission_overlay_status"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:labelFor="@id/permission_overlay_image"
+                android:padding="5sp"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@id/permission_overlay_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/permission_overlay_image"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:id="@+id/permission_service_text"
+                android:layout_width="0dp"
+                android:layout_height="60sp"
+                android:gravity="center_vertical"
+                android:text="@string/permissions_activity_accessibility_service"
+                app:layout_constraintEnd_toStartOf="@+id/permission_service_image"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/permission_overlay_text" />
+
+            <ImageView
+                android:id="@+id/permission_service_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/permission_service_text"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/permission_service_status"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/permission_service_text"
+                app:layout_constraintTop_toTopOf="@id/permission_service_text"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/permission_service_status"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:labelFor="@id/permission_service_image"
+                android:padding="5sp"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@id/permission_service_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/permission_service_image"
+                app:layout_constraintTop_toTopOf="@id/permission_service_image"
+                tools:ignore="LabelFor" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/continue_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/permissions_activity_button_continue"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
+</ScrollView>

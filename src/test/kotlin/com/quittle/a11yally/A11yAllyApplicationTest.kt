@@ -44,6 +44,7 @@ class A11yAllyApplicationTest {
     fun testDefaultPreferenceValues() {
         assertEquals(
                 mapOf(
+                        Pair("pref_service_enabled", true),
                         Pair("pref_highlight_issues", false),
                         Pair("pref_highlight_missing_labels", true),
                         Pair("pref_highlight_small_touch_targets", true),

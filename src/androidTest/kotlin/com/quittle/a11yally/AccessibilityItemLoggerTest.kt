@@ -21,6 +21,7 @@ import java.io.File
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.After
+import org.junit.Rule
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import java.lang.Thread.sleep
@@ -32,6 +33,9 @@ class AccessibilityItemLoggerTest {
     private lateinit var testContext: Context
     private lateinit var recordingFile: File
 
+    @get:Rule
+    val mPermissionsRule = PermissionsRule()
+
     @Before
     fun setUp() {
         targetContext = InstrumentationRegistry.getInstrumentation().targetContext
@@ -39,13 +43,11 @@ class AccessibilityItemLoggerTest {
         recordingFile = File(targetContext.filesDir, "recordings/recording.json")
         recordingFile.delete()
         clearSharedPreferences()
-        fullySetUpPermissions()
     }
 
     @After
     fun tearDown() {
         recordingFile.delete()
-        fullyTearDownPermissions()
         clearSharedPreferences()
     }
 

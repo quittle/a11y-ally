@@ -11,15 +11,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/status_button"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/service_check_box"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@null"
-            android:padding="30dp"
-            android:src="@drawable/service_status_icon"
-            tools:ignore="contentDescription" />
+            android:layout_margin="40dp"
+            android:button="@drawable/service_status_icon"
+            android:checked="true"
+            android:foregroundGravity="center"
+            android:gravity="center" />
 
         <com.quittle.a11yally.view.ButtonSwitch
             android:id="@+id/highlight_issues"

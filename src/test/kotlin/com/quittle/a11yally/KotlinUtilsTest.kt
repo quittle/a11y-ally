@@ -3,7 +3,9 @@ package com.quittle.a11yally
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
@@ -119,5 +121,17 @@ class KotlinUtilsTest {
         assertTrue(null.orElse(true))
         assertNull(null.orElse(null))
         assertTrue(true.orElse(false))
+        assertFalse(false.orElse(true))
+    }
+
+    @Test
+    fun testIfElse() {
+        val o1 = Object()
+        val o2 = Object()
+        assertNotSame(o1, o2)
+
+        assertSame(o1, true.ifElse(o1, o2))
+        assertSame(o2, false.ifElse(o1, o2))
+        assertNull(null?.ifElse(o1, o2))
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="permissions_activity_status_ok">#70e070</color>
+    <color name="permissions_activity_status_fix">#f05454</color>
+
+    <string name="permissions_activity_primary_header">Welcome</string>
+    <string name="permissions_activity_secondary_header">Ready to get started?</string>
+    <string name="permissions_activity_intro">Begin by granting this app all the permissions it will need to detect and display analysis.</string>
+    <string name="permissions_activity_display_over_other_apps">Display over other apps</string>
+    <string name="permissions_activity_accessibility_service">Run as accessibility service</string>
+    <string name="permissions_activity_status_ok" tools:ignore="ButtonCase,Typos">Ok</string>
+    <string name="permissions_activity_status_fix">Fix Now</string>
+    <string name="permissions_activity_button_continue">Continue</string>
+</resources>
