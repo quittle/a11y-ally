@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.util.AttributeSet
-import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
@@ -115,23 +114,20 @@ class ButtonSwitch : LinearLayout {
             if (mText.isNotNull()) {
                 text = mText
             }
+            setPadding(mLayoutPadding, mLayoutPadding, mDividerPadding, mLayoutPadding)
         }
 
         mDivider.apply {
-            (layoutParams as? LinearLayout.LayoutParams)
-                    ?.setMargins(mDividerPadding, 0, mDividerPadding, 0)
             layoutParams.width = mDividerWidth
             if (mDividerDrawableResource != 0) {
                 setBackgroundResource(mDividerDrawableResource)
             }
         }
-        findViewById<View>(R.id.wrapper).apply {
-            setPadding(mLayoutPadding, mLayoutPadding, mLayoutPadding, mLayoutPadding)
-        }
 
         mSwitchCompat.apply {
             if (mPreference.isNotNull()) {
                 isChecked = mSharedPreferences.getBoolean(mPreference, false)
+                setPadding(mDividerPadding, mLayoutPadding, mLayoutPadding, mLayoutPadding)
 
                 setOnCheckedChangeListener { _, isChecked: Boolean ->
                     mSharedPreferences.edit()
