@@ -17,6 +17,15 @@ install: true
 script:
 - ./gradlew
 
+before_deploy:
+- git config --local user.name "Dustin Toff"
+- git config --local user.email "me@dustintoff.com"
+- apkanalyzer=./build/android-sdk-root/tools/bin/apkanalyzer
+- chmod +x $apkanalyzer
+- version_code="$($apkanalyzer manifest version-code build/outputs/apk/release/a11y-ally-release.apk)"
+- export TRAVIS_TAG="version-code-${version_code}"
+- git tag "$TRAVIS_TAG"
+
 deploy:
 - provider: releases
   api_key:

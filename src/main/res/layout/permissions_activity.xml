@@ -17,10 +17,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/permissions_activity_primary_header"
-            android:textSize="60sp"
+            android:textSize="40sp"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="60sp" />
+            app:autoSizeMinTextSize="40sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
