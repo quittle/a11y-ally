@@ -49,6 +49,7 @@ class AccessibilityItemLoggerTest {
     fun tearDown() {
         recordingFile.delete()
         clearSharedPreferences()
+        fullyTearDownPermissions()
     }
 
     @Test

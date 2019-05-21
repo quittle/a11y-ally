@@ -28,8 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PermissionsActivity" />
-        <activity android:name=".UnfriendlyActivity"
-                android:parentActivityName=".MainActivity" />
+        <activity android:name=".UnfriendlyActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".FeatureSettingsActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".DialogActivity" android:theme="@style/Theme.AppCompat.Dialog" android:excludeFromRecents="true" />
         <service android:name=".analyzer.A11yAllyAccessibilityAnalyzer"

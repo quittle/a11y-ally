@@ -58,6 +58,8 @@ class PermissionsActivityInstrumentationTest {
 
         mActivityRule.relaunchActivity()
 
+        sleep(1500)
+
         onView(withId(R.id.continue_button))
                 .perform(scrollTo())
                 .check(matches(isCompletelyDisplayed()))

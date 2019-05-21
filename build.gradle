@@ -94,6 +94,8 @@ android {
         }
     }
 
+    testBuildType project.properties.get('testBuildType', 'debug')
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         main.res.srcDirs += [customResDir, customResDirFg, customResDirBg]

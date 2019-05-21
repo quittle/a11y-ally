@@ -1,1 +1,8 @@
--keep class kotlin.reflect.jvm.internal.impl.load.java.structure.LightClassOriginKind
+-keep class kotlin.** {
+    public *;
+    protected *;
+}
+
+-keep class com.quittle.** {
+    public *;
+}
