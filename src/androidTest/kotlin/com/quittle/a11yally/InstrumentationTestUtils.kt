@@ -140,6 +140,18 @@ fun clearSharedPreferences() {
 }
 
 /**
+ * Launches an activity in the app under test
+ */
+fun <T : Activity> launchActivity(clazz: KClass<T>): T {
+    val instrumentation = InstrumentationRegistry.getInstrumentation()
+    val intent = Intent(instrumentation.targetContext, clazz.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    }
+    @Suppress("unchecked_cast")
+    return instrumentation.startActivitySync(intent) as T
+}
+
+/**
  * Blocks the thread until a file has been fully created.
  */
 fun waitForFile(file: File) {
@@ -177,7 +189,7 @@ private fun isFileClosed(file: File): Boolean {
     }
 }
 
-private fun runShellCommand(command: String) {
+fun runShellCommand(command: String) {
     val pfd: ParcelFileDescriptor = InstrumentationRegistry.getInstrumentation()
             .getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES)
             .executeShellCommand(command)
