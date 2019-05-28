@@ -6,7 +6,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.XmlRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.SwitchCompat
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.view.ButtonSwitch
 import com.quittle.a11yally.view.MultiAppSelectionDialog
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.main_activity)
 
-        findViewById<AppCompatCheckBox>(R.id.service_check_box).run {
+        findViewById<SwitchCompat>(R.id.service_check_box).run {
             isChecked = mPreferenceProvider.getServiceEnabled()
             mPreferenceProvider.onServiceEnabledUpdate(this::setChecked)
             setOnCheckedChangeListener { _, enabled ->
