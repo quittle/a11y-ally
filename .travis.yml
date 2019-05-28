@@ -44,3 +44,4 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
+    condition: "$TRAVIS_TAG =~ ^(?!version-code-)"
