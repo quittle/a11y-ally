@@ -1,13 +1,15 @@
 # A11y Ally [<img alt="Get it on Google Play" src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="50px" align="top" />](https://play.google.com/store/apps/details?id=com.quittle.a11yally) [![Build Status](https://travis-ci.com/quittle/a11y-ally.svg?branch=master)](https://travis-ci.com/quittle/a11y-ally)
 
 <img align="left" src="src/main/custom-res/icon.svg" alt="A11y Ally Logo" height="80px" />
-This tool is aimed at developers, designers, and testers to analyze and inspect Android applications'
+A11y Ally (as in [Accessibility Ally](https://a11yproject.com/about/#what-does-the-term-a11y-mean))
+tool is aimed at developers, designers, and testers to analyze and inspect Android applications'
 accessibility to all users. Providing an AR-style overlay, it runs alongside your app and highlights
 issues it discovers and provides insight into what assistive technology users experience when using
 your app. In addition to providing exploratory feedback for a user manually interacting with their app,
 A11y Ally can generate reports of accessibility issues it finds, making it possible to integrate into
 automated testing.
 
+**[Learn how to get started now!](GETTING_STARTED.md)**
 <br />
 <br />
 
