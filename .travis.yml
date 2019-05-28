@@ -38,10 +38,10 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-    condition: "$TRAVIS_TAG =~ ^(?!version-code-)"
+    condition: "$TRAVIS_TAG =~ ^version-code-\d+$"
 - provider: script
   script: ./gradlew publish
   skip_cleanup: true
   on:
     branch: master
-    condition: "$TRAVIS_TAG =~ ^(?!version-code-)"
+    condition: "$TRAVIS_TAG =~ ^version-code-\d+$"
