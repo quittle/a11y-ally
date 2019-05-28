@@ -23,8 +23,7 @@ before_deploy:
 - apkanalyzer=./build/android-sdk-root/tools/bin/apkanalyzer
 - chmod +x $apkanalyzer
 - version_code="$($apkanalyzer manifest version-code build/outputs/apk/release/a11y-ally-release.apk)"
-- export TRAVIS_TAG="version-code-${version_code}"
-- git tag "$TRAVIS_TAG"
+- git tag "version-code-${version_code}"
 
 deploy:
 - provider: releases
@@ -38,10 +37,10 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-    condition: "$TRAVIS_TAG =~ ^version-code-\d+$"
+    condition: "$TRAVIS_TAG =~ ^(?!version-code-)"
 - provider: script
   script: ./gradlew publish
   skip_cleanup: true
   on:
     branch: master
-    condition: "$TRAVIS_TAG =~ ^version-code-\d+$"
+    condition: "$TRAVIS_TAG =~ ^(?!version-code-)"
