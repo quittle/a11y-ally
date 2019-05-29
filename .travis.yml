@@ -23,7 +23,7 @@ before_deploy:
 - apkanalyzer=./build/android-sdk-root/tools/bin/apkanalyzer
 - chmod +x $apkanalyzer
 - version_code="$($apkanalyzer manifest version-code build/outputs/apk/release/a11y-ally-release.apk)"
-- git tag "version-code-${version_code}" && export TAGGED_DURING_BUILD=true || echo "Release already tagged"
+- git tag "version-code-${version_code}" || echo "Release already tagged"
 
 deploy:
 - provider: releases
@@ -37,10 +37,10 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-    condition: "env(TAGGED_DURING_BUILD) = true"
+    tags: false
 - provider: script
   script: ./gradlew publish
   skip_cleanup: true
   on:
     branch: master
-    condition: "env(TAGGED_DURING_BUILD) = true"
+    tags: false
