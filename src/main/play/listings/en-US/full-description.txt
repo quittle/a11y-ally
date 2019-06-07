@@ -1,3 +1,3 @@
 As a developer, it can be hard to keep all your customers in mind when your primary focus is on delivering killer, new features. A11y Ally is an an accessibility issue discovery tool. You can use it passively to discover issues as they appear during regular use of your app or catch regressions during automated integration tests.
 
-Discover accessibility issues that Android Lint or other static analysis tools can't by checking what your app looks like to an accessibility service running on your device. For more details on how it works, instructions on usage, and everything else see https://github.com/quittle/a11y-ally
+Discover accessibility issues that static analysis tools can't by checking what your app looks like to an accessibility service running on your device. For more details on how it works, instructions on usage, and everything else see https://github.com/quittle/a11y-ally
