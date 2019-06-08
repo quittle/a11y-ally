@@ -2,6 +2,7 @@ package com.quittle.a11yally.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.Preference
 import android.preference.PreferenceManager
 import com.quittle.a11yally.R
 import java.util.Arrays.asList
@@ -21,7 +22,8 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
             PreferenceProviderStringIntMember(mContext, R.string.pref_small_touch_target_size),
             PreferenceProviderBooleanMember(mContext, R.string.pref_linear_navigation_enabled),
             PreferenceProviderBooleanMember(mContext, R.string.pref_enable_all_apps),
-            PreferenceProviderStringSetMember(mContext, R.string.pref_enabled_apps)
+            PreferenceProviderStringSetMember(mContext, R.string.pref_enabled_apps),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_show_tutorial)
     )
 
     init {
@@ -135,6 +137,14 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
         putPreferenceProviderByPrefKey(R.string.pref_enabled_apps, apps)
     }
 
+    fun getShowTutorial(): Boolean {
+        return getPreferenceProviderValueByPrefKey(R.string.pref_show_tutorial)
+    }
+
+    fun setShowTutorial(enabled: Boolean) {
+        putPreferenceProviderByPrefKey(R.string.pref_show_tutorial, enabled)
+    }
+
     fun onServiceEnabledUpdate(callback: (Boolean) -> Unit) {
         getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_service_enabled)
                 .addListener(callback)
@@ -158,5 +168,13 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
     fun onInspectAllAppsUpdate(callback: (Boolean) -> Unit) {
         getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_enable_all_apps)
                 .addListener(callback)
+    }
+}
+
+fun withPreferenceProvider(context: Context, block: PreferenceProvider.() -> Unit) {
+    PreferenceProvider(context).apply {
+        onResume()
+        block(this)
+        onPause()
     }
 }

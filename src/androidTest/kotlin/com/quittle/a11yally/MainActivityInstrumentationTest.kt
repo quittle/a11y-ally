@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.quittle.a11yally.view.MultiAppSelectionActivity
+import com.quittle.a11yally.preferences.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertSame
@@ -28,8 +29,27 @@ class MainActivityInstrumentationTest {
     val mPermissionsRule = PermissionsRule()
 
     @Test
-    fun launchWithoutPermissions() {
+    fun firstTimeLaunch() {
+        clearSharedPreferences()
         fullyTearDownPermissions()
+
+        onIdle()
+
+        mActivityRule.launchActivity()
+
+        onIdle()
+
+        assertSame(TutorialActivity::class.java, getCurrentActivity().javaClass)
+    }
+
+    @Test
+    fun launchWithoutPermissions() {
+        clearSharedPreferences()
+        fullyTearDownPermissions()
+        withPreferenceProvider {
+            setShowTutorial(false)
+        }
+
         mActivityRule.launchActivity()
 
         onIdle()

@@ -10,6 +10,8 @@ import androidx.appcompat.widget.SwitchCompat
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.view.ButtonSwitch
 import com.quittle.a11yally.view.MultiAppSelectionActivity
+import android.view.Menu
+import android.view.MenuItem
 
 class MainActivity : AppCompatActivity() {
     private companion object {
@@ -57,6 +59,19 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.toggle_app_selection).setOnClickListener {
             startActivity(Intent(this, MultiAppSelectionActivity::class.java))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_activity_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
+        if (menuItem.itemId == R.id.show_tutorial) {
+            startActivity(Intent(this, TutorialActivity::class.java))
+            return true
+        }
+        return false
     }
 
     override fun onPause() {

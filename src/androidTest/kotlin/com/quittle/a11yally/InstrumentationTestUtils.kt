@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.UiAutomation
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.ParcelFileDescriptor
@@ -20,6 +21,8 @@ import androidx.test.runner.lifecycle.Stage
 import androidx.test.runner.permission.PermissionRequester
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
+import com.quittle.a11yally.preferences.PreferenceProvider
+import com.quittle.a11yally.preferences.withPreferenceProvider
 import org.json.JSONArray
 import org.json.JSONException
 import org.junit.rules.TestRule
@@ -234,6 +237,12 @@ fun runShellCommand(command: String) {
     ParcelFileDescriptor.AutoCloseInputStream(pfd).use {
         val bytes = ByteArray(1024)
         do while (it.read(bytes) != -1)
+    }
+}
+
+fun withPreferenceProvider(block: PreferenceProvider.() -> Unit) {
+    withPreferenceProvider(InstrumentationRegistry.getInstrumentation().targetContext) {
+        block(this)
     }
 }
 

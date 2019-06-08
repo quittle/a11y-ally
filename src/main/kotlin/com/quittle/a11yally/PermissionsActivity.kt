@@ -3,6 +3,7 @@ package com.quittle.a11yally
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
@@ -10,6 +11,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.quittle.a11yally.preferences.PreferenceProvider
+import com.quittle.a11yally.preferences.withPreferenceProvider
 import com.quittle.a11yally.view.FixedContentActivity
 
 /**
@@ -19,6 +22,16 @@ class PermissionsActivity : FixedContentActivity() {
     override val layoutId = R.layout.permissions_activity
 
     private val mPermissionsManager by lazy { PermissionsManager(this) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        withPreferenceProvider(this) {
+            if (getShowTutorial()) {
+                startActivity(Intent(this@PermissionsActivity, TutorialActivity::class.java))
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()

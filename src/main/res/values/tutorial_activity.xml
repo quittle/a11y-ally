@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="tutorial_activity_grant_permissions_blurb">Before we can get started, A11y Ally will need you to <b>grant</b> it some <b>permissions</b> and allow it run as an <b>accessibility service</b>.\n\nThis allows it to <i>\"see\"</i> what a screen reader would and introspect the layout of the app.</string>
+    <string name="tutorial_activity_filters_blurb">
+        Once that is taken care of, you can configure A11y Ally to apply filters on the screen.\n\n
+        One can highlight issues in real time, like augmented reality for your screen! Imagine leaving this running during development and seeing issues highlighted while testing layout changes or making bug fixes.\n\n
+        Another can expose the accessibility properties of your layout visually so you can quickly verify the app has all the appropriate properties for inclusive design. Perfect for a UX designer to verify the app is usable by everyone.\n\n
+        Finally, there is an advanced filter that allows a sighted user to experience their app through simulated linear navigation. This allows simulation of experiencing apps restricted to the experience of a screen reader.\n\n
+        Don\'t worry about what you choose, you can always come back later and change your filter.
+    </string>
+
+</resources>

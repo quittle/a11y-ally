@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PermissionsActivity" />
+        <activity android:name=".TutorialActivity" />
         <activity android:name=".UnfriendlyActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".FeatureSettingsActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".view.MultiAppSelectionActivity" android:parentActivityName=".MainActivity" />

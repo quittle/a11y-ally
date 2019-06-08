@@ -6,4 +6,7 @@
     <SwitchPreference
         android:key="@string/pref_service_enabled"
         android:defaultValue="true" />
+    <SwitchPreference
+        android:key="@string/pref_show_tutorial"
+        android:defaultValue="true" />
 </PreferenceScreen>

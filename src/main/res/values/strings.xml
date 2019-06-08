@@ -39,6 +39,7 @@
     <string name="main_activity_service_status_button_content_description">Service Status</string>
     <string name="multi_app_selection_search">Search installed apps</string>
     <string name="multi_app_selection_select_all">Select All</string>
+    <string name="show_tutorial">See tutorial again</string>
 
     <string-array name="pref_small_touch_target_size_entries">
         <item>24 dp</item>

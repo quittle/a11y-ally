@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#005AAC"
+            android:orientation="vertical"
+            android:padding="60sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cheerio!"
+                android:layout_marginBottom="10sp"
+                android:textSize="40sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is A11y Ally, your companion for assessing an app's support of inclusive design."
+                android:layout_marginBottom="40sp"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Let's get started!"
+                android:layout_marginBottom="40sp"
+                android:textSize="20sp" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="80sp"
+                android:src="@mipmap/ic_launcher" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|bottom"
+                android:text="Swipe left to get continue"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00A6AC"
+            android:orientation="vertical"
+            android:padding="60sp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="120sp"
+                android:layout_gravity="center|top"
+                android:src="@drawable/android_head_icon"
+                android:textSize="40sp"
+                android:layout_marginBottom="40sp"/>
+            <TextView
+                android:text="@string/tutorial_activity_grant_permissions_blurb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#00AC76">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="60sp">
+                <TextView
+                    android:text="@string/tutorial_activity_filters_blurb"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="#fff"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="#00AC31"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="40sp">
+            <TextView
+                android:text="Excited to get started?"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="40sp"
+                android:textSize="35sp"/>
+            <Button
+                android:id="@+id/lets_go"
+                android:text="Let's Go!"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10sp"
+                android:paddingHorizontal="40sp"
+                android:background="#005AAC"
+                android:textSize="20sp"/>
+        </LinearLayout>
+        <com.itsronald.widget.ViewPagerIndicator
+            android:id="@+id/view_pager_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="80sp"
+            android:background="#4A4955"
+            app:dotRadius="15sp"
+            app:dotPadding="20sp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:gravity="center_vertical"/>
+    </androidx.viewpager.widget.ViewPager>
+</LinearLayout>
