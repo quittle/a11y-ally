@@ -59,7 +59,6 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
     }
 
     @SuppressLint("SetTextI18n")
-//    @SuppressWarnings("deprecation")
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
         mListView.ifNotNull { listView ->
             val descriptionText = mAccessibilityNodeAnalyzer

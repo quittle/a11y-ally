@@ -50,7 +50,8 @@ class A11yAllyApplicationTest {
                         Pair("pref_highlight_small_touch_targets", true),
                         Pair("pref_small_touch_target_size", "48"),
                         Pair("pref_display_content_descriptions", false),
-                        Pair("pref_linear_navigation_enabled", false)
+                        Pair("pref_linear_navigation_enabled", false),
+                        Pair("pref_show_tutorial", true)
                 ),
                 sharedPreferences.all)
     }

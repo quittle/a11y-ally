@@ -10,51 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="40sp">
+        android:padding="@dimen/activity_padding">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/permissions_activity_primary_header"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="40sp" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingBottom="20sp"
-            android:text="@string/permissions_activity_secondary_header"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:autoSizeMaxTextSize="80sp"
-            app:autoSizeMinTextSize="20sp" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="fill"
-            android:text="@string/permissions_activity_intro"
-            android:textSize="20sp"
-            app:autoSizeMaxTextSize="80sp"
-            app:autoSizeMinTextSize="20sp" />
+            android:text="@string/permissions_activity_intro" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/Main.Button.Primary"
+            android:id="@+id/permission_overlay_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:layout_marginBottom="20sp"
-            android:orientation="vertical">
+            android:layout_height="100sp"
+            android:layout_marginTop="@dimen/button_padding">
 
             <TextView
                 android:id="@+id/permission_overlay_text"
                 android:layout_width="0dp"
-                android:layout_height="60sp"
+                android:layout_height="0dp"
                 android:gravity="center_vertical"
                 android:text="@string/permissions_activity_display_over_other_apps"
+                app:autoSizeMaxTextSize="25sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/permission_overlay_image"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_weight="2"
@@ -65,76 +43,103 @@
                 android:id="@+id/permission_overlay_image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/permission_overlay_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/permission_overlay_status"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/permission_overlay_text"
-                app:layout_constraintTop_toTopOf="@id/permission_overlay_text"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/warning_icon" />
 
             <TextView
                 android:id="@+id/permission_overlay_status"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:labelFor="@id/permission_overlay_image"
-                android:padding="5sp"
+                android:gravity="center"
+                android:labelFor="@id/permission_overlay_wrapper"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="@id/permission_overlay_image"
+                android:textColor="@color/primary_action_text"
+                app:autoSizeMaxTextSize="25sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/permission_overlay_image"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="LabelFor" />
+                tools:ignore="LabelFor"
+                tools:text="@string/permissions_activity_status_fix" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/Main.Button.Primary"
+            android:id="@+id/permission_service_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_marginTop="@dimen/button_padding"
+            tools:background="@color/primary_action_disabled_background"
+            tools:enabled="false">
 
             <TextView
                 android:id="@+id/permission_service_text"
                 android:layout_width="0dp"
-                android:layout_height="60sp"
+                android:layout_height="0dp"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="25sp"
                 android:gravity="center_vertical"
                 android:text="@string/permissions_activity_accessibility_service"
+                android:labelFor="@id/permission_service_wrapper"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/permission_service_image"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_weight="2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/permission_overlay_text" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/permission_service_image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/permission_service_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/permission_service_status"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/permission_service_text"
-                app:layout_constraintTop_toTopOf="@id/permission_service_text"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/service_status_enabled_icon" />
 
             <TextView
                 android:id="@+id/permission_service_status"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:labelFor="@id/permission_service_image"
-                android:padding="5sp"
+                android:gravity="center"
+                android:labelFor="@id/permission_service_wrapper"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="@id/permission_service_image"
+                app:autoSizeMaxTextSize="25sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/permission_service_image"
-                app:layout_constraintTop_toTopOf="@id/permission_service_image"
-                tools:ignore="LabelFor" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="LabelFor"
+                tools:text="@string/permissions_activity_status_ok"
+                tools:textColor="@color/primary_action_disabled_text" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/continue_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/button_padding"
+            android:layout_marginTop="@dimen/activity_plus_button_padding"
+            android:layout_marginRight="@dimen/button_padding"
+            android:layout_marginBottom="@dimen/button_padding"
             android:text="@string/permissions_activity_button_continue"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:enabled="false" />
     </LinearLayout>
 </ScrollView>

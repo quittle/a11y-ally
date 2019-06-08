@@ -47,8 +47,9 @@ class PreferenceProviderTest {
         assertEquals(0, preferenceProvider.getSmallTouchTargetSize())
         assertFalse(preferenceProvider.getInspectAllAppsEnabled())
         assertEquals(emptySet<String>(), preferenceProvider.getAppsToInspect())
+        assertTrue(preferenceProvider.getShowTutorial())
 
-        assertKnownGetters(9)
+        assertKnownGetters(10)
     }
 
     @Test
@@ -64,6 +65,7 @@ class PreferenceProviderTest {
                 .putString(context.getString(R.string.pref_small_touch_target_size), "123")
                 .putBoolean(context.getString(R.string.pref_enable_all_apps), true)
                 .putStringSet(context.getString(R.string.pref_enabled_apps), setOf("a", "b"))
+                .putBoolean(context.getString(R.string.pref_show_tutorial), false)
                 .commit()
         assertTrue(preferenceProvider.getServiceEnabled())
         assertTrue(preferenceProvider.getDisplayContentDescription())
@@ -74,8 +76,9 @@ class PreferenceProviderTest {
         assertEquals(123, preferenceProvider.getSmallTouchTargetSize())
         assertTrue(preferenceProvider.getInspectAllAppsEnabled())
         assertEquals(setOf("a", "b"), preferenceProvider.getAppsToInspect())
+        assertFalse(preferenceProvider.getShowTutorial())
 
-        assertKnownGetters(9)
+        assertKnownGetters(10)
     }
 
     @Test
@@ -87,6 +90,7 @@ class PreferenceProviderTest {
         assertFalse(preferenceProvider.getHighlightIssues())
         assertFalse(preferenceProvider.getInspectAllAppsEnabled())
         assertEquals(setOf<String>(), preferenceProvider.getAppsToInspect())
+        assertTrue(preferenceProvider.getShowTutorial())
 
         preferenceProvider.setServiceEnabled(true)
         preferenceProvider.setDisplayContentDescription(true)
@@ -94,6 +98,7 @@ class PreferenceProviderTest {
         preferenceProvider.setHighlightIssues(true)
         preferenceProvider.setInspectAllAppsEnabled(true)
         preferenceProvider.setAppsToInspect(setOf("a", "b"))
+        preferenceProvider.setShowTutorial(false)
 
         assertTrue(preferenceProvider.getServiceEnabled())
         assertTrue(preferenceProvider.getDisplayContentDescription())
@@ -101,6 +106,7 @@ class PreferenceProviderTest {
         assertTrue(preferenceProvider.getHighlightIssues())
         assertTrue(preferenceProvider.getInspectAllAppsEnabled())
         assertEquals(setOf("a", "b"), preferenceProvider.getAppsToInspect())
+        assertFalse(preferenceProvider.getShowTutorial())
 
         PreferenceProvider(context).run {
             onResume()
@@ -109,7 +115,8 @@ class PreferenceProviderTest {
             assertTrue(getLinearNavigationEnabled())
             assertTrue(getHighlightIssues())
             assertTrue(getInspectAllAppsEnabled())
-            assertEquals(setOf("a", "b"), preferenceProvider.getAppsToInspect())
+            assertEquals(setOf("a", "b"), getAppsToInspect())
+            assertFalse(getShowTutorial())
         }
 
         assertTrue(sharedPreferences.getBoolean(
@@ -124,8 +131,10 @@ class PreferenceProviderTest {
                 context.getString(R.string.pref_enable_all_apps), false))
         assertEquals(setOf("a", "b"),
                 sharedPreferences.getStringSet(context.getString(R.string.pref_enabled_apps), null))
+        assertFalse(sharedPreferences.getBoolean(
+                context.getString(R.string.pref_show_tutorial), true))
 
-        assertKnownSetters(6)
+        assertKnownSetters(7)
     }
 
     @Test

@@ -18,7 +18,7 @@
             android:label="@string/app_label"
             android:icon="@mipmap/ic_launcher"
             android:allowBackup="true"
-            android:theme="@style/MainTheme"
+            android:theme="@style/Theme.Main"
             android:supportsRtl="false">
         <activity android:name=".MainActivity"
                 android:screenOrientation="userPortrait">
@@ -27,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar" />
+        <activity android:name=".LearnMoreActivity" android:label="@string/learn_more_button" android:parentActivityName=".WelcomeActivity" />
         <activity android:name=".PermissionsActivity" />
         <activity android:name=".UnfriendlyActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".FeatureSettingsActivity" android:parentActivityName=".MainActivity" />

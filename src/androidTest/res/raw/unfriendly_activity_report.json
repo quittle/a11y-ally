@@ -1,6 +1,6 @@
 [
     {
-        "boundsInScreen": "[240,379][304,430]",
+        "boundsInScreen": "[240,372][304,432]",
         "nodeClassPath": [
             "android.widget.FrameLayout",
             "android.widget.ScrollView",

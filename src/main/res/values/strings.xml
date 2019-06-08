@@ -39,6 +39,10 @@
     <string name="main_activity_service_status_button_content_description">Service Status</string>
     <string name="multi_app_selection_search">Search installed apps</string>
     <string name="multi_app_selection_select_all">Select All</string>
+    <string name="show_learn_more">Learn more about A11y Ally</string>
+    <string name="learn_more_spiel">A11y Ally is tailored to your specific needs as a developer, designer, or QA engineer.\n\nThe permissions that you will be asked for in the following step, enable dynamic filters to display over the apps you want to test. Like augmented reality for your screen, they allow you to highlight issues in real time, empowering you to make layout changes and fix bugs with instant feedback on how the changes will affect all users. Discover difficult-to-notice accessibility issues by overlaying images and icons with content descriptions. Understand what it’s like to experience your app in one dimension, the way some users do with linear navigation.\n\nAll of these tools are aimed at guiding you towards a better understanding of the experiences and, sometimes, frustrations of users who rely on assistive technology, so that you can take steps towards more inclusive design.</string>
+    <string name="get_started_button">Let\'s get started!</string>
+    <string name="learn_more_button">Learn More</string>
 
     <string-array name="pref_small_touch_target_size_entries">
         <item>24 dp</item>

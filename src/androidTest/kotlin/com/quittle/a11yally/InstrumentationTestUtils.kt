@@ -20,6 +20,8 @@ import androidx.test.runner.lifecycle.Stage
 import androidx.test.runner.permission.PermissionRequester
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
+import com.quittle.a11yally.preferences.PreferenceProvider
+import com.quittle.a11yally.preferences.withPreferenceProvider
 import org.json.JSONArray
 import org.json.JSONException
 import org.junit.rules.TestRule
@@ -48,7 +50,7 @@ class PermissionsRule : TestRule {
 }
 
 /**
- * Wrapper for auto-releasing the espress [Intents] recorder.
+ * Wrapper for auto-releasing the Espresso [Intents] recorder.
  */
 fun recordingIntents(r: () -> Unit) {
     Intents.init()
@@ -234,6 +236,12 @@ fun runShellCommand(command: String) {
     ParcelFileDescriptor.AutoCloseInputStream(pfd).use {
         val bytes = ByteArray(1024)
         do while (it.read(bytes) != -1)
+    }
+}
+
+fun withPreferenceProvider(block: PreferenceProvider.() -> Unit) {
+    withPreferenceProvider(InstrumentationRegistry.getInstrumentation().targetContext) {
+        block(this)
     }
 }
 

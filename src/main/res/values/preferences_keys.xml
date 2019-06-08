@@ -21,5 +21,7 @@
         <item>48</item>
         <item>56</item>
     </string-array>
+
+    <string name="pref_show_tutorial">pref_show_tutorial</string>
 </resources>
 

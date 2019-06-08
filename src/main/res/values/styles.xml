@@ -1,13 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <style name="MainTheme" parent="Theme.AppCompat.Light">
-        <item name="android:textViewStyle">@style/MainTextViewStyle</item>
+    <style name="Theme.Main" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">@style/Main.Button.Primary</item>
+        <item name="buttonStyle">@style/Main.Button.Primary</item>
+        <item name="android:textViewStyle">@style/Main.Text</item>
+        <item name="android:textAppearance">@style/Main.TextAppearance</item>
+        <item name="android:windowBackground">@color/standard_background</item>
+        <item name="colorPrimary">@color/primary_action_background</item>
+        <item name="android:textColorPrimary">@color/primary_action_text</item>
     </style>
-    <style name="MainTextViewStyle" parent="android:style/TextAppearance.Medium">
+
+    <!-- This should be identical to Theme.Main -->
+    <style name="Theme.Main.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:buttonStyle">@style/Main.Button.Primary</item>
+        <item name="buttonStyle">@style/Main.Button.Primary</item>
+        <item name="android:textViewStyle">@style/Main.Text</item>
+        <item name="android:textAppearance">@style/Main.TextAppearance</item>
+        <item name="android:windowBackground">@color/standard_background</item>
+        <item name="colorPrimary">@color/primary_action_background</item>
+        <item name="android:textColorPrimary">@color/primary_action_text</item>
+    </style>
+
+    <style name="Main.Text" parent="android:style/TextAppearance.Medium">
         <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/standard_text</item>
+    </style>
+    <style name="Main.TextAppearance" parent="android:TextAppearance.DeviceDefault">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/standard_text</item>
+    </style>
+    <style name="Main.Text.Title" parent="android:style/TextAppearance.Large">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">@color/call_to_action_text</item>
+    </style>
+
+    <style name="Main.Button" parent="android:Widget.Button">
+        <item name="android:radius">@dimen/button_radius</item>
+        <item name="android:textSize">@dimen/button_text</item>
+        <item name="android:textColor">@color/call_to_action_text</item>
+        <item name="android:padding">@dimen/button_padding</item>
+    </style>
+
+    <style name="Main.Button.Primary" parent="@style/Main.Button">
+        <item name="android:background">@drawable/button_primary_background</item>
+        <item name="android:textColor">@color/primary_action_text</item>
+    </style>
+
+    <style name="Main.Button.Secondary" parent="@style/Main.Button">
+        <item name="android:background">@drawable/button_secondary_background</item>
+        <item name="android:textColor">@color/secondary_action_text</item>
     </style>
 
     <style name="UnfriendlyEntryTheme">
         <item name="android:padding">16sp</item>
     </style>
+
+    <color name="call_to_action_text">#3A5961</color>
+    <color name="call_to_action_disabled_text">#9AA7AD</color>
+    <color name="call_to_action_background">#ADF58F</color>
+    <color name="call_to_action_disabled_background">#CAE8C0</color>
+
+    <color name="primary_action_background">@color/call_to_action_background</color>
+    <color name="primary_action_disabled_background">@color/call_to_action_disabled_background</color>
+    <color name="primary_action_enabled_text">@color/call_to_action_text</color>
+    <color name="primary_action_disabled_text">@color/call_to_action_disabled_text</color>
+
+    <color name="secondary_action_background">#F1FDEC</color>
+    <color name="secondary_action_disabled_background">#E7ECE6</color>
+    <color name="secondary_action_text">@color/call_to_action_text</color>
+    <color name="secondary_action_disabled_text">@color/call_to_action_disabled_text</color>
+
+    <color name="standard_text">#5C6263</color>
+    <color name="standard_background">#E1F5F4</color>
+
+    <dimen name="button_text">20sp</dimen>
+    <dimen name="button_padding">20sp</dimen>
+    <dimen name="button_radius">5sp</dimen>
+
+    <dimen name="activity_padding">30sp</dimen>
+
+    <dimen name="activity_plus_button_padding">50sp</dimen>
 </resources>

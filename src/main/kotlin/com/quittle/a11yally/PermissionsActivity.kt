@@ -3,6 +3,7 @@ package com.quittle.a11yally
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.quittle.a11yally.preferences.withPreferenceProvider
 import com.quittle.a11yally.view.FixedContentActivity
 
 /**
@@ -19,6 +21,16 @@ class PermissionsActivity : FixedContentActivity() {
     override val layoutId = R.layout.permissions_activity
 
     private val mPermissionsManager by lazy { PermissionsManager(this) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        withPreferenceProvider(this) {
+            if (getShowTutorial()) {
+                startActivity(Intent(this@PermissionsActivity, WelcomeActivity::class.java))
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -40,13 +52,13 @@ class PermissionsActivity : FixedContentActivity() {
     private fun updateViewsStatuses() {
         updateStatus(
                 mPermissionsManager.hasDrawOverlaysPermission(),
-                R.id.permission_overlay_text,
+                R.id.permission_overlay_wrapper,
                 R.id.permission_overlay_image,
                 R.id.permission_overlay_status,
                 this::onClickFixOverlay)
         updateStatus(
                 mPermissionsManager.hasAccessibilityServicePermission(),
-                R.id.permission_service_text,
+                R.id.permission_service_wrapper,
                 R.id.permission_service_image,
                 R.id.permission_service_status,
                 this::onClickFixService)
@@ -59,7 +71,7 @@ class PermissionsActivity : FixedContentActivity() {
         }
     }
 
-    fun onClickFixOverlay() {
+    private fun onClickFixOverlay() {
         if (!mPermissionsManager.hasDrawOverlaysPermission()) {
             startActivityIntent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, true)
         } else {
@@ -67,7 +79,7 @@ class PermissionsActivity : FixedContentActivity() {
         }
     }
 
-    fun onClickFixService() {
+    private fun onClickFixService() {
         if (!mPermissionsManager.hasAccessibilityServicePermission()) {
             try {
                 startActivityIntent(Settings.ACTION_ACCESSIBILITY_SETTINGS, true)
@@ -84,7 +96,9 @@ class PermissionsActivity : FixedContentActivity() {
     }
 
     private fun updateStatus(hasPermission: Boolean,
-                             textViewId: Int, imageViewId: Int, statusViewId: Int,
+                             wrapperViewId: Int,
+                             imageViewId: Int,
+                             statusViewId: Int,
                              onClickCallback: () -> Unit) {
         val onClickListener: View.OnClickListener? = hasPermission.ifElse(
                 null,
@@ -94,25 +108,28 @@ class PermissionsActivity : FixedContentActivity() {
                     }
                 })
 
-        findViewById<View>(textViewId).setOnClickListener(onClickListener)
+        findViewById<View>(wrapperViewId).run {
+            setOnClickListener(onClickListener)
+            isEnabled = !hasPermission
+            setBackgroundResource(hasPermission.ifElse(
+                    R.color.primary_action_disabled_background, R.color.primary_action_background))
+        }
 
         findViewById<ImageView>(imageViewId).run {
-            setOnClickListener(onClickListener)
             setImageResource(
-                hasPermission.ifElse(
-                        R.drawable.service_status_enabled_icon,
-                        R.drawable.warning_icon))
+                    hasPermission.ifElse(
+                            R.drawable.service_status_enabled_icon,
+                            R.drawable.warning_icon))
         }
 
         findViewById<TextView>(statusViewId).run {
-            setOnClickListener(onClickListener)
             setText(hasPermission.ifElse(
                     R.string.permissions_activity_status_ok,
                     R.string.permissions_activity_status_fix))
             setTextColor(ContextCompat.getColor(this@PermissionsActivity,
                     hasPermission.ifElse(
-                            R.color.permissions_activity_status_ok,
-                            R.color.permissions_activity_status_fix)))
+                            R.color.primary_action_disabled_text,
+                            R.color.primary_action_text)))
         }
     }
 

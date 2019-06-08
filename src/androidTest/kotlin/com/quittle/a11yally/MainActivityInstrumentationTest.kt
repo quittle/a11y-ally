@@ -27,9 +27,28 @@ class MainActivityInstrumentationTest {
     @get:Rule
     val mPermissionsRule = PermissionsRule()
 
+    @get:Rule
+    val mDisableAnimationsRule = DisableAnimationsRule()
+
     @Test
-    fun launchWithoutPermissions() {
+    fun firstTimeLaunch() {
+        clearSharedPreferences()
         fullyTearDownPermissions()
+
+        onIdle()
+
+        mActivityRule.launchActivity()
+
+        onIdle()
+
+        assertSame(WelcomeActivity::class.java, getCurrentActivity().javaClass)
+    }
+
+    @Test
+    fun launchWithoutPermissionsAfterTutorial() {
+        fullyTearDownPermissions()
+        disableTutorial()
+
         mActivityRule.launchActivity()
 
         onIdle()
@@ -39,6 +58,7 @@ class MainActivityInstrumentationTest {
 
     @Test
     fun pressHighlightIssuesButton() {
+        disableTutorial()
         mActivityRule.launchActivity()
 
         onView(withId(R.id.highlight_issues))
@@ -58,10 +78,12 @@ class MainActivityInstrumentationTest {
 
     @Test
     fun pressToggleButtons() {
+        disableTutorial()
         mActivityRule.launchActivity()
 
-        arrayOf(R.id.highlight_issues,
-                R.id.display_content_descriptions).forEach { id ->
+        arrayOf(R.id.display_content_descriptions, R.id.highlight_issues).forEach { id ->
+            onView(withId(id))
+                    .perform(scrollTo())
             onView(allOf(withId(R.id.switch_compat), isDescendantOfA(withId(id))))
                     .perform(scrollTo())
                     .check(matches(isCompletelyDisplayed()))
@@ -77,6 +99,7 @@ class MainActivityInstrumentationTest {
 
     @Test
     fun pressSelectAppsToInspectActivityButton() {
+        disableTutorial()
         mActivityRule.launchActivity()
 
         onView(withId(R.id.toggle_app_selection))
@@ -90,6 +113,7 @@ class MainActivityInstrumentationTest {
 
     @Test
     fun pressUnfriendlyActivityButton() {
+        disableTutorial()
         mActivityRule.launchActivity()
 
         onView(withId(R.id.open_unfriendly_activity_button))
@@ -99,5 +123,11 @@ class MainActivityInstrumentationTest {
                 .perform(click())
 
         assertSame(UnfriendlyActivity::class.java, getCurrentActivity().javaClass)
+    }
+
+    private fun disableTutorial() {
+        withPreferenceProvider {
+            setShowTutorial(false)
+        }
     }
 }

@@ -17,6 +17,7 @@ import androidx.test.espresso.matcher.ViewMatchers.hasTextColor
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withChild
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.Matchers.allOf
@@ -40,6 +41,11 @@ class PermissionsActivityInstrumentationTest {
     @Before
     fun setUp() {
         fullyTearDownPermissions()
+
+        withPreferenceProvider {
+            setShowTutorial(false)
+        }
+
         mActivityRule.launchActivity()
     }
 
@@ -95,7 +101,7 @@ class PermissionsActivityInstrumentationTest {
         mActivityRule.relaunchActivity()
 
         // Wait for the permission to propagate
-        sleep(1500)
+        sleep(2000)
 
         verifyStatusViews(
                 textViewId = R.id.permission_overlay_text,
@@ -146,25 +152,26 @@ class PermissionsActivityInstrumentationTest {
         val imageView = withId(imageViewId)
         val statusView = withId(statusViewId)
 
-        onView(textView)
+        onView(withChild(textView))
                 .perform(scrollTo())
                 .check(matches(isCompletelyDisplayed()))
+                .check(matches(statusOk.ifElse(not(isEnabled()), isEnabled())))
                 .check(matches(isClickable()))
+        onView(textView)
+                .check(matches(isCompletelyDisplayed()))
         onView(imageView)
                 .check(matches(isCompletelyDisplayed()))
-                .check(matches(isClickable()))
                 .check(isCompletelyRightOf(textView))
                 .check(isTopAlignedWith(textView))
                 .check(isBottomAlignedWith(textView))
         onView(statusView)
                 .check(matches(isCompletelyDisplayed()))
-                .check(matches(isClickable()))
                 .check(matches(withText(statusOk.ifElse(
                         R.string.permissions_activity_status_ok,
                         R.string.permissions_activity_status_fix))))
                 .check(matches(hasTextColor(statusOk.ifElse(
-                        R.color.permissions_activity_status_ok,
-                        R.color.permissions_activity_status_fix))))
+                        R.color.primary_action_disabled_text,
+                        R.color.primary_action_enabled_text))))
                 .check(isCompletelyRightOf(imageView))
                 .check(isTopAlignedWith(imageView))
                 .check(isBottomAlignedWith(imageView))

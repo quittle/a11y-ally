@@ -10,7 +10,7 @@ import java.io.IOException
  */
 class DisableAnimationsRule : TestRule {
     private companion object {
-        class DisableAnimtationsRuleStatement(private val mBase: Statement) : Statement() {
+        class DisableAnimationsRuleStatement(private val mBase: Statement) : Statement() {
             @Throws(Throwable::class)
             override fun evaluate() {
                 disableAnimations()
@@ -38,6 +38,6 @@ class DisableAnimationsRule : TestRule {
     }
 
     override fun apply(base: Statement, description: Description): Statement {
-        return DisableAnimtationsRuleStatement(base)
+        return DisableAnimationsRuleStatement(base)
     }
 }
