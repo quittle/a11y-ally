@@ -9,6 +9,7 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatCheckedTextView
 import androidx.fragment.app.DialogFragment
 import com.quittle.a11yally.R
 
@@ -27,69 +28,81 @@ class MultiAppSelectionDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val appNames = getApps()
-                ?.map(ApplicationInfo::packageName)
-                ?.sorted()
-                ?.toTypedArray()
-                .orEmpty()
-
-        val enabledAppsSet: MutableSet<String> = run {
-            val emptySet = mutableSetOf<String>()
-            preferences.getStringSet(prefKeyEnabledApps, emptySet)?.toMutableSet() ?: emptySet
-        }
-        val enabledAppsArray = BooleanArray(appNames.size) { i ->
-            enabledAppsSet.contains(appNames[i])
-        }
+        val currentlyEnabledApps = preferences.getStringSet(prefKeyEnabledApps, emptySet())!!
+        val installedApplicationNames = getAllInstalledApplicationNames()
+        val installedApplicationStatus =
+                installedApplicationNames.map(currentlyEnabledApps::contains).toBooleanArray()
 
         var selectAllEnabled =
                 preferences.getBoolean(prefKeyEnableAllApps, prefEnableAllAppsDefault)
 
+        // Initialize all the checkboxes to be checked if select all is enabled. Enabling them
+        // immediately after during onShow is too early in the lifecycle
+        val initialInstalledApplicationStatus = if (selectAllEnabled) {
+            BooleanArray(installedApplicationStatus.size) { true }
+        } else {
+            installedApplicationStatus
+        }
+
         val titleView = View.inflate(context, R.layout.app_picker_custom_title, null)
         val dialog = AlertDialog.Builder(context!!, R.style.MainTheme)
                 .setCustomTitle(titleView)
-                .setMultiChoiceItems(appNames, enabledAppsArray) { _, i: Int, checked: Boolean ->
-                    val appName = appNames[i]
-                    if (checked) {
-                        enabledAppsSet.add(appName)
-                    } else {
-                        enabledAppsSet.remove(appName)
-                    }
+                .setMultiChoiceItems(installedApplicationNames, initialInstalledApplicationStatus) {
+                        _, index: Int, checked: Boolean ->
+                    installedApplicationStatus[index] = checked
                 }
                 .setNegativeButton(R.string.cancel, NO_OP_ON_CLICK_LISTENER)
                 .setPositiveButton(R.string.confirm) { _: DialogInterface, _: Int ->
+                    val enabledApps = installedApplicationNames
+                            .filterIndexed { index: Int, _ -> installedApplicationStatus[index] }
+                            .toSet()
                     preferences.edit()
-                            .putStringSet(prefKeyEnabledApps, enabledAppsSet)
+                            .putStringSet(prefKeyEnabledApps, enabledApps)
                             .putBoolean(prefKeyEnableAllApps, selectAllEnabled)
                             .apply()
                 }
                 .create()
 
-        setListState(dialog, !selectAllEnabled)
+        setListState(dialog, selectAllEnabled, installedApplicationStatus)
         // This may not render correctly if disabled and set before being shown, hence the need to
         // set it twice
         dialog.setOnShowListener {
-            setListState(dialog, !selectAllEnabled)
+            setListState(dialog, selectAllEnabled, installedApplicationStatus)
         }
 
         titleView.findViewById<CheckBox>(R.id.select_all)?.apply {
             isChecked = selectAllEnabled
             setOnCheckedChangeListener { _, checked: Boolean ->
                 selectAllEnabled = checked
-                setListState(dialog, !checked)
+                setListState(dialog, checked, installedApplicationStatus)
             }
         }
         return dialog
     }
 
-    private fun getApps(): Collection<ApplicationInfo>? {
+    private fun getAllInstalledApplicationNames(): Array<out String> {
+        return getAllInstalledApplications()
+                ?.map(ApplicationInfo::packageName)
+                ?.sorted()
+                ?.toTypedArray()
+                .orEmpty()
+    }
+
+    private fun getAllInstalledApplications(): Collection<ApplicationInfo>? {
         return context?.packageManager?.getInstalledApplications(0)
     }
 
-    private fun setListState(dialog: AlertDialog, enabled: Boolean) {
+    private fun setListState(dialog: AlertDialog,
+                             selectAllEnabled: Boolean,
+                             currentEnabledPreference: BooleanArray) {
         val list = dialog.listView
-        list.isEnabled = enabled
+        list.isEnabled = !selectAllEnabled
+
         for (i in 0 until list.childCount) {
-            list.getChildAt(i).isEnabled = enabled
+            (list.getChildAt(i) as AppCompatCheckedTextView).apply {
+                isChecked = selectAllEnabled || currentEnabledPreference[i]
+                isEnabled = !selectAllEnabled
+            }
         }
     }
 }
