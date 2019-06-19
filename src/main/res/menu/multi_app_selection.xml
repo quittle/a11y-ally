@@ -1,0 +1,16 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/search"
+        android:title="@string/multi_app_selection_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/select_all"
+        android:checkable="true"
+        android:checked="false"
+        android:title="@string/multi_app_selection_select_all"
+        app:actionViewClass="androidx.appcompat.widget.AppCompatCheckBox"
+        app:showAsAction="ifRoom" />
+</menu>

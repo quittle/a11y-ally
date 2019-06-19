@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.view.ButtonSwitch
-import com.quittle.a11yally.view.MultiAppSelectionDialog
+import com.quittle.a11yally.view.MultiAppSelectionActivity
 
 class MainActivity : AppCompatActivity() {
     private companion object {
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.toggle_app_selection).setOnClickListener {
-            MultiAppSelectionDialog().showNow(supportFragmentManager, null)
+            startActivity(Intent(this, MultiAppSelectionActivity::class.java))
         }
     }
 

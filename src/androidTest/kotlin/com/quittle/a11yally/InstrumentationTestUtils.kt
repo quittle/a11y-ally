@@ -5,15 +5,21 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.UiAutomation
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.ParcelFileDescriptor
+import android.view.View
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.runner.permission.PermissionRequester
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 import org.json.JSONArray
 import org.json.JSONException
 import org.junit.rules.TestRule
@@ -130,13 +136,41 @@ fun fullyTearDownPermissions() {
 /**
  * Wipes all shared preferences of the application under test
  */
-// Setting preferences of another context is restricted
-@SuppressLint("RestrictedApi", "ApplySharedPref")
+@SuppressLint("ApplySharedPref")
 fun clearSharedPreferences() {
-    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
-    PreferenceManager(targetContext).sharedPreferences.edit()
+    sharedPreferences().edit()
             .clear()
             .commit()
+}
+
+fun sharedPreferences(): SharedPreferences {
+    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+    return PreferenceManager.getDefaultSharedPreferences(targetContext)
+}
+
+fun getSharedPreferenceBoolean(pref_id: Int, default: Boolean): Boolean {
+    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+    return sharedPreferences().getBoolean(targetContext.getString(pref_id), default)
+}
+
+fun getSharedPreferenceStringSet(pref_id: Int): Set<String> {
+    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+    return sharedPreferences()
+            .getStringSet(targetContext.getString(pref_id), emptySet()) as Set<String>
+}
+
+class ViewActionCheck(private val check: (view: View) -> Unit) : ViewAction {
+    override fun getDescription(): String {
+        return "Performs checks as an action"
+    }
+
+    override fun getConstraints(): Matcher<View> {
+        return Matchers.any(View::class.java)
+    }
+
+    override fun perform(uiController: UiController?, view: View) {
+        check(view)
+    }
 }
 
 /**

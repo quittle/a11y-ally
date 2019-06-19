@@ -20,6 +20,7 @@ import kotlin.reflect.full.memberFunctions
 
 @RunWith(RobolectricTestRunner::class)
 @SuppressLint("ApplySharedPref")
+@SuppressWarnings("LongMethod")
 // This must not be the real application to prevent
 // A11yAllyApplication::initializePreferenceController
 @Config(application = Application::class)
@@ -44,8 +45,10 @@ class PreferenceProviderTest {
         assertFalse(preferenceProvider.getHighlightMissingLabels())
         assertFalse(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(0, preferenceProvider.getSmallTouchTargetSize())
+        assertFalse(preferenceProvider.getInspectAllAppsEnabled())
+        assertEquals(emptySet<String>(), preferenceProvider.getAppsToInspect())
 
-        assertKnownGetters(7)
+        assertKnownGetters(9)
     }
 
     @Test
@@ -59,6 +62,8 @@ class PreferenceProviderTest {
                 .putBoolean(context.getString(R.string.pref_highlight_missing_labels), true)
                 .putBoolean(context.getString(R.string.pref_highlight_small_touch_targets), true)
                 .putString(context.getString(R.string.pref_small_touch_target_size), "123")
+                .putBoolean(context.getString(R.string.pref_enable_all_apps), true)
+                .putStringSet(context.getString(R.string.pref_enabled_apps), setOf("a", "b"))
                 .commit()
         assertTrue(preferenceProvider.getServiceEnabled())
         assertTrue(preferenceProvider.getDisplayContentDescription())
@@ -67,8 +72,10 @@ class PreferenceProviderTest {
         assertTrue(preferenceProvider.getHighlightMissingLabels())
         assertTrue(preferenceProvider.getHighlightSmallTouchTargets())
         assertEquals(123, preferenceProvider.getSmallTouchTargetSize())
+        assertTrue(preferenceProvider.getInspectAllAppsEnabled())
+        assertEquals(setOf("a", "b"), preferenceProvider.getAppsToInspect())
 
-        assertKnownGetters(7)
+        assertKnownGetters(9)
     }
 
     @Test
@@ -78,16 +85,22 @@ class PreferenceProviderTest {
         assertFalse(preferenceProvider.getDisplayContentDescription())
         assertFalse(preferenceProvider.getLinearNavigationEnabled())
         assertFalse(preferenceProvider.getHighlightIssues())
+        assertFalse(preferenceProvider.getInspectAllAppsEnabled())
+        assertEquals(setOf<String>(), preferenceProvider.getAppsToInspect())
 
         preferenceProvider.setServiceEnabled(true)
         preferenceProvider.setDisplayContentDescription(true)
         preferenceProvider.setLinearNavigationEnabled(true)
         preferenceProvider.setHighlightIssues(true)
+        preferenceProvider.setInspectAllAppsEnabled(true)
+        preferenceProvider.setAppsToInspect(setOf("a", "b"))
 
         assertTrue(preferenceProvider.getServiceEnabled())
         assertTrue(preferenceProvider.getDisplayContentDescription())
         assertTrue(preferenceProvider.getLinearNavigationEnabled())
         assertTrue(preferenceProvider.getHighlightIssues())
+        assertTrue(preferenceProvider.getInspectAllAppsEnabled())
+        assertEquals(setOf("a", "b"), preferenceProvider.getAppsToInspect())
 
         PreferenceProvider(context).run {
             onResume()
@@ -95,6 +108,8 @@ class PreferenceProviderTest {
             assertTrue(getDisplayContentDescription())
             assertTrue(getLinearNavigationEnabled())
             assertTrue(getHighlightIssues())
+            assertTrue(getInspectAllAppsEnabled())
+            assertEquals(setOf("a", "b"), preferenceProvider.getAppsToInspect())
         }
 
         assertTrue(sharedPreferences.getBoolean(
@@ -105,8 +120,12 @@ class PreferenceProviderTest {
                 context.getString(R.string.pref_linear_navigation_enabled), false))
         assertTrue(sharedPreferences.getBoolean(
                 context.getString(R.string.pref_highlight_issues), false))
+        assertTrue(sharedPreferences.getBoolean(
+                context.getString(R.string.pref_enable_all_apps), false))
+        assertEquals(setOf("a", "b"),
+                sharedPreferences.getStringSet(context.getString(R.string.pref_enabled_apps), null))
 
-        assertKnownSetters(4)
+        assertKnownSetters(6)
     }
 
     @Test

@@ -10,7 +10,7 @@ import java.util.Arrays.asList
  * Provides easy, lazy access to preferences. Consumers must call the [onResume] and [onPause]
  * events when appropriate in the consumer.
  */
-class PreferenceProvider(context: Context) {
+class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false) {
     private val mContext = context.applicationContext
     private val preferenceProviderMembers = asList(
             PreferenceProviderBooleanMember(mContext, R.string.pref_service_enabled),
@@ -19,8 +19,16 @@ class PreferenceProvider(context: Context) {
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_missing_labels),
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_small_touch_targets),
             PreferenceProviderStringIntMember(mContext, R.string.pref_small_touch_target_size),
-            PreferenceProviderBooleanMember(mContext, R.string.pref_linear_navigation_enabled)
+            PreferenceProviderBooleanMember(mContext, R.string.pref_linear_navigation_enabled),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_enable_all_apps),
+            PreferenceProviderStringSetMember(mContext, R.string.pref_enabled_apps)
     )
+
+    init {
+        if (resumeOnConstruction) {
+            this.onResume()
+        }
+    }
 
     /**
      * This method may throw for a number of configuration issues. This is to simplify the logic
@@ -111,6 +119,22 @@ class PreferenceProvider(context: Context) {
         putPreferenceProviderByPrefKey(R.string.pref_linear_navigation_enabled, enabled)
     }
 
+    fun getInspectAllAppsEnabled(): Boolean {
+        return getPreferenceProviderValueByPrefKey(R.string.pref_enable_all_apps)
+    }
+
+    fun setInspectAllAppsEnabled(enabled: Boolean) {
+        putPreferenceProviderByPrefKey(R.string.pref_enable_all_apps, enabled)
+    }
+
+    fun getAppsToInspect(): Set<String> {
+        return getPreferenceProviderValueByPrefKey(R.string.pref_enabled_apps)
+    }
+
+    fun setAppsToInspect(apps: Set<String>) {
+        putPreferenceProviderByPrefKey(R.string.pref_enabled_apps, apps)
+    }
+
     fun onServiceEnabledUpdate(callback: (Boolean) -> Unit) {
         getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_service_enabled)
                 .addListener(callback)
@@ -128,6 +152,11 @@ class PreferenceProvider(context: Context) {
 
     fun onDisplayContentDescriptionUpdate(callback: (Boolean) -> Unit) {
         getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_display_content_descriptions)
+                .addListener(callback)
+    }
+
+    fun onInspectAllAppsUpdate(callback: (Boolean) -> Unit) {
+        getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_enable_all_apps)
                 .addListener(callback)
     }
 }

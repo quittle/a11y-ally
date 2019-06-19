@@ -30,7 +30,9 @@
         <activity android:name=".PermissionsActivity" />
         <activity android:name=".UnfriendlyActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".FeatureSettingsActivity" android:parentActivityName=".MainActivity" />
+        <activity android:name=".view.MultiAppSelectionActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".DialogActivity" android:theme="@style/Theme.AppCompat.Dialog" android:excludeFromRecents="true" />
+
         <service android:name=".analyzer.A11yAllyAccessibilityAnalyzer"
                 android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
