@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import android.Manifest
 import androidx.test.espresso.Espresso.onIdle
@@ -20,6 +20,18 @@ import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withChild
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.quittle.a11yally.DelayedActivityTestRule
+import com.quittle.a11yally.R
+import com.quittle.a11yally.enableAccessibilityService
+import com.quittle.a11yally.fullySetUpPermissions
+import com.quittle.a11yally.fullyTearDownPermissions
+import com.quittle.a11yally.getCurrentActivity
+import com.quittle.a11yally.grantPermissions
+import com.quittle.a11yally.ifElse
+import com.quittle.a11yally.launchActivity
+import com.quittle.a11yally.recordingIntents
+import com.quittle.a11yally.relaunchActivity
+import com.quittle.a11yally.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
@@ -89,11 +101,13 @@ class PermissionsActivityInstrumentationTest {
             onView(withId(R.id.permission_overlay_status))
                     .perform(click())
 
-            Intents.intended(allOf(
-                    toPackage("com.android.settings"),
-                    hasAction("android.settings.action.MANAGE_OVERLAY_PERMISSION"),
-                    hasData("package:com.quittle.a11yally")),
-                            Intents.times(1))
+            Intents.intended(
+                    allOf(
+                        toPackage("com.android.settings"),
+                        hasAction("android.settings.action.MANAGE_OVERLAY_PERMISSION"),
+                        hasData("package:com.quittle.a11yally")
+                    ),
+                    Intents.times(1))
         }
 
         grantPermissions(Manifest.permission.SYSTEM_ALERT_WINDOW)

@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.quittle.a11yally.RecordingService.Companion.START_RECORDING_INTENT_ACTION
 import com.quittle.a11yally.RecordingService.Companion.STOP_RECORDING_INTENT_ACTION
+import com.quittle.a11yally.activity.UnfriendlyActivity
 import com.quittle.a11yally.test.R as TestR
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

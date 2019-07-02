@@ -1,4 +1,4 @@
-package com.quittle.a11yally.view
+package com.quittle.a11yally.activity
 
 import android.content.pm.ApplicationInfo
 import android.os.Bundle

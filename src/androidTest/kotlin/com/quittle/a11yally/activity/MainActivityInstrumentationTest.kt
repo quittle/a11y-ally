@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
@@ -11,7 +11,15 @@ import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.quittle.a11yally.view.MultiAppSelectionActivity
+import com.quittle.a11yally.DelayedActivityTestRule
+import com.quittle.a11yally.DisableAnimationsRule
+import com.quittle.a11yally.PermissionsRule
+import com.quittle.a11yally.R
+import com.quittle.a11yally.clearSharedPreferences
+import com.quittle.a11yally.fullyTearDownPermissions
+import com.quittle.a11yally.getCurrentActivity
+import com.quittle.a11yally.launchActivity
+import com.quittle.a11yally.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertSame

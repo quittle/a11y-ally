@@ -1,10 +1,11 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import com.quittle.a11yally.BuildConfig.TAG
-import com.quittle.a11yally.view.FixedContentActivity
+import com.quittle.a11yally.R
+import com.quittle.a11yally.isNullOrZero
 import com.quittle.a11yally.view.FixedPreferenceFragment
 
 /**

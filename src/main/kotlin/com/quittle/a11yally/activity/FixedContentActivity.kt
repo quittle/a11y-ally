@@ -1,4 +1,4 @@
-package com.quittle.a11yally.view
+package com.quittle.a11yally.activity
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes

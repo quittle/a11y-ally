@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import android.annotation.SuppressLint
 import androidx.test.espresso.Espresso.onView
@@ -11,6 +11,13 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.quittle.a11yally.DisableAnimationsRule
+import com.quittle.a11yally.R
+import com.quittle.a11yally.clearSharedPreferences
+import com.quittle.a11yally.fullySetUpPermissions
+import com.quittle.a11yally.fullyTearDownPermissions
+import com.quittle.a11yally.getCurrentActivity
+import com.quittle.a11yally.launchActivity
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

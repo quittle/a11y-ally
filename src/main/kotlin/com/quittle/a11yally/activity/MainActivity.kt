@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.view.ButtonSwitch
-import com.quittle.a11yally.view.MultiAppSelectionActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.quittle.a11yally.PermissionsManager
+import com.quittle.a11yally.R
 
 class MainActivity : AppCompatActivity() {
     private companion object {

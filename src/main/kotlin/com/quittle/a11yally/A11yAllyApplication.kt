@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.preference.PreferenceManager
 import android.os.StrictMode
+import com.quittle.a11yally.activity.DialogActivity
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 import com.quittle.a11yally.preferences.PreferenceProvider
 

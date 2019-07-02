@@ -20,20 +20,20 @@
             android:allowBackup="true"
             android:theme="@style/Theme.Main"
             android:supportsRtl="false">
-        <activity android:name=".MainActivity"
+        <activity android:name=".activity.MainActivity"
                 android:screenOrientation="userPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar" />
-        <activity android:name=".LearnMoreActivity" android:label="@string/learn_more_button" android:parentActivityName=".WelcomeActivity" />
-        <activity android:name=".PermissionsActivity" />
-        <activity android:name=".UnfriendlyActivity" android:parentActivityName=".MainActivity" />
-        <activity android:name=".FeatureSettingsActivity" android:parentActivityName=".MainActivity" />
-        <activity android:name=".view.MultiAppSelectionActivity" android:parentActivityName=".MainActivity" />
-        <activity android:name=".DialogActivity" android:theme="@style/Theme.AppCompat.Dialog" android:excludeFromRecents="true" />
+        <activity android:name=".activity.WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar" />
+        <activity android:name=".activity.LearnMoreActivity" android:label="@string/learn_more_button" android:parentActivityName=".activity.WelcomeActivity" />
+        <activity android:name=".activity.PermissionsActivity" />
+        <activity android:name=".activity.UnfriendlyActivity" android:parentActivityName=".activity.MainActivity" />
+        <activity android:name=".activity.FeatureSettingsActivity" android:parentActivityName=".activity.MainActivity" />
+        <activity android:name=".activity.MultiAppSelectionActivity" android:parentActivityName=".activity.MainActivity" />
+        <activity android:name=".activity.DialogActivity" android:theme="@style/Theme.AppCompat.Dialog" android:excludeFromRecents="true" />
 
         <service android:name=".analyzer.A11yAllyAccessibilityAnalyzer"
                 android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">

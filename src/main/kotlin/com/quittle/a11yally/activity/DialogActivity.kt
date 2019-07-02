@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,8 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.quittle.a11yally.BuildConfig.TAG
-import com.quittle.a11yally.view.FixedContentActivity
+import com.quittle.a11yally.R
+import com.quittle.a11yally.isNull
 
 /**
  * Helper class for displaying an AlertDialog from anywhere. Use [DialogActivity.show] to display

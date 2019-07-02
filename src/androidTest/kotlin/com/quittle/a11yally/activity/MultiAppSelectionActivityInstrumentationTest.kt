@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import android.content.Context
 import android.view.KeyEvent
@@ -28,8 +28,16 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.quittle.a11yally.DelayedActivityTestRule
+import com.quittle.a11yally.DisableAnimationsRule
+import com.quittle.a11yally.PermissionsRule
+import com.quittle.a11yally.R
+import com.quittle.a11yally.ViewActionCheck
 import com.quittle.a11yally.adapter.CheckboxAdapter.Companion.CheckboxViewHolder
-import com.quittle.a11yally.view.MultiAppSelectionActivity
+import com.quittle.a11yally.clearSharedPreferences
+import com.quittle.a11yally.getSharedPreferenceBoolean
+import com.quittle.a11yally.getSharedPreferenceStringSet
+import com.quittle.a11yally.launchActivity
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After

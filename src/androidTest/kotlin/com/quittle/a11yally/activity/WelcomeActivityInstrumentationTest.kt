@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.activity
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
@@ -11,6 +11,11 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import com.quittle.a11yally.R
+import com.quittle.a11yally.clearSharedPreferences
+import com.quittle.a11yally.fullyTearDownPermissions
+import com.quittle.a11yally.getCurrentActivity
+import com.quittle.a11yally.launchActivity
 import org.junit.Assert.assertEquals
 import org.junit.Before
 
