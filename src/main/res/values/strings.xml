@@ -2,55 +2,9 @@
 <resources>
     <string name="app_label">A11y Ally</string>
     <string name="accessibility_service_description">This service allows A11y Ally to scan applications for accessibility issues. Without permission, A11y Ally cannot perform any analysis.</string>
-    <string name="enable_service_button_enabled">Enabled</string>
-    <string name="enable_service_button_disabled">Disabled</string>
-    <string name="checkbox_feature_content_description">Display Content Description</string>
-    <string name="missing_checkbox_label">Missing CheckBox label</string>
-    <string name="missing_image_button_label">Missing ImageButton Label</string>
-    <string name="open_unfriendly_activity_button_label">Accessibility Issue\nPlayground</string>
-    <string name="text_view_with_content_description">This view has a Content Description…\n\n\n</string>
-    <string name="text_view_content_description">…so the screen reader only reads this</string>
-    <string name="explore_unfriendly_activity">Explore this screen for the types of things the Accessibility Overlay can detect and display.\n\nRed highlighting indicates elements with screen reader issues. If content description displaying is enabled, certain unexpected labelling issues may be more noticeable.</string>
-    <string name="unlabeled_focusable_view">The view behind this text may be important for tab navigation but simply *boop*s when it is focused, not indicating what it is or does.</string>
-    <string name="all_permissions_granted">All necessary permissions already granted.</string>
-    <string name="check_permissions_button_label">Check Permissions</string>
-    <string name="display_content_descriptions_toggle_label">Display Content Descriptions</string>
-    <string name="linear_navigation_toggle_label">Display Linear Navigation Overlay</string>
-    <string name="highlight_accessibility_issues_toggle_button">Highlight Issues</string>
-    <string name="select_all">Select all</string>
-    <string name="app_picker_title">Apps to inspect</string>
-    <string name="cancel">Cancel</string>
-    <string name="confirm">Confirm</string>
     <string name="permission_manage_recording_description">Allows recording of accessibility issues. Results may potentially include sensitive data.</string>
     <string name="permission_manage_recording_label">Manage A11y Ally Recordings</string>
 
-    <string name="highlight_issues_title">Highlight Issues</string>
-    <string name="tiny_touch_target_view">Tiny button is too small a touch target</string>
-    <string name="highlight_missing_labels_title">Missing Content Labeling</string>
-    <string name="highlight_missing_labels_summary">Highlight views without required labeling such as images or checkboxes or focusable views without text</string>
-    <string name="highlight_small_touch_targets_title">Small Touch Targets</string>
-    <string name="highlight_small_touch_targets_summary">Highlight views that may be difficult for some users to accurately press</string>
-    <string name="small_touch_target_size_title">Minimum Touch Target Size</string>
-    <string name="small_touch_target_size_summary">Minimum length of either dimension of a button</string>
-    <string name="pref_category_visual">Visual</string>
-    <string name="pref_category_motor">Motor</string>
-    <string name="linear_navigation_abort_button_label">Get me out of here</string>
-    <string name="linear_navigation_overlay_unavailable_dialog_message">The Linear Navigation Overlay is not available prior to Android Oreo (API level 26).</string>
-    <string name="main_activity_service_status_button_content_description">Service Status</string>
-    <string name="multi_app_selection_search">Search installed apps</string>
-    <string name="multi_app_selection_select_all">Select All</string>
-    <string name="show_learn_more">Learn more about A11y Ally</string>
-    <string name="learn_more_spiel">A11y Ally is tailored to your specific needs as a developer, designer, or QA engineer.\n\nThe permissions that you will be asked for in the following step, enable dynamic filters to display over the apps you want to test. Like augmented reality for your screen, they allow you to highlight issues in real time, empowering you to make layout changes and fix bugs with instant feedback on how the changes will affect all users. Discover difficult-to-notice accessibility issues by overlaying images and icons with content descriptions. Understand what it’s like to experience your app in one dimension, the way some users do with linear navigation.\n\nAll of these tools are aimed at guiding you towards a better understanding of the experiences and, sometimes, frustrations of users who rely on assistive technology, so that you can take steps towards more inclusive design.</string>
     <string name="get_started_button">Let\'s get started!</string>
-    <string name="learn_more_button">Learn More</string>
-
-    <string-array name="pref_small_touch_target_size_entries">
-        <item>24 dp</item>
-        <item>32 dp</item>
-        <item>40 dp</item>
-        <item>48 dp</item>
-        <item>56 dp</item>
-    </string-array>
-
-    <string-array name="empty_string_array" />
+    <string name="learn_more">Learn More</string>
 </resources>

@@ -72,12 +72,4 @@
 
     <color name="standard_text">#5C6263</color>
     <color name="standard_background">#E1F5F4</color>
-
-    <dimen name="button_text">20sp</dimen>
-    <dimen name="button_padding">20sp</dimen>
-    <dimen name="button_radius">5sp</dimen>
-
-    <dimen name="activity_padding">30sp</dimen>
-
-    <dimen name="activity_plus_button_padding">50sp</dimen>
 </resources>

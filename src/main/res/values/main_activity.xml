@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="show_learn_more">Learn more about A11y Ally</string>
+    <string name="main_activity_service_status_button_content_description">Service Status</string>
+    <string name="open_unfriendly_activity_button_label">Accessibility Issue\nPlayground</string>
+
+    <dimen name="main_activity_button_switch_divider_width">2dp</dimen>
+    <dimen name="main_activity_button_switch_padding">30dp</dimen>
+    <!-- This value should be roughly double main_activity_button_switch_padding -->
+    <dimen name="main_activity_button_switch_padding_x2">50dp</dimen>
+</resources>

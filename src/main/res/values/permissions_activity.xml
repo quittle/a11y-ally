@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="permissions_activity_status_ok">#70e070</color>
-    <color name="permissions_activity_status_fix">#f05454</color>
-
-    <string name="permissions_activity_primary_header">Welcome</string>
-    <string name="permissions_activity_secondary_header">Ready to get started?</string>
     <string name="permissions_activity_intro">To get started, A11y Ally needs a few permissions to perform analysis. It needs to run as an <b>Accessibility Service</b> in order to detect layouts and content descriptions. Additionally, A11y Ally requires the <b>Display over other apps</b> permission to provide informative overlays and highlight issues.</string>
     <string name="permissions_activity_display_over_other_apps">Display Over Other Apps</string>
     <string name="permissions_activity_accessibility_service">Accessibility Service</string>

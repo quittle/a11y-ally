@@ -2,7 +2,6 @@
 <!-- Contains string constants used as preference keys and must not be translated -->
 <resources translatable="false">
     <string name="pref_display_content_descriptions">pref_display_content_descriptions</string>
-    <string name="pref_highlight_accessibility_issues">pref_highlight_accessibility_issues</string>
     <string name="pref_service_enabled">pref_service_enabled</string>
     <string name="pref_enabled_apps">pref_enabled_apps</string>
     <string name="pref_enable_all_apps">pref_enable_all_apps</string>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="linear_navigation_abort_button_label">Get me out of here</string>
+    <string name="linear_navigation_overlay_unavailable_dialog_message">The Linear Navigation Overlay is not available prior to Android Oreo (API level 26).</string>
+
+    <color name="linear_navigation_background">#fff</color>
+    <color name="linear_navigation_entry">@color/linear_navigation_background</color>
+    <color name="linear_navigation_entry_text">#000</color>
+    <color name="linear_navigation_entry_pressed">#a7a7a7</color>
+</resources>

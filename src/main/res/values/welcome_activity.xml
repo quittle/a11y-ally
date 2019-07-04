@@ -2,4 +2,5 @@
     <string name="welcome_activity_title">Welcome to A11y Ally</string>
     <string name="welcome_activity_subtitle">your one-stop accessibility issue discovery tool.</string>
     <string name="welcome_activity_main_text">A11y Ally allows developers, quality assurance engineers and designers to experience their apps as users who rely on assistive technology would by highlighting issues in real time and providing instantaneous insight into their app’s accessibility state.  Optimize your app\'s experience for all.</string>
+    <string name="learn_more_button">@string/learn_more</string>
 </resources>

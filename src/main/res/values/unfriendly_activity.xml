@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="missing_checkbox_label">Missing CheckBox label</string>
+    <string name="missing_image_button_label">Missing ImageButton Label</string>
+    <string name="text_view_with_content_description">This view has a Content Description…\n\n\n</string>
+    <string name="text_view_content_description">…so the screen reader only reads this</string>
+    <string name="explore_unfriendly_activity">Explore this screen for the types of things the Accessibility Overlay can detect and display.\n\nRed highlighting indicates elements with screen reader issues. If content description displaying is enabled, certain unexpected labelling issues may be more noticeable.</string>
+    <string name="unlabeled_focusable_view">The view behind this text may be important for tab navigation but simply *boop*s when it is focused, not indicating what it is or does.</string>
+    <string name="tiny_touch_target_view">Tiny button is too small a touch target</string>
+</resources>

@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar" />
-        <activity android:name=".activity.LearnMoreActivity" android:label="@string/learn_more_button" android:parentActivityName=".activity.WelcomeActivity" />
+        <activity android:name=".activity.LearnMoreActivity" android:label="@string/learn_more" android:parentActivityName=".activity.WelcomeActivity" />
         <activity android:name=".activity.PermissionsActivity" />
         <activity android:name=".activity.UnfriendlyActivity" android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.FeatureSettingsActivity" android:parentActivityName=".activity.MainActivity" />
