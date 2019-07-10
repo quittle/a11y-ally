@@ -10,6 +10,17 @@
 
     <string name="pref_highlight_issues">pref_highlight_issues</string>
     <string name="pref_highlight_missing_labels">pref_highlight_missing_labels</string>
+    <string name="pref_highlight_small_text">pref_highlight_small_text</string>
+    <string name="pref_highlight_small_text_size_sp">pref_highlight_small_text_size_sp</string>
+    <!-- Source https://material.io/design/typography/the-type-system.html -->
+    <integer name="pref_highlight_small_text_size_sp_default">12</integer>
+    <string-array name="pref_highlight_small_text_size_sp_values">
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+    </string-array>
     <string name="pref_highlight_small_touch_targets">pref_highlight_small_touch_targets</string>
     <string name="pref_small_touch_target_size">pref_small_touch_target_size</string>
     <integer name="pref_small_touch_target_size_default">48</integer>

@@ -67,5 +67,7 @@
         <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" tools:node="remove" />
         <provider android:name="com.google.firebase.provider.FirebaseInitProvider" android:authorities="com.quittle.a11yally" android:exported="false" tools:node="remove"/>
         <activity android:name="com.google.android.gms.common.api.GoogleApiActivity" tools:node="remove" />
+        <activity android:name=".analyzer.firebase.FirebaseAnalyzerInitializerActivity" />
+        <activity android:name=".permission.ScreenRecordingActivity" />
     </application>
 </manifest>

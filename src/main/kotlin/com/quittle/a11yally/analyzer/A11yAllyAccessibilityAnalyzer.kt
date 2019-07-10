@@ -2,10 +2,13 @@ package com.quittle.a11yally.analyzer
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.os.Build
 import android.preference.PreferenceManager
+import android.util.Log
 import com.quittle.a11yally.R
-import com.quittle.a11yally.analyzer.listeners.AccessibilityItemLogger
 import com.quittle.a11yally.analyzer.listeners.ContentDescriptionOverlay
+import com.quittle.a11yally.analyzer.firebase.FirebaseAnalyzer
+import com.quittle.a11yally.analyzer.listeners.AccessibilityItemLogger
 import com.quittle.a11yally.analyzer.listeners.HighlighterAccessibilityOverlay
 
 /**
@@ -25,6 +28,7 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
     private var whitelistedApps: Iterable<String>? = null
 
     companion object {
+        private const val TAG = "A11yAllyAccessibilityAnalyzer"
         private var sServiceInstance: A11yAllyAccessibilityAnalyzer? = null
 
         fun getInstance(): A11yAllyAccessibilityAnalyzer? {
@@ -87,14 +91,32 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
     override val listeners: Collection<AccessibilityItemEventListener> by lazy {
         val highlighterAccessibilityOverlay = HighlighterAccessibilityOverlay(this)
 
-        val rootListener =
-                fanOutIssueListeners(highlighterAccessibilityOverlay, mAccessibilityItemLogger)
+//        val rootListener =
+//                fanOutIssueListeners(highlighterAccessibilityOverlay, mAccessibilityItemLogger)
+
+
+        val firebaseMiddleman = AccessibilityIssueListenerMiddleman(1)
+        val firebaseAnalyzer: FirebaseAnalyzer?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.i(TAG, "Initializing Firebase analyzer")
+            firebaseAnalyzer = FirebaseAnalyzer(this, firebaseMiddleman)
+        } else {
+            firebaseAnalyzer = null
+        }
+
+        val accessibilityNodeIssueAnalyzerMiddleman = AccessibilityIssueListenerMiddleman(2)
+        val accessibilityNodeIssueAnalyzer = AccessibilityNodeIssueAnalyzer(this, accessibilityNodeIssueAnalyzerMiddleman)
+
+        val multiplexer = AccessibilityIssueListenerMultiplexer(highlighterAccessibilityOverlay, mAccessibilityItemLogger)
+        firebaseMiddleman.multiplexer = multiplexer
+        accessibilityNodeIssueAnalyzerMiddleman.multiplexer = multiplexer
 
         setOf(
-                AccessibilityNodeIssueAnalyzer(this, rootListener),
+                accessibilityNodeIssueAnalyzer,
                 ContentDescriptionOverlay(this),
-                LinearNavigationAccessibilityOverlay(this)
-        )
+                LinearNavigationAccessibilityOverlay(this),
+                firebaseAnalyzer
+        ).filterNotNull()
     }
 
     private fun updateAppWhitelist(preferences: SharedPreferences) {
@@ -105,21 +127,66 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
         }
     }
 
-    /**
-     * Generates a new listener that will generate callbacks to invoke all the [targetListeners].
-     * @param targetListeners The listeners to invoke when the returned listener is invoked.
-     * @return a new listener that delegates callbacks to all the [targetListeners]
-     */
-    private fun fanOutIssueListeners(
-            vararg targetListeners: AccessibilityIssueListener): AccessibilityIssueListener {
-        return object : AccessibilityIssueListener {
-            override fun onInvalidateIssues() {
-                targetListeners.forEach(AccessibilityIssueListener::onInvalidateIssues)
-            }
+//    /**
+//     * Generates a new listener that will generate callbacks to invoke all the [targetListeners].
+//     * @param targetListeners The listeners to invoke when the returned listener is invoked.
+//     * @return a new listener that delegates callbacks to all the [targetListeners]
+//     */
+//    private fun fanOutIssueListeners(
+//            vararg targetListeners: AccessibilityIssueListener): AccessibilityIssueListener {
+//        return object : AccessibilityIssueListener {
+//            override fun onInvalidateIssues() {
+//                targetListeners.forEach(AccessibilityIssueListener::onInvalidateIssues)
+//            }
+//
+//            override fun onIssues(issues: Collection<AccessibilityIssue>) {
+//                targetListeners.forEach { listener -> listener.onIssues(issues) }
+//            }
+//        }
+//    }
+//
+//    private fun fanInIssueListener(
+//            vararg targetListeners: AccessibilityIssueListener): AccessibilityIssueListener {
+//        return object : AccessibilityIssueListener {
+//            override fun onInvalidateIssues() {
+//                targetListeners.forEach(AccessibilityIssueListener::onInvalidateIssues)
+//            }
+//
+//            override fun onIssues(issues: Collection<AccessibilityIssue>) {
+//                targetListeners.forEach { listener -> listener.onIssues(issues) }
+//            }
+//        }
+//    }
+}
 
-            override fun onIssues(issues: Collection<AccessibilityIssue>) {
-                targetListeners.forEach { listener -> listener.onIssues(issues) }
-            }
-        }
+class AccessibilityIssueListenerMiddleman(
+        private val id: Int,
+        var multiplexer: AccessibilityIssueListenerMultiplexer? = null):
+                AccessibilityIssueListener {
+    override fun onIssues(issues: Collection<AccessibilityIssue>) {
+        multiplexer?.onIssues(id, issues)
+    }
+
+    override fun onInvalidateIssues() {
+        multiplexer?.onInvalidateIssues(id)
+    }
+}
+
+class AccessibilityIssueListenerMultiplexer(private vararg val reporters: AccessibilityIssueListener) {
+    private val holder = mutableMapOf<Int, Collection<AccessibilityIssue>>()
+
+    fun onInvalidateIssues(id: Int) {
+        holder.remove(id)
+        notifyTheHerd()
+    }
+
+    fun onIssues(id: Int, issues: Collection<AccessibilityIssue>) {
+        holder[id] = issues
+        notifyTheHerd()
+    }
+
+    private fun notifyTheHerd() {
+        val allIssues = holder.values.flatten()
+        reporters.forEach { it.onIssues(allIssues) }
     }
 }

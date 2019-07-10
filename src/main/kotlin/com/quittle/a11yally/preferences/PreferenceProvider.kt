@@ -22,6 +22,8 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_missing_labels),
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_small_touch_targets),
             PreferenceProviderStringIntMember(mContext, R.string.pref_small_touch_target_size),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_small_text),
+            PreferenceProviderStringIntMember(mContext, R.string.pref_highlight_small_text_size_sp),
             PreferenceProviderBooleanMember(mContext, R.string.pref_linear_navigation_enabled),
             PreferenceProviderBooleanMember(mContext, R.string.pref_enable_all_apps, true),
             PreferenceProviderStringSetMember(mContext, R.string.pref_enabled_apps),
@@ -127,6 +129,18 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
         return getPreferenceProviderValueByPrefKey(R.string.pref_small_touch_target_size)
     }
 
+    fun getHighlightSmallText(): Boolean {
+        return getPreferenceProviderValueByPrefKey(R.string.pref_highlight_small_text)
+    }
+
+    fun getHighlightSmallTextSize(): Int {
+        return getPreferenceProviderValueByPrefKey(R.string.pref_highlight_small_text_size_sp)
+    }
+
+    fun getHighlightSmallTextSizeLiveData(): LiveData<Int> {
+        return intPreferenceLiveData(R.string.pref_highlight_small_text_size_sp)
+    }
+
     fun getLinearNavigationEnabled(): Boolean {
         return getPreferenceProviderValueByPrefKey(R.string.pref_linear_navigation_enabled)
     }
@@ -190,6 +204,11 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
 
     private fun booleanPreferenceLiveData(@StringRes id: Int): LiveData<Boolean> {
         val pref = getPreferenceProviderMemberByPrefKey<Boolean>(id)
+        return PreferenceLiveData(pref)
+    }
+
+    private fun intPreferenceLiveData(@StringRes id: Int): LiveData<Int> {
+        val pref = getPreferenceProviderMemberByPrefKey<Int>(id)
         return PreferenceLiveData(pref)
     }
 }

@@ -11,7 +11,7 @@ import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.view.ButtonSwitch
 import android.view.Menu
 import android.view.MenuItem
-import com.quittle.a11yally.PermissionsManager
+import com.quittle.a11yally.permission.PermissionsManager
 import com.quittle.a11yally.R
 
 class MainActivity : AppCompatActivity() {

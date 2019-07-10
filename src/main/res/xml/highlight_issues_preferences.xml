@@ -11,6 +11,19 @@
             android:title="@string/highlight_missing_labels_title"
             android:summary="@string/highlight_missing_labels_summary"
             android:defaultValue="true" />
+        <androidx.preference.CheckBoxPreference
+            android:key="@string/pref_highlight_small_text"
+            android:title="Small Text Size"
+            android:summary="Small text is hard to read"
+            android:defaultValue="true" />
+        <androidx.preference.ListPreference
+            android:dependency="@string/pref_highlight_small_text"
+            android:key="@string/pref_highlight_small_text_size_sp"
+            android:title="Text size"
+            android:summary="12sp is the recommendation from google"
+            android:entries="@array/pref_highlight_small_text_size_sp_values"
+            android:entryValues="@array/pref_highlight_small_text_size_sp_values"
+            android:defaultValue="@integer/pref_highlight_small_text_size_sp_default" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/pref_category_motor"

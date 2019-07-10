@@ -85,7 +85,7 @@ class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnal
                     IntArray(2).apply(rootView::getLocationOnScreen)
 
             nodes.forEach { node ->
-                val rect = node.rect
+                val rect = Rect(node.rect)
                 rect.offset(-drawViewOffsetX, -drawViewOffsetY)
 
                 (View.inflate(mContext, R.layout.content_description_view, null) as TextView)

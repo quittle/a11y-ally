@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.permission
 
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
@@ -25,9 +25,9 @@ class PermissionsManager(context: Context) {
         } catch (e: NullPointerException) {
             throw PermissionsManagerInitializationException(
                     "Unable to initialize Permissions Manager so soon in the application " +
-                    "lifecycle. This usually occurs when trying to construct the class before " +
-                    "the application has fully initialized. Instead initialize this lazily or " +
-                    "during the onCreate() of your activity or application.", e)
+                            "lifecycle. This usually occurs when trying to construct the class before " +
+                            "the application has fully initialized. Instead initialize this lazily or " +
+                            "during the onCreate() of your activity or application.", e)
         }
     }
     private val mAccessibilityManager =
@@ -53,11 +53,16 @@ class PermissionsManager(context: Context) {
                 .any("$mPackageName/.analyzer.$ANALYZER_CLASS_NAME"::equals)
     }
 
+    // TODO JAVADOC
+    fun hasScreenRecordingPermission(): Boolean {
+        return ScreenRecordingActivity.hasPermission()
+    }
+
     /**
      * Checks that all necessary permissions are available for the app to run correctly.
      * @return true if it is set up fully
      */
     fun hasAllPermissions(): Boolean {
-        return hasDrawOverlaysPermission() && hasAccessibilityServicePermission()
+        return hasDrawOverlaysPermission() && hasAccessibilityServicePermission() && hasScreenRecordingPermission()
     }
 }

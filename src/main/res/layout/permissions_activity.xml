@@ -130,6 +130,64 @@
                 tools:textColor="@color/primary_action_disabled_text" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/Main.Button.Primary"
+            android:id="@+id/permission_screen_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_marginTop="@dimen/button_padding"
+            tools:background="@color/primary_action_disabled_background"
+            tools:enabled="false">
+
+            <TextView
+                android:id="@+id/permission_screen_text"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="25sp"
+                android:gravity="center_vertical"
+                android:text="@string/permissions_activity_screen_recording"
+                android:labelFor="@id/permission_service_wrapper"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/permission_screen_image"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/permission_screen_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/permission_screen_status"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/permission_screen_text"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/service_status_enabled_icon" />
+
+            <TextView
+                android:id="@+id/permission_screen_status"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:labelFor="@id/permission_screen_wrapper"
+                android:textAlignment="center"
+                app:autoSizeMaxTextSize="25sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/permission_screen_image"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="LabelFor"
+                tools:text="@string/permissions_activity_status_ok"
+                tools:textColor="@color/primary_action_disabled_text" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <Button
             android:id="@+id/continue_button"
             android:layout_width="match_parent"

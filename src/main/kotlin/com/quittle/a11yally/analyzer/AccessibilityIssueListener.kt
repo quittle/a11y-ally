@@ -8,6 +8,7 @@ import android.graphics.Rect
 enum class IssueType {
     UnlabeledNode,
     SmallTouchTarget,
+    SmallText,
 }
 
 /**

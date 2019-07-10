@@ -12,9 +12,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.quittle.a11yally.BuildConfig
-import com.quittle.a11yally.PermissionsManager
+import com.quittle.a11yally.permission.PermissionsManager
 import com.quittle.a11yally.R
 import com.quittle.a11yally.ifElse
+import com.quittle.a11yally.permission.startScreenRecordingActivity
 import com.quittle.a11yally.preferences.withPreferenceProvider
 
 /**
@@ -67,6 +68,13 @@ class PermissionsActivity : FixedContentActivity() {
                 R.id.permission_service_image,
                 R.id.permission_service_status,
                 this::onClickFixService)
+        updateStatus(
+                mPermissionsManager.hasScreenRecordingPermission(),
+                R.id.permission_screen_wrapper,
+                R.id.permission_screen_image,
+                R.id.permission_screen_status,
+                this::onClickFixScreenRecording
+        )
 
         findViewById<View>(R.id.continue_button).run {
             isEnabled = mPermissionsManager.hasAllPermissions()
@@ -98,6 +106,10 @@ class PermissionsActivity : FixedContentActivity() {
         } else {
             updateViewsStatuses()
         }
+    }
+
+    private fun onClickFixScreenRecording() {
+        startScreenRecordingActivity(this)
     }
 
     private fun updateStatus(hasPermission: Boolean,

@@ -5,6 +5,7 @@
     <color name="mid_grey">#7f7f7f</color>
     <color name="highlight_issue_unlabeled_node">#64ff0000</color>
     <color name="highlight_issue_small_touch_target">#6428c83c</color>
+    <color name="highlight_issue_small_text">#64FFEB3B</color>
     <color name="white">#fff</color>
     <color name="ic_launcher_background">#262626</color>
 </resources>

@@ -3,6 +3,7 @@
     <string name="permissions_activity_intro">To get started, A11y Ally needs a few permissions to perform analysis. It needs to run as an <b>Accessibility Service</b> in order to detect layouts and content descriptions. Additionally, A11y Ally requires the <b>Display over other apps</b> permission to provide informative overlays and highlight issues.</string>
     <string name="permissions_activity_display_over_other_apps">Display Over Other Apps</string>
     <string name="permissions_activity_accessibility_service">Accessibility Service</string>
+    <string name="permissions_activity_screen_recording">Record Screen</string>
     <string name="permissions_activity_status_ok" tools:ignore="ButtonCase,Typos">Ok</string>
     <string name="permissions_activity_status_fix">Fix Now</string>
     <string name="permissions_activity_button_continue">Continue</string>
