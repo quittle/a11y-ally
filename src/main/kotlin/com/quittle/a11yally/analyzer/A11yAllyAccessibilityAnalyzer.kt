@@ -4,6 +4,9 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.preference.PreferenceManager
 import com.quittle.a11yally.R
+import com.quittle.a11yally.analyzer.listeners.AccessibilityItemLogger
+import com.quittle.a11yally.analyzer.listeners.ContentDescriptionOverlay
+import com.quittle.a11yally.analyzer.listeners.HighlighterAccessibilityOverlay
 
 /**
  * App-specific implementation of an {@link AccessibilityAnalyzer}. It implements
@@ -78,20 +81,45 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
     /**
      * {@inheritDoc}
      *
-     * This must be lazy because the constructor for {@link AccessibilityOverlay}s must run after
-     * {@link AccessibilityAnalyzer} is initialized fully.
+     * This must be lazy because the constructor for [AccessibilityOverlay]s must run after
+     * [AccessibilityAnalyzer] is initialized fully.
      */
-    override val listeners: Collection<AccessibilityItemEventListener> by lazy { setOf(
-            mAccessibilityItemLogger,
-            HighlighterAccessibilityOverlay(this),
-            LinearNavigationAccessibilityOverlay(this)
-    ) }
+    override val listeners: Collection<AccessibilityItemEventListener> by lazy {
+        val highlighterAccessibilityOverlay = HighlighterAccessibilityOverlay(this)
+
+        val rootListener =
+                fanOutIssueListeners(highlighterAccessibilityOverlay, mAccessibilityItemLogger)
+
+        setOf(
+                AccessibilityNodeIssueAnalyzer(this, rootListener),
+                ContentDescriptionOverlay(this),
+                LinearNavigationAccessibilityOverlay(this)
+        )
+    }
 
     private fun updateAppWhitelist(preferences: SharedPreferences) {
         whitelistedApps = if (preferences.getBoolean(prefEnableAllApps, prefEnableAllAppsDefault)) {
             null
         } else {
             preferences.getStringSet(prefEnabledApps, mutableSetOf())
+        }
+    }
+
+    /**
+     * Generates a new listener that will generate callbacks to invoke all the [targetListeners].
+     * @param targetListeners The listeners to invoke when the returned listener is invoked.
+     * @return a new listener that delegates callbacks to all the [targetListeners]
+     */
+    private fun fanOutIssueListeners(
+            vararg targetListeners: AccessibilityIssueListener): AccessibilityIssueListener {
+        return object : AccessibilityIssueListener {
+            override fun onInvalidateIssues() {
+                targetListeners.forEach(AccessibilityIssueListener::onInvalidateIssues)
+            }
+
+            override fun onIssues(issues: Collection<AccessibilityIssue>) {
+                targetListeners.forEach { listener -> listener.onIssues(issues) }
+            }
         }
     }
 }

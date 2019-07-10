@@ -47,4 +47,13 @@ class AccessibilityNodeAnalyzer(context: Context) {
             node.contentDescription
         }
     }
+
+    /**
+     * Gets the location of the node on the screen
+     */
+    fun getBoundsInScreen(node: AccessibilityNodeInfo): Rect {
+        val rect = Rect()
+        node.getBoundsInScreen(rect)
+        return rect
+    }
 }

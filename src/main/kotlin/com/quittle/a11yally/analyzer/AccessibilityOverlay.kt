@@ -15,7 +15,7 @@ import com.quittle.a11yally.preferences.PreferenceProvider
  * Base class for displaying an overlay on top of the window's content.
  */
 abstract class AccessibilityOverlay<T : ViewGroup>(
-        val accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
+        private val accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
             AccessibilityItemEventListener {
     private companion object {
         private const val PIXEL_FORMAT: Int = PixelFormat.TRANSLUCENT

@@ -1,31 +1,55 @@
 package com.quittle.a11yally
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import androidx.annotation.RawRes
+import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectReader
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.quittle.a11yally.RecordingService.Companion.START_RECORDING_INTENT_ACTION
 import com.quittle.a11yally.RecordingService.Companion.STOP_RECORDING_INTENT_ACTION
-import com.quittle.a11yally.activity.UnfriendlyActivity
-import com.quittle.a11yally.test.R as TestR
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
-import org.json.JSONArray
-import org.json.JSONObject
-import org.junit.After
-import org.junit.Rule
-import org.skyscreamer.jsonassert.JSONAssert
-import org.skyscreamer.jsonassert.JSONCompareMode
 import java.lang.Thread.sleep
+import com.quittle.a11yally.test.R as TestR
+
+class AccessibilityTestActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        setContentView(TestR.layout.accessibility_test_activity)
+    }
+}
+
+data class AccessibilityOutput(
+    val boundsInScreen: String,
+    val nodeClassPath: List<String>,
+    val packageName: String,
+    val text: String?,
+    val issues: List<String>,
+    @JsonIgnore
+    val timestamp: Int
+)
 
 @RunWith(AndroidJUnit4::class)
 @SuppressLint("ApplySharedPref")
@@ -33,6 +57,9 @@ class AccessibilityItemLoggerTest {
     private lateinit var targetContext: Context
     private lateinit var testContext: Context
     private lateinit var recordingFile: File
+
+    private val outputReader: ObjectReader =
+            jacksonObjectMapper().readerFor(object : TypeReference<Set<AccessibilityOutput>>() {})
 
     @get:Rule
     val mPermissionsRule = PermissionsRule()
@@ -50,7 +77,6 @@ class AccessibilityItemLoggerTest {
     fun tearDown() {
         recordingFile.delete()
         clearSharedPreferences()
-        fullyTearDownPermissions()
     }
 
     @Test
@@ -79,65 +105,30 @@ class AccessibilityItemLoggerTest {
                         targetContext.getString(R.string.pref_highlight_small_touch_targets), true)
                 .putBoolean(targetContext.getString(R.string.pref_enable_all_apps), false)
                 .putStringSet(targetContext.getString(R.string.pref_enabled_apps),
-                        setOf(targetContext.applicationInfo.packageName))
+                        setOf(testContext.applicationInfo.packageName))
+                .putString(targetContext.getString(R.string.pref_small_touch_target_size), "40")
                 .commit()
 
-        sleep(100)
-        onIdle()
-
         startRecording()
-
-        openUnfriendlyActivity()
+        testContext.startActivity(
+                Intent(testContext, AccessibilityTestActivity::class.java).apply {
+                    flags += FLAG_ACTIVITY_NEW_TASK
+                })
 
         // It is up to the OS to send accessibility events, which do not have a guaranteed
         // "frame rate". Wait until at least one should get triggered.
-        sleep(1000)
-        onIdle()
+        sleep(2000)
 
         stopRecording()
 
         waitForJsonArrayFile(recordingFile)
 
-        var actualReport = JSONArray(recordingFile.readText())
-        val originalReportLength = actualReport.length()
-        for (i in 0 until originalReportLength) {
-            val entry = actualReport[i] as JSONObject
-            entry.remove("timestamp")
-        }
+        val contents: Set<AccessibilityOutput> = outputReader.readValue(recordingFile)
 
-        // Multiple may have been triggered but they should all be duplicates. De-dup them as it is
-        // okay to receive multiple accessibility events.
-        if (originalReportLength % 3 == 0) {
-            for (i in 0 until 3) {
-                for (j in 0 until originalReportLength / 3) {
-                    JSONAssert.assertEquals(actualReport.getJSONObject(i),
-                            actualReport.getJSONObject(3 * j + i),
-                            JSONCompareMode.STRICT)
-                }
-            }
-            actualReport = actualReport.range(0, 3)
-        }
+        val expectedReport: Set<AccessibilityOutput> = outputReader.readValue(testContext.resources
+                .openRawResource(TestR.raw.unfriendly_activity_report))
 
-        val expectedReport = readReportToJSONArray(TestR.raw.unfriendly_activity_report)
-
-        JSONAssert.assertEquals(
-                actualReport.toString(4), expectedReport, actualReport, JSONCompareMode.STRICT)
-    }
-
-    private fun openUnfriendlyActivity(): UnfriendlyActivity {
-        return InstrumentationRegistry.getInstrumentation()
-                .startActivitySync(
-                        Intent(targetContext, UnfriendlyActivity::class.java).apply {
-                            flags += FLAG_ACTIVITY_NEW_TASK
-                        }
-                ) as UnfriendlyActivity
-    }
-
-    private fun readReportToJSONArray(@RawRes resourceId: Int): JSONArray {
-        return JSONArray(testContext.resources
-                .openRawResource(resourceId)
-                .readBytes()
-                .toString(Charsets.UTF_8))
+        assertEquals(expectedReport, contents)
     }
 
     private fun startRecording() {
@@ -151,15 +142,4 @@ class AccessibilityItemLoggerTest {
                 STOP_RECORDING_INTENT_ACTION, null, targetContext, RecordingService::class.java))
         onIdle()
     }
-}
-
-/**
- * Helper function to extract a subset of the [JSONArray] as a new [JSONArray].
- */
-private fun JSONArray.range(start: Int, end: Int): JSONArray {
-    val ret = JSONArray()
-    for (i in start until end) {
-        ret.put(this[i])
-    }
-    return ret
 }

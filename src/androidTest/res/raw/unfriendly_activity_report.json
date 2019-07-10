@@ -1,36 +1,23 @@
 [
     {
-        "boundsInScreen": "[240,372][304,432]",
+        "boundsInScreen": "[0,0][10,50]",
         "nodeClassPath": [
             "android.widget.FrameLayout",
-            "android.widget.ScrollView",
-            "android.widget.CheckBox"
+            "android.widget.Button"
         ],
-        "packageName": "com.quittle.a11yally",
+        "packageName": "com.quittle.a11yally.test",
+        "text": "text",
         "issues": [
-            "UnlabeledNode"
+            "SmallTouchTarget"
         ]
     },
     {
-        "boundsInScreen": "[240,488][304,480]",
+        "boundsInScreen": "[10,0][70,80]",
         "nodeClassPath": [
             "android.widget.FrameLayout",
-            "android.widget.ScrollView",
-            "android.widget.ImageButton"
+            "android.widget.Button"
         ],
-        "packageName": "com.quittle.a11yally",
-        "issues": [
-            "UnlabeledNode"
-        ]
-    },
-    {
-        "boundsInScreen": "[16,792][304,480]",
-        "nodeClassPath": [
-            "android.widget.FrameLayout",
-            "android.widget.ScrollView",
-            "android.view.View"
-        ],
-        "packageName": "com.quittle.a11yally",
+        "packageName": "com.quittle.a11yally.test",
         "issues": [
             "UnlabeledNode"
         ]

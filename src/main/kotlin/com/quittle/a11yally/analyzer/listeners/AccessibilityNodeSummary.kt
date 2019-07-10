@@ -1,4 +1,4 @@
-package com.quittle.a11yally.analyzer
+package com.quittle.a11yally.analyzer.listeners
 
 import android.graphics.Rect
 import android.os.Build

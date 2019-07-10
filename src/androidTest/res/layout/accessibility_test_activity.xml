@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0000ff"
+    android:orientation="horizontal">
+    <!-- Labeled with tiny touch target -->
+    <Button
+        android:layout_width="10px"
+        android:layout_height="50px"
+        android:layout_gravity="left"
+        android:background="#ff0000"
+        android:text="text"
+        android:textAllCaps="false" />
+    <!-- Unlabeled -->
+    <Button
+        android:layout_width="60px"
+        android:layout_height="80px"
+        android:layout_gravity="left"
+        android:background="#ffff00" />
+</LinearLayout>
