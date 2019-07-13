@@ -21,8 +21,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
-import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -35,9 +35,8 @@ import com.quittle.a11yally.R
 import com.quittle.a11yally.ViewActionCheck
 import com.quittle.a11yally.adapter.CheckboxAdapter.Companion.CheckboxViewHolder
 import com.quittle.a11yally.clearSharedPreferences
-import com.quittle.a11yally.getSharedPreferenceBoolean
-import com.quittle.a11yally.getSharedPreferenceStringSet
 import com.quittle.a11yally.launchActivity
+import com.quittle.a11yally.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
@@ -63,6 +62,11 @@ class MultiAppSelectionActivityInstrumentationTest {
     @get:Rule
     val mDisableAnimationsRule = DisableAnimationsRule()
 
+    private val recyclerView = withId(R.id.recycler_view)
+    private val title = withId(R.id.title)
+    private val subtitle = withId(R.id.subtitle)
+    private val isCheckbox = isAssignableFrom(AppCompatCheckBox::class.java)
+
     @After
     fun tearDown() {
         clearSharedPreferences()
@@ -76,39 +80,45 @@ class MultiAppSelectionActivityInstrumentationTest {
 
     @Test
     fun selectAll() {
-        selectedDescendantsMatch(withId(R.id.checkbox), isNotChecked())
+        onView(recyclerView)
+                .check(selectedDescendantsMatch(isCheckbox, allOf(isChecked(), not(isEnabled()))))
+                .check(selectedDescendantsMatch(title, not(isEnabled())))
+                .check(selectedDescendantsMatch(subtitle, not(isEnabled())))
 
-        assertFalse(getSharedPreferenceBoolean(R.string.pref_enable_all_apps, false))
+        withPreferenceProvider { assertTrue(getInspectAllAppsEnabled()) }
 
         onView(withId(R.id.select_all))
                 .check(matches(isCompletelyDisplayed()))
-                .check(matches(isNotChecked()))
-                .perform(click())
                 .check(matches(isChecked()))
+                .perform(click())
+                .check(matches(isNotChecked()))
 
-        assertTrue(getSharedPreferenceBoolean(R.string.pref_enable_all_apps, false))
+        withPreferenceProvider { assertFalse(getInspectAllAppsEnabled()) }
 
-        selectedDescendantsMatch(withId(R.id.checkbox), allOf(isChecked(), isClickable()))
+        onView(recyclerView)
+                .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
+                .check(selectedDescendantsMatch(title, isEnabled()))
+                .check(selectedDescendantsMatch(subtitle, isEnabled()))
 
         onView(withId(R.id.recycler_view))
                 .perform(swipeUp())
 
         onIdle()
-        selectedDescendantsMatch(withId(R.id.checkbox), allOf(isChecked(), isClickable()))
 
-        withNthEntry(0) { checkbox, title, subtitle ->
-            assertTrue(checkbox.isChecked)
-            assertFalse(checkbox.isEnabled)
-            assertFalse(title.isEnabled)
-            assertFalse(subtitle.isEnabled)
-        }
+        onView(recyclerView)
+                .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
+                .check(selectedDescendantsMatch(title, isEnabled()))
+                .check(selectedDescendantsMatch(subtitle, isEnabled()))
     }
 
     @Test
     fun checkboxStateMaintained() {
-        selectedDescendantsMatch(withId(R.id.checkbox), isNotChecked())
+        withPreferenceProvider { setInspectAllAppsEnabled(false) }
 
-        assertTrue(getSharedPreferenceStringSet(R.string.pref_enabled_apps).isEmpty())
+        onView(recyclerView)
+                .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
+
+        withPreferenceProvider { assertTrue(getAppsToInspect().isEmpty()) }
 
         lateinit var firstAppId: CharSequence
 
@@ -119,7 +129,7 @@ class MultiAppSelectionActivityInstrumentationTest {
             assertTrue(checkbox.isChecked)
         }
 
-        assertEquals(setOf(firstAppId), getSharedPreferenceStringSet(R.string.pref_enabled_apps))
+        withPreferenceProvider { assertEquals(setOf(firstAppId), getAppsToInspect()) }
 
         withNthEntry(60) { checkbox, _, subtitle ->
             assertFalse(checkbox.isChecked)
@@ -131,7 +141,7 @@ class MultiAppSelectionActivityInstrumentationTest {
             assertEquals(firstAppId, subtitle.text)
         }
 
-        assertEquals(setOf(firstAppId), getSharedPreferenceStringSet(R.string.pref_enabled_apps))
+        withPreferenceProvider { assertEquals(setOf(firstAppId), getAppsToInspect()) }
     }
 
     @Test
@@ -199,6 +209,10 @@ class MultiAppSelectionActivityInstrumentationTest {
 
     @Test
     fun testEntireEntryTogglesCheckbox() {
+        withPreferenceProvider {
+            setInspectAllAppsEnabled(false)
+        }
+
         withNthEntry(0) { checkbox, title, subtitle ->
             assertFalse(checkbox.isChecked)
 

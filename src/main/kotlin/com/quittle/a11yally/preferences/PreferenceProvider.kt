@@ -20,7 +20,7 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_small_touch_targets),
             PreferenceProviderStringIntMember(mContext, R.string.pref_small_touch_target_size),
             PreferenceProviderBooleanMember(mContext, R.string.pref_linear_navigation_enabled),
-            PreferenceProviderBooleanMember(mContext, R.string.pref_enable_all_apps),
+            PreferenceProviderBooleanMember(mContext, R.string.pref_enable_all_apps, true),
             PreferenceProviderStringSetMember(mContext, R.string.pref_enabled_apps),
             PreferenceProviderBooleanMember(mContext, R.string.pref_show_tutorial, true)
     )

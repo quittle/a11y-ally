@@ -150,17 +150,6 @@ fun sharedPreferences(): SharedPreferences {
     return PreferenceManager.getDefaultSharedPreferences(targetContext)
 }
 
-fun getSharedPreferenceBoolean(pref_id: Int, default: Boolean): Boolean {
-    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
-    return sharedPreferences().getBoolean(targetContext.getString(pref_id), default)
-}
-
-fun getSharedPreferenceStringSet(pref_id: Int): Set<String> {
-    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
-    return sharedPreferences()
-            .getStringSet(targetContext.getString(pref_id), emptySet()) as Set<String>
-}
-
 class ViewActionCheck(private val check: (view: View) -> Unit) : ViewAction {
     override fun getDescription(): String {
         return "Performs checks as an action"

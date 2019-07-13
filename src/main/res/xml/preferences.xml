@@ -4,6 +4,9 @@
         preferences should not be controlled through any other preference screen.
     -->
     <SwitchPreference
+        android:key="@string/pref_enable_all_apps"
+        android:defaultValue="true" />
+    <SwitchPreference
         android:key="@string/pref_service_enabled"
         android:defaultValue="true" />
     <SwitchPreference
