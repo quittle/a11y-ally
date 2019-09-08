@@ -11,7 +11,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
-        classpath 'com.android.tools.lint:lint-gradle:26.4.2'
+        classpath 'com.android.tools.lint:lint-gradle:26.5.0'
 
         // Fix bug where upgrading lint-gradle lead to a missing class exception
         // See https://stackoverflow.com/q/30483255
