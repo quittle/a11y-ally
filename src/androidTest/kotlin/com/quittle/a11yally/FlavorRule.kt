@@ -8,7 +8,7 @@ import org.junit.runners.model.Statement
  * Enables tests if the build flavor is in [mFlavors]
  * @param mFlavors The flavors the tests should run on
  */
-class FlavorRule(vararg private val mFlavors: String) : TestRule {
+class FlavorRule(private vararg val mFlavors: String) : TestRule {
     private companion object {
         class FlavorRuleStatement(private val mBase: Statement,
                                   private val mFlavors: Array<out String>) : Statement() {

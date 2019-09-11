@@ -56,11 +56,9 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
                 PIXEL_FORMAT) }
 
     init {
-        PreferenceProvider(accessibilityAnalyzer).apply {
-            onServiceEnabledUpdate { enabled ->
-                if (!enabled) {
-                    accessibilityAnalyzer.pauseListener(this@AccessibilityOverlay)
-                }
+        PreferenceProvider(accessibilityAnalyzer).onServiceEnabledUpdate { enabled ->
+            if (!enabled) {
+                accessibilityAnalyzer.pauseListener(this)
             }
         }
     }

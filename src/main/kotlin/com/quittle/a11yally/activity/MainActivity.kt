@@ -16,7 +16,8 @@ import com.quittle.a11yally.R
 
 class MainActivity : AppCompatActivity() {
     private companion object {
-        private val FEATURE_SETTINGS_ACTIVITY_CLASS = FeatureSettingsActivity::class.java
+        @JvmField
+        val FEATURE_SETTINGS_ACTIVITY_CLASS = FeatureSettingsActivity::class.java
     }
 
     lateinit var mPreferenceProvider: PreferenceProvider
@@ -93,10 +94,10 @@ class MainActivity : AppCompatActivity() {
      * Helper function for setting up the {@link ButtonSwitch}es to open the preferences panel when
      * clicked.
      */
-    private fun setUpButtonSwitchAsFeaturePreferencesButton(view_id: Int,
+    private fun setUpButtonSwitchAsFeaturePreferencesButton(viewId: Int,
                                                             @XmlRes preferences: Int,
                                                             @DrawableRes imageResource: Int) {
-        findViewById<ButtonSwitch>(view_id).let { view ->
+        findViewById<ButtonSwitch>(viewId).let { view ->
             view.getButton().setOnClickListener {
                 val intent = Intent(applicationContext, FEATURE_SETTINGS_ACTIVITY_CLASS)
                 intent.putExtra(FeatureSettingsActivity.EXTRA_KEY_IMAGE_RESOURCE_ID, imageResource)

@@ -45,10 +45,12 @@ class PermissionsActivity : FixedContentActivity() {
         // switches back via recents, the activity will likely get the update in time. If they use
         // the back button, however, they are very unlikely to get the permission by the time
         // onResume has been called so to handle this race condition, periodically update the views
+        @Suppress("MagicNumber")
         Handler().run {
-            postDelayed(this@PermissionsActivity::updateViewsStatuses, 500)
-            postDelayed(this@PermissionsActivity::updateViewsStatuses, 1000)
-            postDelayed(this@PermissionsActivity::updateViewsStatuses, 2000)
+            val initialDelayMs = 500L
+            postDelayed(this@PermissionsActivity::updateViewsStatuses, initialDelayMs)
+            postDelayed(this@PermissionsActivity::updateViewsStatuses, initialDelayMs * 2)
+            postDelayed(this@PermissionsActivity::updateViewsStatuses, initialDelayMs * 4)
         }
     }
 

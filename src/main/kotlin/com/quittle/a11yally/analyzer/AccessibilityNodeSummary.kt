@@ -58,8 +58,7 @@ class AccessibilityNodeSummary(node: AccessibilityNodeInfo) {
 
     private fun getWindowType(): CharSequence? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val windowType = mNode.window?.type
-            when (windowType) {
+            when (val windowType = mNode.window?.type) {
                 AccessibilityWindowInfo.TYPE_SYSTEM -> "TYPE_SYSTEM"
                 AccessibilityWindowInfo.TYPE_ACCESSIBILITY_OVERLAY -> "TYPE_ACCESSIBILITY_OVERLAY"
                 AccessibilityWindowInfo.TYPE_APPLICATION -> "TYPE_APPLICATION"

@@ -17,6 +17,7 @@ class AccessibilityItemLogger(context: Context) : AccessibilityItemEventListener
         private const val TAG = "${com.quittle.a11yally.BuildConfig.TAG}::Report"
         private const val RECORDINGS_DIR = "recordings"
         private const val RECORDING_FILE = "recording.json"
+        private const val JSON_INDENTATION = 4
     }
 
     private var mIsRecording = false
@@ -62,7 +63,7 @@ class AccessibilityItemLogger(context: Context) : AccessibilityItemEventListener
             summaryMap["issues"] = issues
             summaryMap["timestamp"] = System.currentTimeMillis()
             mOngoingRecording.add(summaryMap)
-            val nodeSummary = JSONObject(summaryMap).toString(4)
+            val nodeSummary = JSONObject(summaryMap).toString(JSON_INDENTATION)
             Log.i(TAG, "Issue found: $nodeSummary")
         }
     }
@@ -83,7 +84,7 @@ class AccessibilityItemLogger(context: Context) : AccessibilityItemEventListener
             return
         }
 
-        val recording = JSONArray(mOngoingRecording).toString(4)
+        val recording = JSONArray(mOngoingRecording).toString(JSON_INDENTATION)
         val recordingFile = getRecordingFile()
         recordingFile.writeText(recording, Charsets.UTF_8)
 

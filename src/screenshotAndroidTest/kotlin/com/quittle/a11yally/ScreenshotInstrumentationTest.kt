@@ -15,9 +15,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy
+import android.os.Build.VERSION_CODES.JELLY_BEAN_MR2
 
 @RunWith(AndroidJUnit4::class)
-@TargetApi(18)
+@TargetApi(JELLY_BEAN_MR2)
 class ScreenshotInstrumentationTest {
     companion object {
         @BeforeClass

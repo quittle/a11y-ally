@@ -64,7 +64,8 @@ class CheckableCustomCardView : Checkable, CustomCardView {
                 val checked: Boolean,
                 val preferenceKey: String?)
 
-        private val ON_TOGGLE = object : OnCheckedChangeListener {
+        @JvmField
+        val ON_TOGGLE = object : OnCheckedChangeListener {
             override fun onCheckedChanged(view: CheckableCustomCardView, isChecked: Boolean) {
                 if (isChecked) {
                     view.setImageResource(view.mImageResource)
