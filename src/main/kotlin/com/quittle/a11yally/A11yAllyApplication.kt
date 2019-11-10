@@ -6,9 +6,11 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.preference.PreferenceManager
 import android.os.StrictMode
+import com.google.firebase.FirebaseApp
 import com.quittle.a11yally.activity.DialogActivity
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 import com.quittle.a11yally.preferences.PreferenceProvider
+import com.google.firebase.FirebaseOptions
 
 class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
@@ -49,6 +51,7 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
         super.onCreate()
         initializePreferences()
         initializePreferenceController()
+        initializeFirebase()
     }
 
     private fun initializePreferences() {
@@ -93,5 +96,21 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
             // Start listening
             onResume()
         }
+    }
+
+    /**
+     * Initialize Firebase with a fake account. It doesn't have to be real, but it can't be empty.
+     * As A11yAlly only uses On-Device ML, it does not need to do any authenticated calls. In fact,
+     * this app does not need internet access to download the ML models. It gets them via Google
+     * Play Services, which downloads and updates the models centrally, presumably so the models
+     * aren't cached by every single app and they have finer-grained controls over updates to the
+     * models.
+     */
+    private fun initializeFirebase() {
+        val firebaseOptions = FirebaseOptions.Builder()
+                .setApplicationId("abc")
+                .setApiKey("abc")
+                .build()
+        FirebaseApp.initializeApp(this, firebaseOptions)
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
+import com.google.firebase.FirebaseApp
 import org.junit.Assert.assertEquals
 import com.quittle.a11yally.preferences.PreferenceProvider
 import org.junit.Assert.assertFalse
@@ -23,6 +24,7 @@ class A11yAllyApplicationTest {
 
     @Before
     fun setUp() {
+        FirebaseApp.clearInstancesForTest()
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferenceProvider = PreferenceProvider(context)
