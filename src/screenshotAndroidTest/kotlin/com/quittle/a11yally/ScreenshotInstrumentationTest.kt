@@ -8,6 +8,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
+import com.quittle.a11yally.activity.MainActivity
+import com.quittle.a11yally.activity.PermissionsActivity
+import com.quittle.a11yally.activity.UnfriendlyActivity
 import org.junit.After
 import org.junit.BeforeClass
 import org.junit.Rule

@@ -4,7 +4,5 @@
     package="com.quittle.a11yally.test">
     <uses-sdk
         android:minSdkVersion="16"
-        tools:overrideLibrary="com.android.support.test.uiautomator.v18" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        tools:overrideLibrary="com.android.support.test.uiautomator.v18, android_libs.ub_uiautomator, tools.fastlane.screengrab" />
 </manifest>

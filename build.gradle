@@ -156,6 +156,10 @@ codeQualityTools {
         // Any higher and it complains about indentation that cannot be suppressed
         toolVersion = '0.15.0'
     }
+
+    cpd {
+        enabled false
+    }
 }
 
 imageGrinder {
