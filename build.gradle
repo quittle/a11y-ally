@@ -1,5 +1,5 @@
 buildscript {
-    project.ext.KOTLIN_VERSION = '1.3.50'
+    project.ext.KOTLIN_VERSION = '1.3.61'
     project.ext.IS_IN_TRAVIS = 'true' == System.getenv('TRAVIS')
     project.ext.TEST_BUILD_TYPE = project.properties.get('testBuildType', 'debug')
 
