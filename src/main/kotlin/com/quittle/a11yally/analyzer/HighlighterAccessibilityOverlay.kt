@@ -121,7 +121,7 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
     private fun buildAndAttachHighlightNode(parentView: RelativeLayout,
                                             node: AccessibilityNodeInfo): TextView {
         val textView =
-                mLayoutInflater.inflate(R.layout.highlight_node_view, null, false) as TextView
+                mLayoutInflater.inflate(R.layout.highlight_node_view, parentView, false) as TextView
 
         // Create the rect and pass it as the out parameter to getBoundsInScreen
         val rect = Rect().apply(node::getBoundsInScreen)

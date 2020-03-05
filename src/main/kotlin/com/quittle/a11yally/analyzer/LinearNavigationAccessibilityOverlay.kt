@@ -68,7 +68,7 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
                     .toString()
             if (mAccessibilityNodeAnalyzer.isNodeLikelyFocusable(node)) {
                 val textView = (mLayoutInflator.inflate(
-                        R.layout.linear_navigation_entry, null, false) as TextView).apply {
+                        R.layout.linear_navigation_entry, listView, false) as TextView).apply {
                     val descriptors = getDescriptors(node)
                     if (descriptors.isEmpty()) {
                         text = descriptionText
@@ -107,6 +107,7 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
         mScrollView = null
     }
 
+    @SuppressLint("InflateParams")
     override fun buildRootView(): ViewGroup {
         return (mLayoutInflator.inflate(R.layout.linear_navigation_overlay, null, false)
                 as ViewGroup).apply {

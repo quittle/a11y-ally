@@ -21,6 +21,6 @@ class FixedPreferenceFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(arguments!!.getInt(PREFERENCE_XML_KEY))
+        addPreferencesFromResource(requireArguments().getInt(PREFERENCE_XML_KEY))
     }
 }
