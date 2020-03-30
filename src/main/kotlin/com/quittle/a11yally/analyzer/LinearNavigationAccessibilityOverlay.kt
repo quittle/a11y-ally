@@ -10,10 +10,13 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.quittle.a11yally.R
 import com.quittle.a11yally.ifNotNull
 import com.quittle.a11yally.isNull
 import com.quittle.a11yally.orElse
+import com.quittle.a11yally.lifecycle.AllTrueLiveData
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 /**
@@ -30,23 +33,26 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
     private val mTextEntries: MutableList<String> = mutableListOf()
     private val mLayoutInflator = LayoutInflater.from(mContext)
     private val mPreferenceProvider = PreferenceProvider(mContext)
+    private val mLinearNavigationLiveData: LiveData<Boolean>
 
     init {
         mPreferenceProvider.onResume()
 
-        if (mPreferenceProvider.getServiceEnabled() &&
-                mPreferenceProvider.getLinearNavigationEnabled()) {
-            accessibilityAnalyzer.resumeListener(this)
-        } else {
-            accessibilityAnalyzer.pauseListener(this)
-        }
-
-        mPreferenceProvider.onLinearNavigationEnabledUpdate { enabled ->
-            if (mPreferenceProvider.getServiceEnabled() && enabled) {
+        mLinearNavigationLiveData = AllTrueLiveData(
+                mPreferenceProvider.getLinearNavigationLiveData(),
+                mPreferenceProvider.getServiceEnabledLiveData())
+        mLinearNavigationLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
+            if (enabled) {
                 accessibilityAnalyzer.resumeListener(this)
             } else {
                 accessibilityAnalyzer.pauseListener(this)
             }
+        })
+
+        if (mLinearNavigationLiveData.value!!) {
+            accessibilityAnalyzer.resumeListener(this)
+        } else {
+            accessibilityAnalyzer.pauseListener(this)
         }
     }
 

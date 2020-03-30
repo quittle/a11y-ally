@@ -6,16 +6,17 @@ import android.os.Build
 import android.util.Log
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.ifNotNull
-import com.quittle.a11yally.isNull
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 /**
  * Base class for displaying an overlay on top of the window's content.
  */
 abstract class AccessibilityOverlay<T : ViewGroup>(
-        private val accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
+        accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
             AccessibilityItemEventListener {
     private companion object {
         private const val PIXEL_FORMAT: Int = PixelFormat.TRANSLUCENT
@@ -33,6 +34,8 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
     private val mWindowManager =
             accessibilityAnalyzer.applicationContext
                     .getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
+    private val mPreferenceProvider: PreferenceProvider
+    private val mServiceEnabledLiveData: LiveData<Boolean>
 
     protected val rootView get() = mRootView
 
@@ -56,17 +59,13 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
                 PIXEL_FORMAT) }
 
     init {
-        PreferenceProvider(accessibilityAnalyzer).onServiceEnabledUpdate { enabled ->
+        mPreferenceProvider = PreferenceProvider(accessibilityAnalyzer)
+        mServiceEnabledLiveData = mPreferenceProvider.getServiceEnabledLiveData()
+        mServiceEnabledLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
             if (!enabled) {
                 accessibilityAnalyzer.pauseListener(this)
             }
-        }
-    }
-
-    override fun onAccessibilityEventStart() {
-        if (mRootView.isNull()) {
-            onResume()
-        }
+        })
     }
 
     override fun onResume() {

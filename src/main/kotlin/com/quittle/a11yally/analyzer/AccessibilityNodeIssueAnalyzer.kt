@@ -1,7 +1,6 @@
 package com.quittle.a11yally.analyzer
 
 import android.content.Context
-import android.graphics.Rect
 import android.view.accessibility.AccessibilityNodeInfo
 import com.quittle.a11yally.analyzer.listeners.AccessibilityNodeSummary
 import com.quittle.a11yally.preferences.PreferenceProvider
@@ -40,7 +39,7 @@ class AccessibilityNodeIssueAnalyzer(
     }
 
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
-        val nodePosition = Rect().apply(node::getBoundsInScreen)
+        val nodePosition = mAccessibilityNodeAnalyzer.getBoundsInScreen(node)
         val nodeSummary = AccessibilityNodeSummary(node).getSummary()
 
         if (mPreferenceProvider.getHighlightMissingLabels() &&

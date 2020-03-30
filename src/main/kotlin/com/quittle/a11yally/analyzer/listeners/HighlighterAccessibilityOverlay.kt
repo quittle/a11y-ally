@@ -10,6 +10,8 @@ import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
@@ -19,6 +21,7 @@ import com.quittle.a11yally.analyzer.AccessibilityOverlay
 import com.quittle.a11yally.analyzer.IssueType
 import com.quittle.a11yally.clear
 import com.quittle.a11yally.ifNotNull
+import com.quittle.a11yally.lifecycle.AllTrueLiveData
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 /**
@@ -33,6 +36,7 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
     private val mContext: Context = accessibilityAnalyzer.applicationContext
     private var mSurfaceView: SurfaceView? = null
     private val mPreferenceProvider = PreferenceProvider(mContext)
+    private val mHighlightIssuesLiveData: LiveData<Boolean>
 
     private val mColorUnlabeledNode by lazy {
         ContextCompat.getColor(mContext, R.color.highlight_issue_unlabeled_node)
@@ -52,20 +56,23 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
 
     init {
         mPreferenceProvider.onResume()
-        if (mPreferenceProvider.getServiceEnabled() &&
-                mPreferenceProvider.getHighlightIssues()) {
-            accessibilityAnalyzer.resumeListener(this)
-        } else {
-            accessibilityAnalyzer.pauseListener(this)
-        }
-        mPreferenceProvider.onHighlightIssuesUpdate { enabled ->
-            val serviceEnabled = mPreferenceProvider.getServiceEnabled()
 
-            if (serviceEnabled && enabled) {
+        mHighlightIssuesLiveData = AllTrueLiveData(
+                mPreferenceProvider.getHighlightIssuesLiveData(),
+                mPreferenceProvider.getServiceEnabledLiveData())
+
+        mHighlightIssuesLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
+            if (enabled) {
                 accessibilityAnalyzer.resumeListener(this)
             } else {
                 accessibilityAnalyzer.pauseListener(this)
             }
+        })
+
+        if (mHighlightIssuesLiveData.value!!) {
+            accessibilityAnalyzer.resumeListener(this)
+        } else {
+            accessibilityAnalyzer.pauseListener(this)
         }
     }
 

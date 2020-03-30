@@ -22,7 +22,7 @@ import kotlin.reflect.full.memberFunctions
 @SuppressLint("ApplySharedPref")
 @SuppressWarnings("LongMethod")
 // This must not be the real application to prevent
-// A11yAllyApplication::initializePreferenceController
+// A11yAllyApplication::initializePreferenceController from running.
 @Config(application = Application::class)
 class PreferenceProviderTest {
     private lateinit var context: Context
@@ -200,6 +200,7 @@ class PreferenceProviderTest {
                 PreferenceProvider::class.memberFunctions
                         .filter { it.visibility == KVisibility.PUBLIC }
                         .filter { it.name.startsWith("get") }
+                        .filterNot { it.name.endsWith("LiveData") }
                         .count())
     }
 }

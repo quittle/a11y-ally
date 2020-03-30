@@ -10,13 +10,15 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.AbsoluteLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
-import com.quittle.a11yally.analyzer.AccessibilityItemEventListener
 import com.quittle.a11yally.analyzer.AccessibilityNodeAnalyzer
 import com.quittle.a11yally.analyzer.AccessibilityOverlay
 import com.quittle.a11yally.ifNotNull
 import com.quittle.a11yally.isNotNull
+import com.quittle.a11yally.lifecycle.AllTrueLiveData
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 /**
@@ -31,8 +33,7 @@ data class ContentDescriptionNode(
  * Displays accessibility info visibly on the screen.
  */
 class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
-        AccessibilityOverlay<AbsoluteLayout>(accessibilityAnalyzer),
-        AccessibilityItemEventListener {
+        AccessibilityOverlay<AbsoluteLayout>(accessibilityAnalyzer) {
     override val mOverlayFlags: Int =
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -41,23 +42,26 @@ class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnal
     private val mPreferenceProvider = PreferenceProvider(mContext)
     private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(mContext)
     private val nodes = mutableListOf<ContentDescriptionNode>()
+    private val mContentDescriptionLiveData: LiveData<Boolean>
 
     init {
         mPreferenceProvider.onResume()
-        if (mPreferenceProvider.getServiceEnabled() &&
-                mPreferenceProvider.getDisplayContentDescription()) {
-            accessibilityAnalyzer.resumeListener(this)
-        } else {
-            accessibilityAnalyzer.pauseListener(this)
-        }
-        mPreferenceProvider.onDisplayContentDescriptionUpdate { enabled ->
-            val serviceEnabled = mPreferenceProvider.getServiceEnabled()
+        mContentDescriptionLiveData = AllTrueLiveData(
+                mPreferenceProvider.getDisplayContentDescriptionLiveData(),
+                mPreferenceProvider.getServiceEnabledLiveData())
 
-            if (serviceEnabled && enabled) {
+        mContentDescriptionLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
+            if (enabled) {
                 accessibilityAnalyzer.resumeListener(this)
             } else {
                 accessibilityAnalyzer.pauseListener(this)
             }
+        })
+
+        if (mContentDescriptionLiveData.value!!) {
+            accessibilityAnalyzer.resumeListener(this)
+        } else {
+            accessibilityAnalyzer.pauseListener(this)
         }
     }
 
@@ -84,7 +88,8 @@ class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnal
                 val rect = node.rect
                 rect.offset(-drawViewOffsetX, -drawViewOffsetY)
 
-                (View.inflate(mContext, R.layout.content_description_view, null) as TextView).apply {
+                (View.inflate(mContext, R.layout.content_description_view, null) as TextView)
+                        .apply {
                     text = node.text
                     width = rect.width()
                     height = rect.height()

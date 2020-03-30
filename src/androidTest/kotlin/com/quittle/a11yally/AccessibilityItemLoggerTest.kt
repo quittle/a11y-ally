@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
+import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
 import androidx.preference.PreferenceManager
@@ -37,7 +38,9 @@ class AccessibilityTestActivity : Activity() {
         window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(TestR.layout.accessibility_test_activity)
+        Handler().postDelayed({
+            setContentView(TestR.layout.accessibility_test_activity)
+        }, 2000)
     }
 }
 
@@ -110,6 +113,8 @@ class AccessibilityItemLoggerTest {
                 .commit()
 
         startRecording()
+
+        // Start the activity which will add content after two seconds
         testContext.startActivity(
                 Intent(testContext, AccessibilityTestActivity::class.java).apply {
                     flags += FLAG_ACTIVITY_NEW_TASK
@@ -117,7 +122,7 @@ class AccessibilityItemLoggerTest {
 
         // It is up to the OS to send accessibility events, which do not have a guaranteed
         // "frame rate". Wait until at least one should get triggered.
-        sleep(2000)
+        sleep(4000)
 
         stopRecording()
 

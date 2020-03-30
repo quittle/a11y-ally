@@ -3,6 +3,9 @@ package com.quittle.a11yally.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.annotation.StringRes
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.quittle.a11yally.R
 import java.util.Arrays.asList
 
@@ -80,6 +83,10 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
         return getPreferenceProviderValueByPrefKey(R.string.pref_service_enabled)
     }
 
+    fun getServiceEnabledLiveData(): LiveData<Boolean> {
+        return booleanPreferenceLiveData(R.string.pref_service_enabled)
+    }
+
     fun setServiceEnabled(enabled: Boolean) {
         putPreferenceProviderByPrefKey(R.string.pref_service_enabled, enabled)
     }
@@ -88,12 +95,20 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
         return getPreferenceProviderValueByPrefKey(R.string.pref_display_content_descriptions)
     }
 
+    fun getDisplayContentDescriptionLiveData(): LiveData<Boolean> {
+        return booleanPreferenceLiveData(R.string.pref_display_content_descriptions)
+    }
+
     fun setDisplayContentDescription(enabled: Boolean) {
         putPreferenceProviderByPrefKey(R.string.pref_display_content_descriptions, enabled)
     }
 
     fun getHighlightIssues(): Boolean {
         return getPreferenceProviderValueByPrefKey(R.string.pref_highlight_issues)
+    }
+
+    fun getHighlightIssuesLiveData(): LiveData<Boolean> {
+        return booleanPreferenceLiveData(R.string.pref_highlight_issues)
     }
 
     fun setHighlightIssues(enabled: Boolean) {
@@ -167,6 +182,27 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
     fun onInspectAllAppsUpdate(callback: (Boolean) -> Unit) {
         getPreferenceProviderMemberByPrefKey<Boolean>(R.string.pref_enable_all_apps)
                 .addListener(callback)
+    }
+
+    fun getLinearNavigationLiveData(): LiveData<Boolean> {
+        return booleanPreferenceLiveData(R.string.pref_linear_navigation_enabled)
+    }
+
+    private fun booleanPreferenceLiveData(@StringRes id: Int): LiveData<Boolean> {
+        val pref = getPreferenceProviderMemberByPrefKey<Boolean>(id)
+        return PreferenceLiveData(pref)
+    }
+}
+
+/**
+ * Hold onto the reference of pref to ensure it doesn't get garbage collected
+ */
+internal class PreferenceLiveData<T>(private val pref: PreferenceProviderMember<T>) :
+        MutableLiveData<T>(pref.getValue()) {
+    init {
+        pref.addListener { v ->
+            setValue(v)
+        }
     }
 }
 

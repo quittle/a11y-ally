@@ -1,15 +1,15 @@
 package com.quittle.a11yally.analyzer
 
-import android.accessibilityservice.AccessibilityService
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.quittle.a11yally.BuildConfig.TAG
+import com.quittle.a11yally.lifecycle.LifecycleAccessibilityService
 
 /**
  * Generic base service class for analyzing the accessibility events.
  */
-abstract class AccessibilityAnalyzer : AccessibilityService() {
+abstract class AccessibilityAnalyzer : LifecycleAccessibilityService() {
     /**
      * Holds the state of if the analyzer is paused due to focus being on a non-whitelisted app
      */
@@ -34,7 +34,9 @@ abstract class AccessibilityAnalyzer : AccessibilityService() {
 
     fun resumeListener(listener: AccessibilityItemEventListener) {
         if (mPausedListeners.remove(listener)) {
-            listener.onResume()
+            if (!mIsPaused) {
+                listener.onResume()
+            }
         }
     }
 
