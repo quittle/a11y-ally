@@ -15,8 +15,8 @@
         android:textAllCaps="false" />
     <!-- Unlabeled -->
     <Button
-        android:layout_width="60px"
-        android:layout_height="80px"
+        android:layout_width="80px"
+        android:layout_height="120px"
         android:layout_gravity="left"
         android:background="#ffff00" />
 </LinearLayout>

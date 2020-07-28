@@ -7,7 +7,7 @@ import kotlin.contracts.contract
  * Checks if a value is null, setting up a contract to support smart casting
  * @return true if the value is null, otherwise false
  */
-@UseExperimental(ExperimentalContracts::class)
+@OptIn(ExperimentalContracts::class)
 fun Any?.isNull(): Boolean {
     contract {
         returns(false) implies (this@isNull !== null)
@@ -20,7 +20,7 @@ fun Any?.isNull(): Boolean {
  * Checks if a number is null or zero, setting up a contract to support smart casting
  * @return true if the value is either null or equal to 0
  */
-@UseExperimental(ExperimentalContracts::class)
+@OptIn(ExperimentalContracts::class)
 fun Number?.isNullOrZero(): Boolean {
     contract {
         returns(false) implies (this@isNullOrZero !== null)
@@ -33,7 +33,7 @@ fun Number?.isNullOrZero(): Boolean {
  * Checks if a value is not null, setting up a contract to support smart casting
  * @return true if the value is nonnull, otherwise false
  */
-@UseExperimental(ExperimentalContracts::class)
+@OptIn(ExperimentalContracts::class)
 fun Any?.isNotNull(): Boolean {
     contract {
         returns(true) implies (this@isNotNull !== null)

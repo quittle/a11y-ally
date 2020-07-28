@@ -14,15 +14,20 @@ import android.content.SharedPreferences
  *   [SharedPreferences.getString].
  */
 internal abstract class PreferenceProviderMember<T>(
-        context: Context,
-        private val prefKeyId: Int,
-        defaultValue: T,
-        private val getPrefValue: (sharedPreferences: SharedPreferences,
-                                   prefKey: String,
-                                   defaultValue: T) -> T,
-        private val putPrefValue: (sharedPreferences: SharedPreferences.Editor,
-                                   prefKey: String,
-                                   value: T) -> SharedPreferences.Editor) {
+    context: Context,
+    private val prefKeyId: Int,
+    defaultValue: T,
+    private val getPrefValue: (
+        sharedPreferences: SharedPreferences,
+        prefKey: String,
+        defaultValue: T
+    ) -> T,
+    private val putPrefValue: (
+        sharedPreferences: SharedPreferences.Editor,
+        prefKey: String,
+        value: T
+    ) -> SharedPreferences.Editor
+) {
     private val mPrefKey: String by lazy { context.getString(prefKeyId) }
     private var mValue: T = defaultValue
     private val mListeners: MutableList<(T) -> Unit> = mutableListOf()

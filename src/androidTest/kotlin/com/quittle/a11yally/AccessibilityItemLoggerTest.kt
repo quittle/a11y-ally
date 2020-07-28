@@ -109,7 +109,7 @@ class AccessibilityItemLoggerTest {
                 .putBoolean(targetContext.getString(R.string.pref_enable_all_apps), false)
                 .putStringSet(targetContext.getString(R.string.pref_enabled_apps),
                         setOf(testContext.applicationInfo.packageName))
-                .putString(targetContext.getString(R.string.pref_small_touch_target_size), "40")
+                .putString(targetContext.getString(R.string.pref_small_touch_target_size), "30")
                 .commit()
 
         startRecording()

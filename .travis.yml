@@ -5,6 +5,9 @@ env:
 
 language: android
 
+jdk:
+  - openjdk10
+
 before_install:
 - openssl aes-256-cbc -K $encrypted_e375928ce4bc_key -iv $encrypted_e375928ce4bc_iv
   -in config/a11y-ally-secrets.zip.enc -out config/a11y-ally-secrets.zip

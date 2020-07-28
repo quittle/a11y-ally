@@ -14,16 +14,19 @@ import com.quittle.a11yally.R
  * view to update the views. The checked state is handled by the checkbox update by the adapter.
  */
 class CheckboxAdapter(
-        val stateArray: Array<CheckboxAdapterState>,
-        private val onCheckedChangeListener: (index: Int, isChecked: Boolean) -> Unit) :
+    val stateArray: Array<CheckboxAdapterState>,
+    private val onCheckedChangeListener: (index: Int, isChecked: Boolean) -> Unit
+) :
                 RecyclerView.Adapter<CheckboxAdapter.Companion.CheckboxViewHolder>() {
     companion object {
         class CheckboxViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
-        data class CheckboxAdapterState (val checkboxAdapterEntry: CheckboxAdapterEntry,
-                                         var checked: Boolean,
-                                         var enabled: Boolean,
-                                         var visible: Boolean)
+        data class CheckboxAdapterState(
+            val checkboxAdapterEntry: CheckboxAdapterEntry,
+            var checked: Boolean,
+            var enabled: Boolean,
+            var visible: Boolean
+        )
 
         data class CheckboxAdapterEntry(val title: String, val subtitle: String) :
                 Comparable<CheckboxAdapterEntry> {

@@ -9,8 +9,9 @@ import com.quittle.a11yally.preferences.PreferenceProvider
  * Analyzes accessibility nodes as they are exposed by the OS and reports issues it finds
  */
 class AccessibilityNodeIssueAnalyzer(
-        context: Context,
-        private val mAccessibilityIssueListener: AccessibilityIssueListener) :
+    context: Context,
+    private val mAccessibilityIssueListener: AccessibilityIssueListener
+) :
                 AccessibilityItemEventListener {
     private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(context)
     private val mPreferenceProvider by lazy { PreferenceProvider(context, true) }

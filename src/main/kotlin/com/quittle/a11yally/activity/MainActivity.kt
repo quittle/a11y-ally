@@ -94,9 +94,11 @@ class MainActivity : AppCompatActivity() {
      * Helper function for setting up the {@link ButtonSwitch}es to open the preferences panel when
      * clicked.
      */
-    private fun setUpButtonSwitchAsFeaturePreferencesButton(viewId: Int,
-                                                            @XmlRes preferences: Int,
-                                                            @DrawableRes imageResource: Int) {
+    private fun setUpButtonSwitchAsFeaturePreferencesButton(
+        viewId: Int,
+        @XmlRes preferences: Int,
+        @DrawableRes imageResource: Int
+    ) {
         findViewById<ButtonSwitch>(viewId).let { view ->
             view.getButton().setOnClickListener {
                 val intent = Intent(applicationContext, FEATURE_SETTINGS_ACTIVITY_CLASS)

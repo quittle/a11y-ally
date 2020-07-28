@@ -227,9 +227,14 @@ class MultiAppSelectionActivityInstrumentationTest {
         }
     }
 
-    private fun withNthEntry(position: Int, handler: (checkbox: AppCompatCheckBox,
-                                                      title: TextView,
-                                                      subtitle: TextView) -> Unit) {
+    private fun withNthEntry(
+        position: Int,
+        handler: (
+            checkbox: AppCompatCheckBox,
+            title: TextView,
+            subtitle: TextView
+        ) -> Unit
+    ) {
         onView(withId(R.id.recycler_view))
                 .perform(scrollToPosition<CheckboxViewHolder>(position))
                 .perform(actionOnItemAtPosition<CheckboxViewHolder>(position,

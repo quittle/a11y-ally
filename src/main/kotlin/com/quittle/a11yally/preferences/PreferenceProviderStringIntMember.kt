@@ -12,14 +12,19 @@ internal class PreferenceProviderStringIntMember(context: Context, prefKeyId: In
          * value must be converted to an int
          */
         private fun parseFromSharedPreferences(
-                sharedPreferences: SharedPreferences, prefKey: String, defaultValue: Int): Int {
+            sharedPreferences: SharedPreferences,
+            prefKey: String,
+            defaultValue: Int
+        ): Int {
             return sharedPreferences.getString(prefKey, defaultValue.toString())?.toInt()
                     ?: defaultValue
         }
 
-        private fun parseIntoSharedPreferences(editor: SharedPreferences.Editor,
-                                               prefKey: String,
-                                               value: Int): SharedPreferences.Editor {
+        private fun parseIntoSharedPreferences(
+            editor: SharedPreferences.Editor,
+            prefKey: String,
+            value: Int
+        ): SharedPreferences.Editor {
             return editor.putString(prefKey, value.toString())
         }
     }

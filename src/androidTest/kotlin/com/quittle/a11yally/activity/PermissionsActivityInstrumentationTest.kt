@@ -161,7 +161,11 @@ class PermissionsActivityInstrumentationTest {
      * Verifies that the status views are displaying correctly and do nothing if [statusOk] is true.
      */
     private fun verifyStatusViews(
-            textViewId: Int, imageViewId: Int, statusViewId: Int, statusOk: Boolean) {
+        textViewId: Int,
+        imageViewId: Int,
+        statusViewId: Int,
+        statusOk: Boolean
+    ) {
         val textView = withId(textViewId)
         val imageView = withId(imageViewId)
         val statusView = withId(statusViewId)

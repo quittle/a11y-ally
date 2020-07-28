@@ -43,8 +43,10 @@ class RecordingService : IntentService(RecordingService::javaClass.name) {
      * @param func The function to call on the analyzer service
      * @param errorMessage The message print if the service wasn't running
      */
-    private fun runServiceOrLog(func: Function1<A11yAllyAccessibilityAnalyzer, Unit>,
-                                errorMessage: String) {
+    private fun runServiceOrLog(
+        func: Function1<A11yAllyAccessibilityAnalyzer, Unit>,
+        errorMessage: String
+    ) {
         val serviceInstance = A11yAllyAccessibilityAnalyzer.getInstance()
 
         if (serviceInstance.isNotNull()) {

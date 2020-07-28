@@ -109,8 +109,10 @@ abstract class AccessibilityAnalyzer : LifecycleAccessibilityService() {
 
     override fun onInterrupt() {}
 
-    private fun iterateAccessibilityNodeInfos(root: AccessibilityNodeInfo,
-                                              onEachCallback: (AccessibilityNodeInfo) -> Unit) {
+    private fun iterateAccessibilityNodeInfos(
+        root: AccessibilityNodeInfo,
+        onEachCallback: (AccessibilityNodeInfo) -> Unit
+    ) {
         onEachCallback(root)
         for (i in 0 until root.childCount) {
             root.getChild(i)?.let {

@@ -2,7 +2,7 @@ package com.quittle.a11yally.analyzer
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.listeners.AccessibilityItemLogger
 import com.quittle.a11yally.analyzer.listeners.ContentDescriptionOverlay
@@ -111,7 +111,8 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
      * @return a new listener that delegates callbacks to all the [targetListeners]
      */
     private fun fanOutIssueListeners(
-            vararg targetListeners: AccessibilityIssueListener): AccessibilityIssueListener {
+        vararg targetListeners: AccessibilityIssueListener
+    ): AccessibilityIssueListener {
         return object : AccessibilityIssueListener {
             override fun onInvalidateIssues() {
                 targetListeners.forEach(AccessibilityIssueListener::onInvalidateIssues)

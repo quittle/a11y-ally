@@ -23,7 +23,7 @@ class AccessibilityNodeAnalyzer(context: Context) {
     fun isNodeSmallTouchTarget(node: AccessibilityNodeInfo, minTouchTargetSizeDp: Int): Boolean {
         if (node.isClickable || node.isLongClickable || node.isScrollable) {
             val rect = Rect()
-            node.getBoundsInParent(rect)
+            node.getBoundsInScreen(rect)
             return rect.width() / mScreenDensity < minTouchTargetSizeDp ||
                     rect.height() / mScreenDensity < minTouchTargetSizeDp
         }

@@ -100,11 +100,13 @@ class PermissionsActivity : FixedContentActivity() {
         }
     }
 
-    private fun updateStatus(hasPermission: Boolean,
-                             wrapperViewId: Int,
-                             imageViewId: Int,
-                             statusViewId: Int,
-                             onClickCallback: () -> Unit) {
+    private fun updateStatus(
+        hasPermission: Boolean,
+        wrapperViewId: Int,
+        imageViewId: Int,
+        statusViewId: Int,
+        onClickCallback: () -> Unit
+    ) {
         val onClickListener: View.OnClickListener? = hasPermission.ifElse(
                 null,
                 object : View.OnClickListener {

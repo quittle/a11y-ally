@@ -38,7 +38,7 @@ class ScreenshotInstrumentationTest {
             GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     @get:Rule
-    val mFlavorRule = FlavorRule("screenshot")
+    val mBuildTypeRule = BuildTypeRule("screenshot")
 
     @After
     fun tearDown() {

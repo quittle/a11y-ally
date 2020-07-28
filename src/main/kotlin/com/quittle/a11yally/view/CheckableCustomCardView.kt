@@ -1,7 +1,7 @@
 package com.quittle.a11yally.view
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.util.AttributeSet
 import android.widget.Checkable
 import androidx.annotation.ColorInt
@@ -42,9 +42,11 @@ class CheckableCustomCardView : Checkable, CustomCardView {
         }
     }
 
-    constructor(context: Context,
-                attrs: AttributeSet,
-                defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyle: Int
+    ) : super(context, attrs, defStyle) {
         with(extractAttributes(context, attrs)) {
             mImageResource = imageResource
             mImageBackgroundColor = imageBackgroundColor
@@ -57,12 +59,13 @@ class CheckableCustomCardView : Checkable, CustomCardView {
 
     private companion object {
         private data class Attributes(
-                @DrawableRes val imageResource: Int,
-                @ColorInt val imageBackgroundColor: Int,
-                @DrawableRes val imageResourceUnchecked: Int,
-                @ColorInt val imageBackgroundColorUnchecked: Int,
-                val checked: Boolean,
-                val preferenceKey: String?)
+            @DrawableRes val imageResource: Int,
+            @ColorInt val imageBackgroundColor: Int,
+            @DrawableRes val imageResourceUnchecked: Int,
+            @ColorInt val imageBackgroundColorUnchecked: Int,
+            val checked: Boolean,
+            val preferenceKey: String?
+        )
 
         @JvmField
         val ON_TOGGLE = object : OnCheckedChangeListener {

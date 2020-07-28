@@ -12,9 +12,10 @@ import com.quittle.a11yally.R
 
 open class CustomCardView : LinearLayout {
     private data class Attributes(
-            val text: CharSequence,
-            @DrawableRes val imageResource: Int,
-            @ColorInt val imageBackgroundColor: Int)
+        val text: CharSequence,
+        @DrawableRes val imageResource: Int,
+        @ColorInt val imageBackgroundColor: Int
+    )
 
     private var mTextView: TextView? = null
     private var mImageView: ImageView? = null
@@ -39,9 +40,11 @@ open class CustomCardView : LinearLayout {
         }
     }
 
-    constructor(context: Context,
-                attrs: AttributeSet,
-                defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyle: Int
+    ) : super(context, attrs, defStyle) {
         initializeViews(context)
 
         with(extractAttributes(context, attrs)) {
