@@ -18,7 +18,7 @@ buildscript {
 plugins {
     id 'com.github.triplet.play' version '2.8.0'
     id 'com.quittle.setup-android-sdk' version '2.0.0'
-    id 'com.quittle.android-emulator' version '0.2.0'
+    id 'com.quittle.android-emulator' version '0.3.0'
     id 'com.quittle.svg-2-android-vector' version '0.0.4'
     id 'com.vanniktech.code.quality.tools' version '0.20.0'
     id 'com.diffplug.image-grinder' version '2.1.2'
