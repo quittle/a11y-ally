@@ -151,6 +151,10 @@ if (IS_IN_TRAVIS) {
     }
 }
 
+setupAndroidSdk {
+    packages 'cmdline-tools;latest'
+}
+
 codeQualityTools {
     htmlReports true
     xmlReports false

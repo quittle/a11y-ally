@@ -23,7 +23,7 @@ script:
 before_deploy:
 - git config --local user.name "Dustin Toff"
 - git config --local user.email "me@dustintoff.com"
-- apkanalyzer=./build/android-sdk-root/tools/bin/apkanalyzer
+- apkanalyzer=./build/android-sdk-root/cmdline-tools/latest/bin/apkanalyzer
 - chmod +x $apkanalyzer
 - version_code="$($apkanalyzer manifest version-code build/outputs/apk/release/a11y-ally-release.apk)"
 - git tag "version-code-${version_code}" || echo "Release already tagged"
