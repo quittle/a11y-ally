@@ -157,6 +157,7 @@ setupAndroidSdk {
 
 androidEmulator {
     logEmulatorOutput true
+    headless true
 }
 
 codeQualityTools {
