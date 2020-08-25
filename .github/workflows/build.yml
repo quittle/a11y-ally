@@ -8,4 +8,4 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '10.0.2'
-    - run: ./gradlew
+    - run: ./gradlew --debug
