@@ -15,7 +15,7 @@ automated testing.
 
 | Main Screen | Highlighting Example |
 | --- | --- |
-| ![](src/main/play/listings/en-US/graphics/phone-screenshots/002_main.png) | ![](src/main/play/listings/en-US/graphics/phone-screenshots/003_highlight_issues.png) |
+| ![](src/main/play/listings/en-US/graphics/phone-screenshots/004_main.png) | ![](src/main/play/listings/en-US/graphics/phone-screenshots/005_content_descriptions.png) |
 
 > It currently only supports a small subset of intended functionality. Check the feature list below
 or in the app to see what features are currently supported. If there's something missing you would
