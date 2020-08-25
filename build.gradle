@@ -155,6 +155,10 @@ setupAndroidSdk {
     packages 'cmdline-tools;latest'
 }
 
+androidEmulator {
+    logEmulatorOutput true
+}
+
 codeQualityTools {
     htmlReports true
     xmlReports false
