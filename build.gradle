@@ -158,6 +158,7 @@ setupAndroidSdk {
 androidEmulator {
     logEmulatorOutput true
     headless true
+    additionalEmulatorArguments '-selinux', 'permissive'
 }
 
 codeQualityTools {
