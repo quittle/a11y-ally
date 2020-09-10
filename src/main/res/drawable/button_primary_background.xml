@@ -2,13 +2,13 @@
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/button_radius" />
-            <solid android:color="@color/primary_action_disabled_background" />
+            <solid android:color="?attr/primary_action_disabled_background" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/button_radius" />
-            <solid android:color="@color/primary_action_background" />
+            <solid android:color="?attr/primary_action_background" />
         </shape>
     </item>
 </selector>

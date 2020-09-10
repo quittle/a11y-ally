@@ -5,6 +5,7 @@ import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.PositionAssertions.isBottomAlignedWith
 import androidx.test.espresso.assertion.PositionAssertions.isCompletelyRightOf
 import androidx.test.espresso.assertion.PositionAssertions.isTopAlignedWith
@@ -13,7 +14,6 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.intent.matcher.IntentMatchers.toPackage
-import androidx.test.espresso.matcher.ViewMatchers.hasTextColor
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
@@ -27,6 +27,7 @@ import com.quittle.a11yally.fullySetUpPermissions
 import com.quittle.a11yally.fullyTearDownPermissions
 import com.quittle.a11yally.getCurrentActivity
 import com.quittle.a11yally.grantPermissions
+import com.quittle.a11yally.hasTextColorFromAttribute
 import com.quittle.a11yally.ifElse
 import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.recordingIntents
@@ -65,6 +66,7 @@ class PermissionsActivityInstrumentationTest {
     fun continueButtonStatus() {
         onView(withId(R.id.continue_button))
                 .perform(scrollTo())
+                .perform(swipeUp())
                 .check(matches(isCompletelyDisplayed()))
                 .check(matches(not(isEnabled())))
                 .perform(click())
@@ -80,6 +82,7 @@ class PermissionsActivityInstrumentationTest {
 
         onView(withId(R.id.continue_button))
                 .perform(scrollTo())
+                .perform(swipeUp())
                 .check(matches(isCompletelyDisplayed()))
                 .check(matches(isEnabled()))
                 .perform(click())
@@ -103,9 +106,9 @@ class PermissionsActivityInstrumentationTest {
 
             Intents.intended(
                     allOf(
-                        toPackage("com.android.settings"),
-                        hasAction("android.settings.action.MANAGE_OVERLAY_PERMISSION"),
-                        hasData("package:com.quittle.a11yally")
+                            toPackage("com.android.settings"),
+                            hasAction("android.settings.action.MANAGE_OVERLAY_PERMISSION"),
+                            hasData("package:com.quittle.a11yally")
                     ),
                     Intents.times(1))
         }
@@ -187,9 +190,9 @@ class PermissionsActivityInstrumentationTest {
                 .check(matches(withText(statusOk.ifElse(
                         R.string.permissions_activity_status_ok,
                         R.string.permissions_activity_status_fix))))
-                .check(matches(hasTextColor(statusOk.ifElse(
-                        R.color.primary_action_disabled_text,
-                        R.color.primary_action_enabled_text))))
+                .check(matches(hasTextColorFromAttribute(statusOk.ifElse(
+                        R.attr.primary_action_disabled_text,
+                        R.attr.primary_action_enabled_text))))
                 .check(isCompletelyRightOf(imageView))
                 .check(isTopAlignedWith(imageView))
                 .check(isBottomAlignedWith(imageView))

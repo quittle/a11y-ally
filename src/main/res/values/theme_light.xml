@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <style name="Theme.Main.NoActionBar.Light" parent="Theme.Main.NoActionBar">
+        <item name="standard_text">#5C6263</item>
+        <item name="standard_background">#E1F5F4</item>
+        <item name="call_to_action_background">#ADF58F</item>
+        <item name="call_to_action_disabled_background">#CAE8C0</item>
+        <item name="secondary_action_background">#F1FDEC</item>
+        <item name="secondary_action_disabled_background">#E7ECE6</item>
+        <item name="call_to_action_text">#3A5961</item>
+        <item name="call_to_action_disabled_text">#9AA7AD</item>
+    </style>
+
+    <style name="Theme.Main.Light" parent="Theme.Main">
+        <item name="standard_text">#5C6263</item>
+        <item name="standard_background">#E1F5F4</item>
+        <item name="call_to_action_background">#ADF58F</item>
+        <item name="call_to_action_disabled_background">#CAE8C0</item>
+        <item name="secondary_action_background">#F1FDEC</item>
+        <item name="secondary_action_disabled_background">#E7ECE6</item>
+        <item name="call_to_action_text">#3A5961</item>
+        <item name="call_to_action_disabled_text">#9AA7AD</item>
+    </style>
+</resources>

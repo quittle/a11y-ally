@@ -25,7 +25,7 @@
             android:label="@string/app_label"
             android:icon="@mipmap/ic_launcher"
             android:allowBackup="true"
-            android:theme="@style/Theme.Main"
+            android:theme="@style/Theme.Main.Light"
             android:supportsRtl="false">
         <!-- Triggers preemptive caching of the ocr models on install from the Google Play Store -->
         <meta-data
@@ -38,13 +38,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar" />
+        <activity android:name=".activity.WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar.Light" />
         <activity android:name=".activity.LearnMoreActivity" android:label="@string/learn_more" android:parentActivityName=".activity.WelcomeActivity" />
         <activity android:name=".activity.PermissionsActivity" />
         <activity android:name=".activity.UnfriendlyActivity" android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.FeatureSettingsActivity" android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.MultiAppSelectionActivity" android:parentActivityName=".activity.MainActivity" />
-        <activity android:name=".activity.DialogActivity" android:theme="@style/Theme.AppCompat.Dialog" android:excludeFromRecents="true" />
+        <activity android:name=".activity.DialogActivity" android:theme="@style/Theme.AppCompat.DayNight.Dialog" android:excludeFromRecents="true" />
 
         <service android:name=".analyzer.A11yAllyAccessibilityAnalyzer"
                 android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">

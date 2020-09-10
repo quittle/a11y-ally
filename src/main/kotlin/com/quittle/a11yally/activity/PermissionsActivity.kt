@@ -10,12 +10,14 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.quittle.a11yally.BuildConfig
 import com.quittle.a11yally.PermissionsManager
 import com.quittle.a11yally.R
 import com.quittle.a11yally.ifElse
+import com.quittle.a11yally.ifNotNull
+import com.quittle.a11yally.getColorCompat
 import com.quittle.a11yally.preferences.withPreferenceProvider
+import com.quittle.a11yally.resolveAttributeResourceValue
+import com.quittle.a11yally.BuildConfig
 
 /**
  * Shows the current status of permissions necessary for the app to run effectively
@@ -58,12 +60,14 @@ class PermissionsActivity : FixedContentActivity() {
         updateStatus(
                 mPermissionsManager.hasDrawOverlaysPermission(),
                 R.id.permission_overlay_wrapper,
+                R.id.permission_overlay_text,
                 R.id.permission_overlay_image,
                 R.id.permission_overlay_status,
                 this::onClickFixOverlay)
         updateStatus(
                 mPermissionsManager.hasAccessibilityServicePermission(),
                 R.id.permission_service_wrapper,
+                R.id.permission_service_text,
                 R.id.permission_service_image,
                 R.id.permission_service_status,
                 this::onClickFixService)
@@ -103,6 +107,7 @@ class PermissionsActivity : FixedContentActivity() {
     private fun updateStatus(
         hasPermission: Boolean,
         wrapperViewId: Int,
+        descriptionViewId: Int,
         imageViewId: Int,
         statusViewId: Int,
         onClickCallback: () -> Unit
@@ -118,8 +123,11 @@ class PermissionsActivity : FixedContentActivity() {
         findViewById<View>(wrapperViewId).run {
             setOnClickListener(onClickListener)
             isEnabled = !hasPermission
-            setBackgroundResource(hasPermission.ifElse(
-                    R.color.primary_action_disabled_background, R.color.primary_action_background))
+            resolveAttributeResourceValue(hasPermission.ifElse(
+                    R.attr.primary_action_disabled_background,
+                    R.attr.primary_action_background)).ifNotNull {
+                setBackgroundColor(it)
+            }
         }
 
         findViewById<ImageView>(imageViewId).run {
@@ -129,14 +137,21 @@ class PermissionsActivity : FixedContentActivity() {
                             R.drawable.warning_icon))
         }
 
+        val textColor = if (hasPermission) {
+            resolveAttributeResourceValue(R.attr.primary_action_disabled_text)
+        } else {
+            getColorCompat(R.color.primary_action_text)
+        }
+
+        textColor.ifNotNull {
+            findViewById<TextView>(descriptionViewId).setTextColor(it)
+        }
+
         findViewById<TextView>(statusViewId).run {
             setText(hasPermission.ifElse(
                     R.string.permissions_activity_status_ok,
                     R.string.permissions_activity_status_fix))
-            setTextColor(ContextCompat.getColor(this@PermissionsActivity,
-                    hasPermission.ifElse(
-                            R.color.primary_action_disabled_text,
-                            R.color.primary_action_text)))
+            textColor.ifNotNull { setTextColor(it) }
         }
     }
 

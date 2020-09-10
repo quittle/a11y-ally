@@ -1,0 +1,6 @@
+<resources>
+    <string name="welcome2_activity_title">Welcome to A11y Ally!</string>
+    <string name="welcome2_activity_main_text">Want to get started checking your app for accessibility issues right now?</string>
+    <string name="welcome2_activity_get_started">Yeah!</string>
+    <string name="welcome2_activity_learn_more">Not Quite Yet</string>
+</resources>

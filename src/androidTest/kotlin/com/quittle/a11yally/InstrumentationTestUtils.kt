@@ -4,15 +4,19 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.UiAutomation
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.ParcelFileDescriptor
 import android.view.View
+import android.widget.TextView
+import androidx.annotation.AttrRes
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
@@ -259,3 +263,21 @@ fun <T : Activity> ActivityTestRule<T>.relaunchActivity(): T {
  */
 class DelayedActivityTestRule<T : Activity>(activity: KClass<T>) :
         ActivityTestRule<T>(activity.java, true, false)
+
+fun hasTextColorFromAttribute(@AttrRes attrId: Int): Matcher<View> {
+    return object : BoundedMatcher<View, TextView>(TextView::class.java) {
+        private var context: Context? = null
+
+        override fun matchesSafely(textView: TextView): Boolean {
+            context = textView.context
+            val textViewColor = textView.currentTextColor
+            val expectedColor = context?.resolveAttributeResourceValue(attrId)
+            return textViewColor == expectedColor
+        }
+
+        override fun describeTo(description: org.hamcrest.Description) {
+            val colorId = context?.resources?.getResourceName(attrId)?.orElse(attrId.toString())
+            description.appendText("has color with ID $colorId")
+        }
+    }
+}

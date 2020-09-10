@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="test_color">#123456</color>
+    <attr name="test_attribute" format="color" />
+
+    <style name="Theme.Test" parent="Theme.AppCompat">
+        <item name="test_attribute">@color/test_color</item>
+    </style>
+</resources>

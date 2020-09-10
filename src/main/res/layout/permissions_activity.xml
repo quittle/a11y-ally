@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="100sp"
             android:layout_marginTop="@dimen/button_padding"
-            tools:background="@color/primary_action_disabled_background"
+            tools:background="?attr/primary_action_disabled_background"
             tools:enabled="false">
 
             <TextView
@@ -95,7 +95,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_weight="2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:textColor="?attr/primary_action_disabled_text" />
 
             <ImageView
                 android:id="@+id/permission_service_image"
@@ -127,7 +128,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="LabelFor"
                 tools:text="@string/permissions_activity_status_ok"
-                tools:textColor="@color/primary_action_disabled_text" />
+                tools:textColor="?attr/primary_action_disabled_text" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="standard_text" format="color" />
+    <attr name="standard_background" format="color" />
+    <attr name="call_to_action_background" format="color" />
+    <attr name="call_to_action_disabled_background" format="color" />
+    <attr name="secondary_action_background" format="color" />
+    <attr name="secondary_action_disabled_background" format="color" />
+    <attr name="call_to_action_text" format="color" />
+    <attr name="call_to_action_disabled_text" format="color" />
+
+    <!-- Transitive Properties -->
+    <attr name="primary_action_background" format="color" />
+    <attr name="primary_action_disabled_background" format="color" />
+    <attr name="primary_action_enabled_text" format="color" />
+    <attr name="primary_action_disabled_text" format="color" />
+    <attr name="secondary_action_text" format="color" />
+    <attr name="secondary_action_disabled_text" format="color" />
+
+    <style name="Theme.Main" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">@style/Main.Button.Primary</item>
+        <item name="buttonStyle">@style/Main.Button.Primary</item>
+        <item name="android:textViewStyle">@style/Main.Text</item>
+        <item name="android:textAppearance">@style/Main.TextAppearance</item>
+        <item name="android:windowBackground">?attr/standard_background</item>
+        <item name="colorPrimary">?attr/primary_action_background</item>
+        <item name="android:textColorPrimary">@color/primary_action_text</item>
+
+        <item name="primary_action_background">?attr/call_to_action_background</item>
+        <item name="primary_action_disabled_background">?attr/call_to_action_disabled_background</item>
+        <item name="primary_action_enabled_text">?attr/call_to_action_text</item>
+        <item name="primary_action_disabled_text">?attr/call_to_action_disabled_text</item>
+        <item name="secondary_action_text">?attr/call_to_action_text</item>
+        <item name="secondary_action_disabled_text">?attr/call_to_action_disabled_text</item>
+    </style>
+
+    <!-- This should be identical to Theme.Main -->
+    <style name="Theme.Main.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:buttonStyle">@style/Main.Button.Primary</item>
+        <item name="buttonStyle">@style/Main.Button.Primary</item>
+        <item name="android:textViewStyle">@style/Main.Text</item>
+        <item name="android:textAppearance">@style/Main.TextAppearance</item>
+        <item name="android:windowBackground">?attr/standard_background</item>
+        <item name="colorPrimary">?attr/primary_action_background</item>
+        <item name="android:textColorPrimary">@color/primary_action_text</item>
+
+        <item name="primary_action_background">?attr/call_to_action_background</item>
+        <item name="primary_action_disabled_background">?attr/call_to_action_disabled_background</item>
+        <item name="primary_action_enabled_text">?attr/call_to_action_text</item>
+        <item name="primary_action_disabled_text">?attr/call_to_action_disabled_text</item>
+        <item name="secondary_action_text">?attr/call_to_action_text</item>
+        <item name="secondary_action_disabled_text">?attr/call_to_action_disabled_text</item>
+    </style>
+</resources>
