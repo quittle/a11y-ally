@@ -20,7 +20,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withChild
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.quittle.a11yally.DelayedActivityTestRule
 import com.quittle.a11yally.R
 import com.quittle.a11yally.enableAccessibilityService
 import com.quittle.a11yally.fullySetUpPermissions
@@ -31,21 +30,16 @@ import com.quittle.a11yally.hasTextColorFromAttribute
 import com.quittle.a11yally.ifElse
 import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.recordingIntents
-import com.quittle.a11yally.relaunchActivity
 import com.quittle.a11yally.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import java.lang.Thread.sleep
 
 class PermissionsActivityInstrumentationTest {
-    @get:Rule
-    val mActivityRule = DelayedActivityTestRule(PermissionsActivity::class)
-
     @After
     fun tearDown() {
         fullyTearDownPermissions()
@@ -59,7 +53,7 @@ class PermissionsActivityInstrumentationTest {
             setShowTutorial(false)
         }
 
-        mActivityRule.launchActivity()
+        launchActivity(PermissionsActivity::class)
     }
 
     @Test
@@ -76,7 +70,7 @@ class PermissionsActivityInstrumentationTest {
 
         fullySetUpPermissions()
 
-        mActivityRule.relaunchActivity()
+        launchActivity(PermissionsActivity::class)
 
         sleep(1500)
 
@@ -115,7 +109,7 @@ class PermissionsActivityInstrumentationTest {
 
         grantPermissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
 
-        mActivityRule.relaunchActivity()
+        launchActivity(PermissionsActivity::class)
 
         // Wait for the permission to propagate
         sleep(2000)
@@ -151,7 +145,7 @@ class PermissionsActivityInstrumentationTest {
 
         enableAccessibilityService()
 
-        mActivityRule.relaunchActivity()
+        launchActivity(PermissionsActivity::class)
 
         verifyStatusViews(
                 textViewId = R.id.permission_service_text,

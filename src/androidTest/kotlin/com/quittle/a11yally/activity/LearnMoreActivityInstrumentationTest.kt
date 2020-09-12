@@ -10,7 +10,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.quittle.a11yally.DisableAnimationsRule
 import com.quittle.a11yally.R
 import com.quittle.a11yally.clearSharedPreferences
@@ -28,14 +27,12 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class LearnMoreActivityInstrumentationTest {
     @get:Rule
-    val mActivityRule = ActivityTestRule(LearnMoreActivity::class.java)
-
-    @get:Rule
     val mDisableAnimationsRule = DisableAnimationsRule()
 
     @Before
     fun setUp() {
         fullyTearDownPermissions()
+        launchActivity(LearnMoreActivity::class)
     }
 
     @Test

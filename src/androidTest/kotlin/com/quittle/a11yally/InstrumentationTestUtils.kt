@@ -18,14 +18,13 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.runner.permission.PermissionRequester
-import org.hamcrest.Matcher
-import org.hamcrest.Matchers
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.preferences.withPreferenceProvider
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 import org.json.JSONArray
 import org.json.JSONException
 import org.junit.rules.TestRule
@@ -170,11 +169,13 @@ class ViewActionCheck(private val check: (view: View) -> Unit) : ViewAction {
 
 /**
  * Launches an activity in the app under test
+ * @param activity The activity to launch
+ * @return The activity instance created
  */
 fun <T : Activity> launchActivity(clazz: KClass<T>): T {
     val instrumentation = InstrumentationRegistry.getInstrumentation()
     val intent = Intent(instrumentation.targetContext, clazz.java).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
     }
     @Suppress("unchecked_cast")
     return instrumentation.startActivitySync(intent) as T
@@ -241,28 +242,6 @@ fun withPreferenceProvider(block: PreferenceProvider.() -> Unit) {
 private fun getPackageName(): String {
     return InstrumentationRegistry.getInstrumentation().targetContext.packageName
 }
-
-/**
- * Extension function to launch an activity without parameters
- */
-fun <T : Activity> ActivityTestRule<T>.launchActivity(): T {
-    return this.launchActivity(Intent())
-}
-
-/**
- * Extension function to stop and re-start the activity of a rule
- */
-fun <T : Activity> ActivityTestRule<T>.relaunchActivity(): T {
-    this.activity.finish()
-    return this.launchActivity()
-}
-
-/**
- * An [ActivityTestRule] that does not launch the activity at startup
- * @param activity The activity to launch
- */
-class DelayedActivityTestRule<T : Activity>(activity: KClass<T>) :
-        ActivityTestRule<T>(activity.java, true, false)
 
 fun hasTextColorFromAttribute(@AttrRes attrId: Int): Matcher<View> {
     return object : BoundedMatcher<View, TextView>(TextView::class.java) {

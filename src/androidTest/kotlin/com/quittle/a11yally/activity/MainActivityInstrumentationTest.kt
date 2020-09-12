@@ -1,17 +1,17 @@
 package com.quittle.a11yally.activity
 
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.quittle.a11yally.DelayedActivityTestRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.quittle.a11yally.DisableAnimationsRule
 import com.quittle.a11yally.PermissionsRule
 import com.quittle.a11yally.R
@@ -30,9 +30,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MainActivityInstrumentationTest {
     @get:Rule
-    val mActivityRule = DelayedActivityTestRule(MainActivity::class)
-
-    @get:Rule
     val mPermissionsRule = PermissionsRule()
 
     @get:Rule
@@ -45,11 +42,11 @@ class MainActivityInstrumentationTest {
 
         onIdle()
 
-        mActivityRule.launchActivity()
+        ActivityScenario.launch(MainActivity::class.java).use {
+            onIdle()
 
-        onIdle()
-
-        assertSame(WelcomeActivity::class.java, getCurrentActivity().javaClass)
+            assertSame(WelcomeActivity::class.java, getCurrentActivity().javaClass)
+        }
     }
 
     @Test
@@ -57,17 +54,18 @@ class MainActivityInstrumentationTest {
         fullyTearDownPermissions()
         disableTutorial()
 
-        mActivityRule.launchActivity()
+        ActivityScenario.launch(MainActivity::class.java).use {
+            onIdle()
 
-        onIdle()
-
-        assertSame(PermissionsActivity::class.java, getCurrentActivity().javaClass)
+            assertSame(PermissionsActivity::class.java, getCurrentActivity().javaClass)
+        }
     }
 
     @Test
     fun pressHighlightIssuesButton() {
         disableTutorial()
-        mActivityRule.launchActivity()
+
+        launchActivity(MainActivity::class)
 
         onView(withId(R.id.highlight_issues))
                 .perform(scrollTo())
@@ -87,7 +85,8 @@ class MainActivityInstrumentationTest {
     @Test
     fun pressToggleButtons() {
         disableTutorial()
-        mActivityRule.launchActivity()
+
+        launchActivity(MainActivity::class)
 
         arrayOf(R.id.display_content_descriptions, R.id.highlight_issues).forEach { id ->
             onView(withId(id))
@@ -108,8 +107,7 @@ class MainActivityInstrumentationTest {
     @Test
     fun pressSelectAppsToInspectActivityButton() {
         disableTutorial()
-        mActivityRule.launchActivity()
-
+        launchActivity(MainActivity::class)
         onView(withId(R.id.toggle_app_selection))
                 .perform(scrollTo())
                 .check(matches(isCompletelyDisplayed()))
@@ -122,7 +120,8 @@ class MainActivityInstrumentationTest {
     @Test
     fun pressUnfriendlyActivityButton() {
         disableTutorial()
-        mActivityRule.launchActivity()
+
+        launchActivity(MainActivity::class)
 
         onView(withId(R.id.open_unfriendly_activity_button))
                 .perform(scrollTo())

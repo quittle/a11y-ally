@@ -1,9 +1,9 @@
 package com.quittle.a11yally
 
 import android.Manifest
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import com.quittle.a11yally.activity.MainActivity
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -22,7 +22,7 @@ class PermissionsManagerInstrumentationTest {
      * activity. If it is, then setting the permission will not work.
      */
     @get:Rule
-    val mActivityRule = ActivityTestRule(MainActivity::class.java)
+    val mActivityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setUp() {

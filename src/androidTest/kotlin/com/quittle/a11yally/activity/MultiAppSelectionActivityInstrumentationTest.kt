@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.PerformException
@@ -28,14 +29,12 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.quittle.a11yally.DelayedActivityTestRule
 import com.quittle.a11yally.DisableAnimationsRule
 import com.quittle.a11yally.PermissionsRule
 import com.quittle.a11yally.R
 import com.quittle.a11yally.ViewActionCheck
 import com.quittle.a11yally.adapter.CheckboxAdapter.Companion.CheckboxViewHolder
 import com.quittle.a11yally.clearSharedPreferences
-import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
@@ -53,9 +52,6 @@ import java.util.Objects
 
 @RunWith(AndroidJUnit4::class)
 class MultiAppSelectionActivityInstrumentationTest {
-    @get:Rule
-    val mDelayedActivityRule = DelayedActivityTestRule(MultiAppSelectionActivity::class)
-
     @get:Rule
     val mPermissionsRule = PermissionsRule()
 
@@ -75,7 +71,8 @@ class MultiAppSelectionActivityInstrumentationTest {
     @Before
     fun setUp() {
         clearSharedPreferences()
-        mDelayedActivityRule.launchActivity()
+
+        ActivityScenario.launch(MultiAppSelectionActivity::class.java)
     }
 
     @Test
