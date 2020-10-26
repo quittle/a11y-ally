@@ -52,6 +52,7 @@ class AccessibilityItemLogger(context: Context) : AccessibilityIssueListener {
             mOngoingRecording.clear()
         }
         mIsRecording = true
+        Log.i(TAG, "Starting recording.")
     }
 
     fun stopRecording() {

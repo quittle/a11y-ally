@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/left_to_right_gradient"
             android:backgroundTint="#df301b"
+            app:backgroundTint="#df301b"
             tools:ignore="UnusedAttribute"
             app:dividerDrawable="@drawable/vertical_divider"
             app:dividerPadding="@dimen/main_activity_button_switch_padding"
@@ -44,6 +45,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/left_to_right_gradient"
             android:backgroundTint="#32cc23"
+            app:backgroundTint="#32cc23"
             tools:ignore="UnusedAttribute"
             app:dividerDrawable="@drawable/vertical_divider"
             app:dividerPadding="@dimen/main_activity_button_switch_padding"
@@ -58,6 +60,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/left_to_right_gradient"
             android:backgroundTint="#8b23cc"
+            app:backgroundTint="#8b23cc"
             tools:ignore="UnusedAttribute"
             app:dividerDrawable="@drawable/vertical_divider"
             app:dividerPadding="@dimen/main_activity_button_switch_padding"
@@ -77,6 +80,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/left_to_right_gradient"
             android:backgroundTint="#42a5e9"
+            app:backgroundTint="#42a5e9"
             tools:ignore="UnusedAttribute"
             android:gravity="center|start"
             android:paddingTop="@dimen/main_activity_button_switch_padding_x2"
@@ -91,6 +95,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/right_to_left_gradient"
             android:backgroundTint="#ff0"
+            app:backgroundTint="#ff0"
             tools:ignore="UnusedAttribute"
             android:orientation="horizontal">
 
@@ -114,5 +119,5 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="HardcodedText" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>

@@ -73,11 +73,7 @@ class AccessibilityNodeSummary(node: AccessibilityNodeInfo) {
     }
 
     private fun getViewIdResourceName(): CharSequence? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mNode.viewIdResourceName
-        } else {
-            null
-        }
+        return mNode.viewIdResourceName
     }
 
     private fun getTooltipText(): CharSequence? {

@@ -49,9 +49,7 @@ complexity:
     excludes: '**/*Test.kt'
     threshold: 150
   LongMethod:
-    active: true
-    threshold: 30
-    excludes: '**/*Test.kt'
+    active: false
   LongParameterList:
     active: true
     threshold: 6

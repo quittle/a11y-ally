@@ -2,12 +2,17 @@ package com.quittle.a11yally.view
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.view.LayoutInflater
 import android.util.AttributeSet
-import android.widget.Button
-import android.widget.LinearLayout
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
+import androidx.core.view.ViewCompat
 import com.quittle.a11yally.R
 import com.quittle.a11yally.isNotNull
 import com.quittle.a11yally.preferences.PreferenceProvider
@@ -26,17 +31,18 @@ import com.quittle.a11yally.preferences.PreferenceProvider
  * The intention is that the switch controls the master on/off preference and the text is a button
  * to enter more in-depth, preference controls.
  */
-class ButtonSwitch : LinearLayout {
+class ButtonSwitch : LinearLayoutCompat {
     private val mText: CharSequence?
     private val mPreference: String?
     private val mLayoutPadding: Int
     private val mDividerPadding: Int
     private val mDividerWidth: Int
+    @ColorInt private val mBackgroundTint: Int
     @DrawableRes private val mDividerDrawableResource: Int
     private val mSharedPreferences: SharedPreferences
 
-    private lateinit var mTitleButton: Button
-    private lateinit var mDivider: LinearLayout
+    private lateinit var mTitleButton: AppCompatButton
+    private lateinit var mDivider: LinearLayoutCompat
     private lateinit var mSwitchCompat: SwitchCompat
     private val mSharedPreferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener?
 
@@ -53,6 +59,7 @@ class ButtonSwitch : LinearLayout {
                 mLayoutPadding = getDimensionPixelSize(R.styleable.ButtonSwitch_layoutPadding, 0)
                 mDividerPadding = getDimensionPixelSize(R.styleable.ButtonSwitch_dividerPadding, 0)
                 mDividerWidth = getDimensionPixelSize(R.styleable.ButtonSwitch_dividerWidth, 0)
+                mBackgroundTint = getColor(R.styleable.ButtonSwitch_backgroundTint, 0)
                 mDividerDrawableResource =
                         getResourceId(R.styleable.ButtonSwitch_dividerDrawable, 0)
             }
@@ -62,6 +69,7 @@ class ButtonSwitch : LinearLayout {
             mLayoutPadding = 0
             mDividerPadding = 0
             mDividerWidth = 0
+            mBackgroundTint = 0
             mDividerDrawableResource = 0
         }
 
@@ -95,7 +103,7 @@ class ButtonSwitch : LinearLayout {
                 mSharedPreferenceChangeListener)
     }
 
-    fun getButton(): Button {
+    fun getButton(): AppCompatButton {
         return mTitleButton
     }
 
@@ -105,6 +113,25 @@ class ButtonSwitch : LinearLayout {
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+
+        val wrapper = rootView.findViewById<LinearLayoutCompat>(R.id.wrapper)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            ViewCompat.setBackground(wrapper, this.background)
+
+            // Android 21 has a bug in background tints on ViewGroups
+            // See: https://stackoverflow.com/a/63602100/1554990
+            when {
+                Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP -> {
+                    val colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                            this.mBackgroundTint, BlendModeCompat.MODULATE)
+                    wrapper.background.colorFilter = colorFilter
+                }
+                Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP -> {
+                    val tintList = ViewCompat.getBackgroundTintList(this)
+                    ViewCompat.setBackgroundTintList(wrapper, tintList)
+                }
+            }
+        }
 
         mTitleButton = findViewById(R.id.button)
         mDivider = findViewById(R.id.divider)

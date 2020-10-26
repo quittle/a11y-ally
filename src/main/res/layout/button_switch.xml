@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wrapper"
@@ -18,7 +18,7 @@
         android:labelFor="@id/switch_compat" />
 
     <!-- This must be a ViewGroup of some sort to support margins -->
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -29,4 +29,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

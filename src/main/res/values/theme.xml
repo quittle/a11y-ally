@@ -22,7 +22,6 @@
         <item name="buttonStyle">@style/Main.Button.Primary</item>
         <item name="android:textViewStyle">@style/Main.Text</item>
         <item name="android:textAppearance">@style/Main.TextAppearance</item>
-        <item name="android:windowBackground">?attr/standard_background</item>
         <item name="colorPrimary">?attr/primary_action_background</item>
         <item name="android:textColorPrimary">@color/primary_action_text</item>
 
@@ -40,7 +39,6 @@
         <item name="buttonStyle">@style/Main.Button.Primary</item>
         <item name="android:textViewStyle">@style/Main.Text</item>
         <item name="android:textAppearance">@style/Main.TextAppearance</item>
-        <item name="android:windowBackground">?attr/standard_background</item>
         <item name="colorPrimary">?attr/primary_action_background</item>
         <item name="android:textColorPrimary">@color/primary_action_text</item>
 

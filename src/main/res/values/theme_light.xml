@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+    <color name="standard_background_light">#E1F5F4</color>
     <style name="Theme.Main.NoActionBar.Light" parent="Theme.Main.NoActionBar">
         <item name="standard_text">#5C6263</item>
         <item name="standard_background">#E1F5F4</item>
+        <item name="android:windowBackground">@color/standard_background_light</item>
         <item name="call_to_action_background">#ADF58F</item>
         <item name="call_to_action_disabled_background">#CAE8C0</item>
         <item name="secondary_action_background">#F1FDEC</item>
@@ -14,6 +16,7 @@
     <style name="Theme.Main.Light" parent="Theme.Main">
         <item name="standard_text">#5C6263</item>
         <item name="standard_background">#E1F5F4</item>
+        <item name="android:windowBackground">@color/standard_background_light</item>
         <item name="call_to_action_background">#ADF58F</item>
         <item name="call_to_action_disabled_background">#CAE8C0</item>
         <item name="secondary_action_background">#F1FDEC</item>

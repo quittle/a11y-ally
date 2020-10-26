@@ -1,12 +1,13 @@
 package com.quittle.a11yally
 
-import android.app.IntentService
 import android.content.Intent
 import android.util.Log
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 
-class RecordingService : IntentService(RecordingService::javaClass.name) {
+@SuppressWarnings("deprecated")
+@Suppress("deprecation")
+class RecordingService : android.app.IntentService(RecordingService::javaClass.name) {
     companion object {
         const val START_RECORDING_INTENT_ACTION = "com.quittle.a11yally.START_RECORDING"
         const val STOP_RECORDING_INTENT_ACTION = "com.quittle.a11yally.STOP_RECORDING"

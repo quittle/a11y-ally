@@ -1,6 +1,7 @@
 package com.quittle.a11yally.activity
 
 import android.Manifest
+import android.os.Build
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -20,6 +21,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withChild
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.filters.SdkSuppress
 import com.quittle.a11yally.R
 import com.quittle.a11yally.enableAccessibilityService
 import com.quittle.a11yally.fullySetUpPermissions
@@ -87,7 +89,18 @@ class PermissionsActivityInstrumentationTest {
     }
 
     @Test
-    fun overlayStatus() {
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.LOLLIPOP_MR1)
+    fun overlayStatus_androidBelowM() {
+        verifyStatusViews(
+                textViewId = R.id.permission_overlay_text,
+                imageViewId = R.id.permission_overlay_image,
+                statusViewId = R.id.permission_overlay_status,
+                statusOk = true)
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.M)
+    fun overlayStatus_androidMOrHigher() {
         verifyStatusViews(
                 textViewId = R.id.permission_overlay_text,
                 imageViewId = R.id.permission_overlay_image,

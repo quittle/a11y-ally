@@ -18,13 +18,11 @@ buildscript {
 plugins {
     id 'com.github.triplet.play' version '2.8.0'
     id 'com.quittle.setup-android-sdk' version '2.0.0'
-    id 'com.quittle.android-emulator' version '0.3.0'
+//    id 'com.quittle.android-emulator' version '0.4.1'
     id 'com.quittle.svg-2-android-vector' version '0.0.5'
     id 'com.vanniktech.code.quality.tools' version '0.20.0'
     id 'com.diffplug.image-grinder' version '2.1.2'
 }
-
-apply plugin: 'com.quittle.android-emulator'
 
 import com.diffplug.gradle.imagegrinder.Size
 import com.github.triplet.gradle.play.internal.PluginsKt
@@ -42,7 +40,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion '29.0.3'
 
     final String androidSigningPassword = System.getenv('ANDROID_SIGNING_PASSWORD')
@@ -76,8 +74,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 30
 
         buildConfigField('@androidx.annotation.NonNull String', 'TAG', '"A11yAlly"')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -86,7 +84,7 @@ android {
     lintOptions {
         warningsAsErrors true
         abortOnError true
-        disable 'GradleDependency', 'AllowBackup', 'GoogleAppIndexingWarning', 'VectorRaster', 'IconLauncherShape'
+        disable 'GradleDependency', 'AllowBackup', 'GoogleAppIndexingWarning', 'VectorRaster', 'IconLauncherShape', 'VectorPath'
         // Temporary while SVG 2 Android Vector plugin does not hide the SVGs from the linter
         disable 'UnusedResources'
     }
@@ -119,11 +117,12 @@ dependencies {
     implementation 'androidx.fragment:fragment:1.2.5'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat-resources:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'androidx.test:core:1.3.0'
-    testImplementation 'org.robolectric:robolectric:4.4'
+    testImplementation 'org.robolectric:robolectric:4.5-alpha-2'
 
     androidTestImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.3'
     androidTestImplementation 'tools.fastlane:screengrab:2.0.0'
@@ -153,6 +152,12 @@ if (IS_IN_TRAVIS) {
 setupAndroidSdk {
     packages 'cmdline-tools;latest'
 }
+
+//androidEmulator {
+//    emulator {
+//        includeGoogleApis true
+//    }
+//}
 
 codeQualityTools {
     htmlReports true

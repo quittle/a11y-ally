@@ -3,14 +3,18 @@ package com.quittle.a11yally
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.UiAutomation
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.AttrRes
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.UiController
@@ -21,18 +25,26 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.runner.permission.PermissionRequester
+import androidx.test.uiautomator.Configurator
+import androidx.test.uiautomator.UiDevice
+import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.preferences.withPreferenceProvider
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.greaterThanOrEqualTo
 import org.json.JSONArray
 import org.json.JSONException
+import org.junit.Assume.assumeThat
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
+import java.lang.RuntimeException
+import java.lang.Thread.sleep
+import java.nio.charset.StandardCharsets
 import kotlin.reflect.KClass
 
 /**
@@ -108,9 +120,23 @@ fun revokePermissions(vararg permissions: String) {
  * Enables the app to run as an accessibility service
  */
 fun enableAccessibilityService() {
+    assumeThat(Build.VERSION.SDK_INT, greaterThanOrEqualTo(24))
     runShellCommand("settings put secure enabled_accessibility_services " +
             getPackageName() + "/.analyzer.A11yAllyAccessibilityAnalyzer")
-    onIdle()
+
+    // Depending on the OS version, enabling the service may be asynchronous
+    val maxWaitMs = 1000
+    val pollingDelayMs = 100L
+    for (i in 0..(maxWaitMs / pollingDelayMs)) {
+        if (isA11yAllyAccessibilityAnalyzerRunning()) {
+            return
+        } else {
+            sleep(pollingDelayMs)
+            onIdle()
+        }
+    }
+
+    throw RuntimeException("Unable to start accessibility service")
 }
 
 /**
@@ -220,17 +246,54 @@ private fun isFileClosed(file: File): Boolean {
 }
 
 fun runShellCommand(command: String) {
-    val pfd: ParcelFileDescriptor = InstrumentationRegistry.getInstrumentation()
-            .getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES)
-            .executeShellCommand(command)
+    val instrumentation = InstrumentationRegistry.getInstrumentation()
+    // On API level 24, even though it technically supports instrumentation.getUiAutomation(int),
+    // it does not work so this workaround is necssary to allow it to start accessibility services.
+    // See https://stackoverflow.com/a/55636900/1554990.
+    if (Build.VERSION.SDK_INT == 24) {
+        val flags = UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES
+        Configurator.getInstance().uiAutomationFlags = flags
 
-    // If the file descriptor isn't read and closed, an I/O error crashes the tests so it must
-    // be read fully and closed after. This has the added benefit of ensuring the command runs
-    // completely before this function returns.
-    ParcelFileDescriptor.AutoCloseInputStream(pfd).use {
-        val bytes = ByteArray(1024)
-        do while (it.read(bytes) != -1)
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val output = device.executeShellCommand(command)
+
+        if (output.isNotEmpty()) {
+            Log.d("cmd", output)
+        }
+    } else {
+        val uiAutomation = if (Build.VERSION.SDK_INT < 24) {
+            // Commands to enable an accessibility service below API version 24 won't work.
+            instrumentation.uiAutomation
+        } else {
+            instrumentation.getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES)
+        }
+        val pfd: ParcelFileDescriptor = uiAutomation.executeShellCommand(command)
+
+        // If the file descriptor isn't read and closed, an I/O error crashes the tests so it must
+        // be read fully and closed after. This has the added benefit of ensuring the command runs
+        // completely before this function returns.
+        ParcelFileDescriptor.AutoCloseInputStream(pfd).use {
+            val bytes = ByteArray(1024)
+            while (it.read(bytes) != -1) {
+                Log.d("cmd", bytes.toString(StandardCharsets.UTF_8))
+            }
+        }
     }
+}
+
+/**
+ * @return True if the service is running, otherwise false.
+ */
+fun isA11yAllyAccessibilityAnalyzerRunning(): Boolean {
+    val context = InstrumentationRegistry.getInstrumentation().targetContext
+    val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    @Suppress("deprecation")
+    for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+        if (A11yAllyAccessibilityAnalyzer::class.java.name == service.service.className) {
+            return true
+        }
+    }
+    return false
 }
 
 fun withPreferenceProvider(block: PreferenceProvider.() -> Unit) {
@@ -241,6 +304,10 @@ fun withPreferenceProvider(block: PreferenceProvider.() -> Unit) {
 
 private fun getPackageName(): String {
     return InstrumentationRegistry.getInstrumentation().targetContext.packageName
+}
+
+private fun getTestPackageName(): String {
+    return InstrumentationRegistry.getInstrumentation().context.packageName
 }
 
 fun hasTextColorFromAttribute(@AttrRes attrId: Int): Matcher<View> {
@@ -256,7 +323,7 @@ fun hasTextColorFromAttribute(@AttrRes attrId: Int): Matcher<View> {
 
         override fun describeTo(description: org.hamcrest.Description) {
             val colorId = context?.resources?.getResourceName(attrId)?.orElse(attrId.toString())
-            description.appendText("has color with ID $colorId")
+            description.appendText("View with text color matching resource id $colorId")
         }
     }
 }

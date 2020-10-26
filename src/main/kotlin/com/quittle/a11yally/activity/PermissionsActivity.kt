@@ -14,7 +14,6 @@ import com.quittle.a11yally.PermissionsManager
 import com.quittle.a11yally.R
 import com.quittle.a11yally.ifElse
 import com.quittle.a11yally.ifNotNull
-import com.quittle.a11yally.getColorCompat
 import com.quittle.a11yally.preferences.withPreferenceProvider
 import com.quittle.a11yally.resolveAttributeResourceValue
 import com.quittle.a11yally.BuildConfig
@@ -48,7 +47,7 @@ class PermissionsActivity : FixedContentActivity() {
         // the back button, however, they are very unlikely to get the permission by the time
         // onResume has been called so to handle this race condition, periodically update the views
         @Suppress("MagicNumber")
-        Handler().run {
+        Handler(mainLooper).run {
             val initialDelayMs = 500L
             postDelayed(this@PermissionsActivity::updateViewsStatuses, initialDelayMs)
             postDelayed(this@PermissionsActivity::updateViewsStatuses, initialDelayMs * 2)
@@ -60,14 +59,12 @@ class PermissionsActivity : FixedContentActivity() {
         updateStatus(
                 mPermissionsManager.hasDrawOverlaysPermission(),
                 R.id.permission_overlay_wrapper,
-                R.id.permission_overlay_text,
                 R.id.permission_overlay_image,
                 R.id.permission_overlay_status,
                 this::onClickFixOverlay)
         updateStatus(
                 mPermissionsManager.hasAccessibilityServicePermission(),
                 R.id.permission_service_wrapper,
-                R.id.permission_service_text,
                 R.id.permission_service_image,
                 R.id.permission_service_status,
                 this::onClickFixService)
@@ -107,7 +104,6 @@ class PermissionsActivity : FixedContentActivity() {
     private fun updateStatus(
         hasPermission: Boolean,
         wrapperViewId: Int,
-        descriptionViewId: Int,
         imageViewId: Int,
         statusViewId: Int,
         onClickCallback: () -> Unit
@@ -137,21 +133,10 @@ class PermissionsActivity : FixedContentActivity() {
                             R.drawable.warning_icon))
         }
 
-        val textColor = if (hasPermission) {
-            resolveAttributeResourceValue(R.attr.primary_action_disabled_text)
-        } else {
-            getColorCompat(R.color.primary_action_text)
-        }
-
-        textColor.ifNotNull {
-            findViewById<TextView>(descriptionViewId).setTextColor(it)
-        }
-
         findViewById<TextView>(statusViewId).run {
             setText(hasPermission.ifElse(
                     R.string.permissions_activity_status_ok,
                     R.string.permissions_activity_status_fix))
-            textColor.ifNotNull { setTextColor(it) }
         }
     }
 

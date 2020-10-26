@@ -1,8 +1,10 @@
 package com.quittle.a11yally
 
 import android.Manifest
+import android.os.Build
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.quittle.a11yally.activity.MainActivity
 import org.junit.Assert.assertFalse
@@ -32,6 +34,14 @@ class PermissionsManagerInstrumentationTest {
     }
 
     @Test
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.LOLLIPOP_MR1)
+    fun testOverlayPermission_beforePermissionsExisted() {
+        assertTrue(mPermissionsManager.hasDrawOverlaysPermission())
+        assertFalse(mPermissionsManager.hasAllPermissions())
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.M)
     fun testOverlayPermission() {
         assertFalse(mPermissionsManager.hasDrawOverlaysPermission())
 

@@ -2,7 +2,6 @@ package com.quittle.a11yally.analyzer
 
 import android.content.Context
 import android.graphics.Rect
-import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo
 import com.quittle.a11yally.isNotNull
 import com.quittle.a11yally.isNull
@@ -40,8 +39,7 @@ class AccessibilityNodeAnalyzer(context: Context) {
     }
 
     fun getContentDescription(node: AccessibilityNodeInfo): CharSequence? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 &&
-                node.labeledBy.isNotNull()) {
+        return if (node.labeledBy.isNotNull()) {
             node.labeledBy.contentDescription ?: node.labeledBy.text
         } else {
             node.contentDescription

@@ -5,9 +5,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Window
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
@@ -22,6 +25,7 @@ import com.quittle.a11yally.RecordingService.Companion.STOP_RECORDING_INTENT_ACT
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,10 +39,16 @@ class AccessibilityTestActivity : Activity() {
         super.onCreate(savedInstanceState)
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        Handler().postDelayed({
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            getSystemService(WindowInsetsController::class.java)
+                    .hide(WindowInsets.Type.statusBars())
+        } else {
+            @Suppress("deprecation")
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
+        Handler(mainLooper).postDelayed({
             setContentView(TestR.layout.accessibility_test_activity)
         }, 2000)
     }
@@ -100,7 +110,10 @@ class AccessibilityItemLoggerTest {
         assertFalse(recordingFile.exists())
 
         // Enable the necessary preferences
-        PreferenceManager(targetContext).sharedPreferences.edit()
+        assertTrue(PreferenceManager(targetContext).sharedPreferences.edit()
+                .clear()
+                .commit())
+        assertTrue(PreferenceManager(targetContext).sharedPreferences.edit()
                 .putBoolean(targetContext.getString(R.string.pref_service_enabled), true)
                 .putBoolean(targetContext.getString(R.string.pref_highlight_issues), true)
                 .putBoolean(targetContext.getString(R.string.pref_highlight_missing_labels), true)
@@ -110,7 +123,9 @@ class AccessibilityItemLoggerTest {
                 .putStringSet(targetContext.getString(R.string.pref_enabled_apps),
                         setOf(testContext.applicationInfo.packageName))
                 .putString(targetContext.getString(R.string.pref_small_touch_target_size), "30")
-                .commit()
+                .commit())
+
+        onIdle()
 
         startRecording()
 
@@ -122,6 +137,8 @@ class AccessibilityItemLoggerTest {
 
         // It is up to the OS to send accessibility events, which do not have a guaranteed
         // "frame rate". Wait until at least one should get triggered.
+        sleep(4000)
+        onIdle()
         sleep(4000)
 
         stopRecording()

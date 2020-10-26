@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.quittle.a11yally.test">
-    <uses-sdk
-        android:minSdkVersion="16"
-        tools:overrideLibrary="com.android.support.test.uiautomator.v18, android_libs.ub_uiautomator, tools.fastlane.screengrab" />
     <application>
         <activity android:name="com.quittle.a11yally.AccessibilityTestActivity" android:exported="true" />
     </application>
