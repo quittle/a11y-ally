@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Window
 import android.view.WindowInsets
-import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
@@ -40,8 +39,14 @@ class AccessibilityTestActivity : Activity() {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            getSystemService(WindowInsetsController::class.java)
-                    .hide(WindowInsets.Type.statusBars())
+            window.setDecorFitsSystemWindows(false)
+            // Kotlin fanciness doesn't work here for an unknown reason, using the accessor
+            // shorthand or "?." will result in a NoClassDefFoundError due to
+            // kotlin.jvm.internal.Intrinsics being missing.
+            val controller = window.getDecorView().getWindowInsetsController()
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars())
+            }
         } else {
             @Suppress("deprecation")
             window.setFlags(
@@ -130,7 +135,7 @@ class AccessibilityItemLoggerTest {
         startRecording()
 
         // Start the activity which will add content after two seconds
-        testContext.startActivity(
+        targetContext.startActivity(
                 Intent(testContext, AccessibilityTestActivity::class.java).apply {
                     flags += FLAG_ACTIVITY_NEW_TASK
                 })

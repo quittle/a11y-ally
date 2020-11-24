@@ -35,7 +35,7 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
     private val mWindowManager =
             accessibilityAnalyzer.applicationContext
                     .getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
-    private val mPreferenceProvider: PreferenceProvider
+    private val mPreferenceProvider = PreferenceProvider(accessibilityAnalyzer)
     private val mServiceEnabledLiveData: LiveData<Boolean>
 
     protected val rootView get() = mRootView
@@ -60,7 +60,6 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
                 PIXEL_FORMAT) }
 
     init {
-        mPreferenceProvider = PreferenceProvider(accessibilityAnalyzer)
         mServiceEnabledLiveData = mPreferenceProvider.getServiceEnabledLiveData()
         mServiceEnabledLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
             if (!enabled) {

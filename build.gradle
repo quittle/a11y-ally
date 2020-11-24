@@ -9,23 +9,21 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
-        classpath 'com.android.tools.lint:lint-gradle:27.0.2'
     }
 }
 
 plugins {
-    id 'com.github.triplet.play' version '2.8.0'
+    id 'com.github.triplet.play' version '3.0.0'
     id 'com.quittle.setup-android-sdk' version '2.0.0'
-//    id 'com.quittle.android-emulator' version '0.4.1'
+    id 'com.quittle.android-emulator' version '0.4.1'
     id 'com.quittle.svg-2-android-vector' version '0.0.5'
     id 'com.vanniktech.code.quality.tools' version '0.20.0'
     id 'com.diffplug.image-grinder' version '2.1.2'
 }
 
 import com.diffplug.gradle.imagegrinder.Size
-import com.github.triplet.gradle.play.internal.PluginsKt
 
 final File customResDir = new File(buildDir, 'custom-generated/res')
 final File customResDirFg = new File(buildDir, 'custom-generated/res-fg')
@@ -64,6 +62,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), file('config/proguard-rules.pro')
+            testProguardFiles file('config/test-proguard-rules.pro')
 
             if (androidSigningPassword) {
                 signingConfig signingConfigs.release
@@ -105,6 +104,12 @@ android {
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
         androidTest.res.srcDirs += 'src/androidTest/res'
     }
+
+    onVariantProperties {
+        for (output in outputs) {
+            output.versionName.set("${output.versionName.get()}.${output.versionCode}")
+        }
+    }
 }
 
 dependencies {
@@ -112,9 +117,9 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
     implementation "androidx.lifecycle:lifecycle-service:2.2.0"
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.fragment:fragment:1.2.5'
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.appcompat:appcompat-resources:1.2.0'
@@ -153,11 +158,12 @@ setupAndroidSdk {
     packages 'cmdline-tools;latest'
 }
 
-//androidEmulator {
-//    emulator {
-//        includeGoogleApis true
-//    }
-//}
+androidEmulator {
+    emulator {
+        includeGoogleApis true
+        device 'Nexus 4'
+    }
+}
 
 codeQualityTools {
     htmlReports true
@@ -178,10 +184,9 @@ imageGrinder {
     // https://github.com/Triple-T/gradle-play-publisher/issues/521
     afterEvaluate {
         generatePlayIconHack {
-            final releaseVariant = android.applicationVariants.find { it.name == 'release' }
-            final String releasePlayPath = PluginsKt.getPlayPath(releaseVariant)
+            final File playDir = project.tasks['generateReleasePlayResources'].resDir.getAsFile().get()
             srcDir = file('src/main/custom-res')
-            dstDir = file("build/${releasePlayPath}/res/listings/en-US/graphics/icon")
+            dstDir = new File(playDir, 'res/listings/en-US/graphics/icon')
 
             grinder { img ->
                 img.renderFull('icon.png', Size.createSquare(512))

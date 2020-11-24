@@ -7,7 +7,6 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.quittle.a11yally.R
-import java.util.Arrays.asList
 
 /**
  * Provides easy, lazy access to preferences. Consumers must call the [onResume] and [onPause]
@@ -15,7 +14,7 @@ import java.util.Arrays.asList
  */
 class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false) {
     private val mContext = context.applicationContext
-    private val preferenceProviderMembers = asList(
+    private val preferenceProviderMembers = listOf(
             PreferenceProviderBooleanMember(mContext, R.string.pref_service_enabled),
             PreferenceProviderBooleanMember(mContext, R.string.pref_display_content_descriptions),
             PreferenceProviderBooleanMember(mContext, R.string.pref_highlight_issues),
@@ -58,9 +57,15 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
 
     private val mListener =
             SharedPreferences.OnSharedPreferenceChangeListener {
-                    sharedPreferences: SharedPreferences, key: String ->
+                    sharedPreferences: SharedPreferences, key: String? ->
                 preferenceProviderMembers.forEach {
-                    it.possiblyUpdateValue(sharedPreferences, key)
+                    // Starting with SDK level 30, when storage is cleared, the key may be null
+                    // indicating the key was deleted.
+                    if (key == null) {
+                        it.updateValue(sharedPreferences)
+                    } else {
+                        it.possiblyUpdateValue(sharedPreferences, key)
+                    }
                 }
             }
 

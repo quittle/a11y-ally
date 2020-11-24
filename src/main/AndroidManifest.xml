@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.quittle.a11yally"
     android:installLocation="internalOnly"
     android:versionCode="1"
     android:versionName="0.0.0">
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="com.quittle.a11yally.MANAGE_RECORDING" />
 
     <permission
@@ -20,8 +23,7 @@
             android:allowBackup="true"
             android:theme="@style/Theme.Main.Real"
             android:supportsRtl="false">
-        <activity android:name=".activity.MainActivity"
-                android:screenOrientation="userPortrait">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

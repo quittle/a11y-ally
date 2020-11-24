@@ -20,6 +20,7 @@ import com.quittle.a11yally.analyzer.AccessibilityIssueListener
 import com.quittle.a11yally.analyzer.AccessibilityOverlay
 import com.quittle.a11yally.analyzer.IssueType
 import com.quittle.a11yally.clear
+import com.quittle.a11yally.getDefaultDisplayContext
 import com.quittle.a11yally.ifNotNull
 import com.quittle.a11yally.lifecycle.AllTrueLiveData
 import com.quittle.a11yally.preferences.PreferenceProvider
@@ -33,7 +34,7 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 
-    private val mContext: Context = accessibilityAnalyzer.applicationContext
+    private val mContext: Context = accessibilityAnalyzer.getDefaultDisplayContext()
     private var mSurfaceView: SurfaceView? = null
     private val mPreferenceProvider = PreferenceProvider(mContext)
     private val mHighlightIssuesLiveData: LiveData<Boolean>

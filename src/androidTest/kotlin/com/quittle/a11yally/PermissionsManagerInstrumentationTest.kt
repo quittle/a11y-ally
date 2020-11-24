@@ -60,6 +60,9 @@ class PermissionsManagerInstrumentationTest {
 
         enableAccessibilityService()
 
+        // Wait for the permission to propagate
+        sleep(2000)
+
         assertTrue(mPermissionsManager.hasAccessibilityServicePermission())
         assertFalse(mPermissionsManager.hasAllPermissions())
     }

@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.AttrRes
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.UiController
@@ -109,7 +108,12 @@ fun grantPermissions(vararg permissions: String) {
 fun revokePermissions(vararg permissions: String) {
     val packageName = getPackageName()
     permissions.forEach { permission ->
-        runShellCommand("pm revoke $packageName $permission")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            InstrumentationRegistry.getInstrumentation()
+                    .uiAutomation.revokeRuntimePermission(packageName, permission)
+        } else {
+            runShellCommand("pm revoke $packageName $permission")
+        }
 
         val simplePermission = permission.replaceFirst("android.permission.", "")
         runShellCommand("appops set $packageName $simplePermission default")

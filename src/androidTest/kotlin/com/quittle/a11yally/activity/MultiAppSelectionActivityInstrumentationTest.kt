@@ -48,7 +48,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.Objects
 
 @RunWith(AndroidJUnit4::class)
 class MultiAppSelectionActivityInstrumentationTest {
@@ -197,7 +196,7 @@ class MultiAppSelectionActivityInstrumentationTest {
                 // Not enough apps installed
             }
             ret
-        }.filter(Objects::nonNull).toTypedArray()
+        }.filterNotNull().toTypedArray()
 
         val sortedEntries = entries.clone().apply { sort() }
 
