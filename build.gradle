@@ -107,7 +107,7 @@ android {
 
     onVariantProperties {
         for (output in outputs) {
-            output.versionName.set("${output.versionName.get()}.${output.versionCode}")
+            output.versionName.set("${output.versionName.get()}.${output.versionCode.get()}")
         }
     }
 }
