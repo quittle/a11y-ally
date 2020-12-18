@@ -1,51 +1,68 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical">
-
     <LinearLayout
+        android:id="@+id/title_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/primary_action_background"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_padding"
+        android:paddingBottom="0px"
+        android:layout_gravity="center"
+        android:clipToPadding="false"
+        android:outlineAmbientShadowColor="@color/welcome2_activity_shadow"
+        android:outlineSpotShadowColor="@color/welcome2_activity_shadow"
+        android:outlineProvider="bounds"
+        android:translationZ="10dp"
+        tools:ignore="UnusedAttribute">
+
+        <TextView
+            android:id="@+id/welcome_title"
+            style="@style/Main.Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10sp"
+            android:paddingBottom="10sp"
+            android:text="@string/welcome2_activity_title" />
+
+        <TextView
+            android:id="@+id/welcome_subtitle"
+            style="@style/Main.Text.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10sp"
+            android:text="@string/welcome2_activity_subtitle" />
+    </LinearLayout>
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_up_gradient"
+        android:fillViewport="true"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/primary_action_background"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_padding"
-            android:paddingBottom="0px">
-
-            <TextView
-                style="@style/Main.Text.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:paddingBottom="10sp"
-                android:text="@string/welcome2_activity_title" />
-
-            <TextView
-                style="@style/Main.Text.Subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:text="@string/welcome_activity_subtitle" />
-        </LinearLayout>
-
-        <LinearLayout
+            android:id="@+id/scrollview_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/activity_padding">
+            android:paddingTop="@dimen/activity_padding"
+            android:paddingHorizontal="@dimen/activity_padding">
 
             <TextView
+                android:id="@+id/main_text"
                 style="@style/Main.Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome2_activity_main_text" />
 
             <LinearLayout
+                android:id="@+id/button_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -61,24 +78,24 @@
 
                 <Button
                     android:id="@+id/learn_more"
-                    style="@style/Main.Button.Primary"
+                    style="@style/Main.Button.Secondary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome2_activity_learn_more" />
             </LinearLayout>
-        </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginTop="@dimen/activity_padding"
-            android:layout_weight="1"
-            android:importantForAccessibility="no"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:src="@drawable/planet"
-            android:translationX="40dp"
-            android:translationY="40dp" />
-    </LinearLayout>
-</ScrollView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginTop="@dimen/activity_padding"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                android:src="@drawable/planet"
+                android:translationX="40dp"
+                android:translationY="40dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

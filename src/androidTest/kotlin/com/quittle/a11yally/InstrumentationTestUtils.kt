@@ -27,6 +27,8 @@ import androidx.test.runner.permission.PermissionRequester
 import androidx.test.uiautomator.Configurator
 import androidx.test.uiautomator.UiDevice
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
+import com.quittle.a11yally.base.orElse
+import com.quittle.a11yally.base.resolveAttributeResourceValue
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.preferences.withPreferenceProvider
 import org.hamcrest.Matcher
@@ -34,6 +36,7 @@ import org.hamcrest.Matchers
 import org.hamcrest.Matchers.greaterThanOrEqualTo
 import org.json.JSONArray
 import org.json.JSONException
+import org.junit.Assert.fail
 import org.junit.Assume.assumeThat
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -41,7 +44,6 @@ import org.junit.runners.model.Statement
 import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
-import java.lang.RuntimeException
 import java.lang.Thread.sleep
 import java.nio.charset.StandardCharsets
 import kotlin.reflect.KClass
@@ -51,16 +53,16 @@ import kotlin.reflect.KClass
  */
 class PermissionsRule : TestRule {
     override fun apply(base: Statement?, description: Description?): Statement =
-            object : Statement() {
-        override fun evaluate() {
-            try {
-                fullySetUpPermissions()
-                base?.evaluate()
-            } finally {
-                fullyTearDownPermissions()
+        object : Statement() {
+            override fun evaluate() {
+                try {
+                    fullySetUpPermissions()
+                    base?.evaluate()
+                } finally {
+                    fullyTearDownPermissions()
+                }
             }
         }
-    }
 }
 
 /**
@@ -83,9 +85,9 @@ fun getCurrentActivity(): Activity {
 
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
         currentActivity = ActivityLifecycleMonitorRegistry.getInstance()
-                .getActivitiesInStage(Stage.RESUMED)
-                .iterator()
-                .next()
+            .getActivitiesInStage(Stage.RESUMED)
+            .iterator()
+            .next()
     }
 
     return currentActivity!!
@@ -110,7 +112,7 @@ fun revokePermissions(vararg permissions: String) {
     permissions.forEach { permission ->
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             InstrumentationRegistry.getInstrumentation()
-                    .uiAutomation.revokeRuntimePermission(packageName, permission)
+                .uiAutomation.revokeRuntimePermission(packageName, permission)
         } else {
             runShellCommand("pm revoke $packageName $permission")
         }
@@ -125,8 +127,10 @@ fun revokePermissions(vararg permissions: String) {
  */
 fun enableAccessibilityService() {
     assumeThat(Build.VERSION.SDK_INT, greaterThanOrEqualTo(24))
-    runShellCommand("settings put secure enabled_accessibility_services " +
-            getPackageName() + "/.analyzer.A11yAllyAccessibilityAnalyzer")
+    runShellCommand(
+        "settings put secure enabled_accessibility_services " +
+            getPackageName() + "/.analyzer.A11yAllyAccessibilityAnalyzer"
+    )
 
     // Depending on the OS version, enabling the service may be asynchronous
     val maxWaitMs = 1000
@@ -140,7 +144,7 @@ fun enableAccessibilityService() {
         }
     }
 
-    throw RuntimeException("Unable to start accessibility service")
+    fail("Unable to start accessibility service")
 }
 
 /**
@@ -174,8 +178,8 @@ fun fullyTearDownPermissions() {
 @SuppressLint("ApplySharedPref")
 fun clearSharedPreferences() {
     sharedPreferences().edit()
-            .clear()
-            .commit()
+        .clear()
+        .commit()
 }
 
 fun sharedPreferences(): SharedPreferences {

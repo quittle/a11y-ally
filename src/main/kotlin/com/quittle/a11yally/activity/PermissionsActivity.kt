@@ -10,13 +10,14 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.quittle.a11yally.BuildConfig
 import com.quittle.a11yally.PermissionsManager
 import com.quittle.a11yally.R
-import com.quittle.a11yally.ifElse
-import com.quittle.a11yally.ifNotNull
+import com.quittle.a11yally.activity.welcome.WelcomeActivity
+import com.quittle.a11yally.base.ifElse
+import com.quittle.a11yally.base.ifNotNull
+import com.quittle.a11yally.base.resolveAttributeResourceValue
 import com.quittle.a11yally.preferences.withPreferenceProvider
-import com.quittle.a11yally.resolveAttributeResourceValue
-import com.quittle.a11yally.BuildConfig
 
 /**
  * Shows the current status of permissions necessary for the app to run effectively
@@ -57,17 +58,19 @@ class PermissionsActivity : FixedContentActivity() {
 
     private fun updateViewsStatuses() {
         updateStatus(
-                mPermissionsManager.hasDrawOverlaysPermission(),
-                R.id.permission_overlay_wrapper,
-                R.id.permission_overlay_image,
-                R.id.permission_overlay_status,
-                this::onClickFixOverlay)
+            mPermissionsManager.hasDrawOverlaysPermission(),
+            R.id.permission_overlay_wrapper,
+            R.id.permission_overlay_image,
+            R.id.permission_overlay_status,
+            this::onClickFixOverlay
+        )
         updateStatus(
-                mPermissionsManager.hasAccessibilityServicePermission(),
-                R.id.permission_service_wrapper,
-                R.id.permission_service_image,
-                R.id.permission_service_status,
-                this::onClickFixService)
+            mPermissionsManager.hasAccessibilityServicePermission(),
+            R.id.permission_service_wrapper,
+            R.id.permission_service_image,
+            R.id.permission_service_status,
+            this::onClickFixService
+        )
 
         findViewById<View>(R.id.continue_button).run {
             isEnabled = mPermissionsManager.hasAllPermissions()
@@ -109,34 +112,43 @@ class PermissionsActivity : FixedContentActivity() {
         onClickCallback: () -> Unit
     ) {
         val onClickListener: View.OnClickListener? = hasPermission.ifElse(
-                null,
-                object : View.OnClickListener {
-                    override fun onClick(view: View?) {
-                        onClickCallback()
-                    }
-                })
+            null,
+            object : View.OnClickListener {
+                override fun onClick(view: View?) {
+                    onClickCallback()
+                }
+            }
+        )
 
         findViewById<View>(wrapperViewId).run {
             setOnClickListener(onClickListener)
             isEnabled = !hasPermission
-            resolveAttributeResourceValue(hasPermission.ifElse(
+            resolveAttributeResourceValue(
+                hasPermission.ifElse(
                     R.attr.primary_action_disabled_background,
-                    R.attr.primary_action_background)).ifNotNull {
+                    R.attr.primary_action_background
+                )
+            ).ifNotNull {
                 setBackgroundColor(it)
             }
         }
 
         findViewById<ImageView>(imageViewId).run {
             setImageResource(
-                    hasPermission.ifElse(
-                            R.drawable.service_status_enabled_icon,
-                            R.drawable.warning_icon))
+                hasPermission.ifElse(
+                    R.drawable.service_status_enabled_icon,
+                    R.drawable.warning_icon
+                )
+            )
         }
 
         findViewById<TextView>(statusViewId).run {
-            setText(hasPermission.ifElse(
+            setText(
+                hasPermission.ifElse(
                     R.string.permissions_activity_status_ok,
-                    R.string.permissions_activity_status_fix))
+                    R.string.permissions_activity_status_fix
+                )
+            )
         }
     }
 

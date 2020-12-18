@@ -15,6 +15,7 @@
     </style>
     <style name="Main.Text.Subtitle" parent="Main.Text.Title">
         <item name="android:textSize">23sp</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Main.Button" parent="android:Widget.Button">

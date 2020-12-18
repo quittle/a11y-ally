@@ -1,17 +1,17 @@
 package com.quittle.a11yally.view
 
 import android.content.Context
-import androidx.preference.PreferenceManager
 import android.util.AttributeSet
 import android.widget.Checkable
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.preference.PreferenceManager
 import com.quittle.a11yally.R
-import com.quittle.a11yally.isNotNull
+import com.quittle.a11yally.base.isNotNull
 
 class CheckableCustomCardView : Checkable, CustomCardView {
     @FunctionalInterface
-    interface OnCheckedChangeListener {
+    fun interface OnCheckedChangeListener {
         fun onCheckedChanged(view: CheckableCustomCardView, isChecked: Boolean)
     }
 
@@ -80,8 +80,8 @@ class CheckableCustomCardView : Checkable, CustomCardView {
 
                 view.mPreferenceKey?.let { preferenceKey ->
                     PreferenceManager.getDefaultSharedPreferences(view.context).edit()
-                            .putBoolean(preferenceKey, isChecked)
-                            ?.apply()
+                        .putBoolean(preferenceKey, isChecked)
+                        ?.apply()
                 }
             }
         }
@@ -100,22 +100,25 @@ class CheckableCustomCardView : Checkable, CustomCardView {
             val preferenceKey: String?
             with(context.obtainStyledAttributes(attrs, R.styleable.CheckableCustomCardView)) {
                 imageResourceUnchecked =
-                        getResourceId(R.styleable.CheckableCustomCardView_imageUnchecked, 0)
+                    getResourceId(R.styleable.CheckableCustomCardView_imageUnchecked, 0)
                 imageBackgroundColorUnchecked =
-                        getColor(R.styleable.CheckableCustomCardView_imageBackgroundColorUnchecked,
-                                0)
+                    getColor(
+                        R.styleable.CheckableCustomCardView_imageBackgroundColorUnchecked,
+                        0
+                    )
                 checked = getBoolean(R.styleable.CheckableCustomCardView_checked, false)
                 preferenceKey = getString(R.styleable.CheckableCustomCardView_preference_key)
                 recycle()
             }
 
             return Attributes(
-                    imageResource,
-                    imageBackgroundColor,
-                    imageResourceUnchecked,
-                    imageBackgroundColorUnchecked,
-                    checked,
-                    preferenceKey)
+                imageResource,
+                imageBackgroundColor,
+                imageResourceUnchecked,
+                imageBackgroundColorUnchecked,
+                checked,
+                preferenceKey
+            )
         }
     }
 
@@ -137,7 +140,7 @@ class CheckableCustomCardView : Checkable, CustomCardView {
 
         isChecked = if (mPreferenceKey.isNotNull()) {
             PreferenceManager.getDefaultSharedPreferences(context)
-                    .getBoolean(mPreferenceKey, mIsChecked)
+                .getBoolean(mPreferenceKey, mIsChecked)
         } else {
             mIsChecked
         }

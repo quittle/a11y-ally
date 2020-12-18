@@ -19,9 +19,9 @@ import com.quittle.a11yally.analyzer.AccessibilityIssue
 import com.quittle.a11yally.analyzer.AccessibilityIssueListener
 import com.quittle.a11yally.analyzer.AccessibilityOverlay
 import com.quittle.a11yally.analyzer.IssueType
-import com.quittle.a11yally.clear
-import com.quittle.a11yally.getDefaultDisplayContext
-import com.quittle.a11yally.ifNotNull
+import com.quittle.a11yally.base.clear
+import com.quittle.a11yally.base.getDefaultDisplayContext
+import com.quittle.a11yally.base.ifNotNull
 import com.quittle.a11yally.lifecycle.AllTrueLiveData
 import com.quittle.a11yally.preferences.PreferenceProvider
 
@@ -29,9 +29,9 @@ import com.quittle.a11yally.preferences.PreferenceProvider
  * Displays accessibility info visibly on the screen.
  */
 class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
-        AccessibilityOverlay<RelativeLayout>(accessibilityAnalyzer), AccessibilityIssueListener {
+    AccessibilityOverlay<RelativeLayout>(accessibilityAnalyzer), AccessibilityIssueListener {
     override val mOverlayFlags: Int =
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 
     private val mContext: Context = accessibilityAnalyzer.getDefaultDisplayContext()
@@ -59,16 +59,20 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
         mPreferenceProvider.onResume()
 
         mHighlightIssuesLiveData = AllTrueLiveData(
-                mPreferenceProvider.getHighlightIssuesLiveData(),
-                mPreferenceProvider.getServiceEnabledLiveData())
+            mPreferenceProvider.getHighlightIssuesLiveData(),
+            mPreferenceProvider.getServiceEnabledLiveData()
+        )
 
-        mHighlightIssuesLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
-            if (enabled) {
-                accessibilityAnalyzer.resumeListener(this)
-            } else {
-                accessibilityAnalyzer.pauseListener(this)
+        mHighlightIssuesLiveData.observe(
+            accessibilityAnalyzer,
+            Observer { enabled ->
+                if (enabled) {
+                    accessibilityAnalyzer.resumeListener(this)
+                } else {
+                    accessibilityAnalyzer.pauseListener(this)
+                }
             }
-        })
+        )
 
         if (mHighlightIssuesLiveData.value!!) {
             accessibilityAnalyzer.resumeListener(this)
@@ -83,7 +87,7 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
     override fun onIssues(issues: Collection<AccessibilityIssue>) {
         withLockedCanvas { surfaceView, canvas ->
             val (drawViewOffsetX, drawViewOffsetY) =
-                    IntArray(2).apply(surfaceView::getLocationOnScreen)
+                IntArray(2).apply(surfaceView::getLocationOnScreen)
 
             val paint = Paint()
             paint.isAntiAlias = true
@@ -113,14 +117,16 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
     override fun buildRootView(): RelativeLayout {
         mSurfaceView = SurfaceView(mContext).apply {
             layoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT)
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+            )
             holder.setFormat(PixelFormat.TRANSPARENT)
         }
         return RelativeLayout(mContext).apply {
             layoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT)
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+            )
             addView(mSurfaceView)
         }
     }

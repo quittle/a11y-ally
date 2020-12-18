@@ -16,8 +16,8 @@ import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 import com.quittle.a11yally.analyzer.AccessibilityNodeAnalyzer
 import com.quittle.a11yally.analyzer.AccessibilityOverlay
-import com.quittle.a11yally.ifNotNull
-import com.quittle.a11yally.isNotNull
+import com.quittle.a11yally.base.ifNotNull
+import com.quittle.a11yally.base.isNotNull
 import com.quittle.a11yally.lifecycle.AllTrueLiveData
 import com.quittle.a11yally.preferences.PreferenceProvider
 
@@ -33,9 +33,9 @@ data class ContentDescriptionNode(
  * Displays accessibility info visibly on the screen.
  */
 class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
-        AccessibilityOverlay<AbsoluteLayout>(accessibilityAnalyzer) {
+    AccessibilityOverlay<AbsoluteLayout>(accessibilityAnalyzer) {
     override val mOverlayFlags: Int =
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 
     private val mContext: Context = accessibilityAnalyzer.applicationContext
@@ -47,16 +47,20 @@ class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnal
     init {
         mPreferenceProvider.onResume()
         mContentDescriptionLiveData = AllTrueLiveData(
-                mPreferenceProvider.getDisplayContentDescriptionLiveData(),
-                mPreferenceProvider.getServiceEnabledLiveData())
+            mPreferenceProvider.getDisplayContentDescriptionLiveData(),
+            mPreferenceProvider.getServiceEnabledLiveData()
+        )
 
-        mContentDescriptionLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
-            if (enabled) {
-                accessibilityAnalyzer.resumeListener(this)
-            } else {
-                accessibilityAnalyzer.pauseListener(this)
+        mContentDescriptionLiveData.observe(
+            accessibilityAnalyzer,
+            Observer { enabled ->
+                if (enabled) {
+                    accessibilityAnalyzer.resumeListener(this)
+                } else {
+                    accessibilityAnalyzer.pauseListener(this)
+                }
             }
-        })
+        )
 
         if (mContentDescriptionLiveData.value!!) {
             accessibilityAnalyzer.resumeListener(this)
@@ -72,31 +76,33 @@ class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnal
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
         val description = mAccessibilityNodeAnalyzer.getContentDescription(node)
         if (description.isNotNull()) {
-            nodes.add(ContentDescriptionNode(
+            nodes.add(
+                ContentDescriptionNode(
                     mAccessibilityNodeAnalyzer.getBoundsInScreen(node),
                     description.toString()
-            ))
+                )
+            )
         }
     }
 
     override fun onAccessibilityEventEnd() {
         rootView.ifNotNull { rootView ->
             val (drawViewOffsetX, drawViewOffsetY) =
-                    IntArray(2).apply(rootView::getLocationOnScreen)
+                IntArray(2).apply(rootView::getLocationOnScreen)
 
             nodes.forEach { node ->
                 val rect = node.rect
                 rect.offset(-drawViewOffsetX, -drawViewOffsetY)
 
                 (View.inflate(mContext, R.layout.content_description_view, null) as TextView)
-                        .apply {
-                    text = node.text
-                    width = rect.width()
-                    height = rect.height()
-                    x = rect.left.toFloat()
-                    y = rect.top.toFloat()
-                    rootView.addView(this)
-                }
+                    .apply {
+                        text = node.text
+                        width = rect.width()
+                        height = rect.height()
+                        x = rect.left.toFloat()
+                        y = rect.top.toFloat()
+                        rootView.addView(this)
+                    }
             }
         }
     }
@@ -108,8 +114,9 @@ class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnal
     override fun buildRootView(): AbsoluteLayout {
         return AbsoluteLayout(mContext).apply {
             layoutParams = RelativeLayout.LayoutParams(
-                    AbsoluteLayout.LayoutParams.MATCH_PARENT,
-                    AbsoluteLayout.LayoutParams.MATCH_PARENT)
+                AbsoluteLayout.LayoutParams.MATCH_PARENT,
+                AbsoluteLayout.LayoutParams.MATCH_PARENT
+            )
         }
     }
 

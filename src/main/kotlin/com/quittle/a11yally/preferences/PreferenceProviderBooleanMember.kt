@@ -8,5 +8,7 @@ internal class PreferenceProviderBooleanMember(
     prefKeyId: Int,
     defaultValue: Boolean = false
 ) :
-        PreferenceProviderMember<Boolean>(context, prefKeyId, defaultValue,
-                SharedPreferences::getBoolean, SharedPreferences.Editor::putBoolean)
+    PreferenceProviderMember<Boolean>(
+        context, prefKeyId, defaultValue,
+        SharedPreferences::getBoolean, SharedPreferences.Editor::putBoolean
+    )

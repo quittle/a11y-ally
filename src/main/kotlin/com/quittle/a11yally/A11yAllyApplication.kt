@@ -4,19 +4,21 @@ import android.app.Application
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import androidx.preference.PreferenceManager
 import android.os.StrictMode
+import androidx.preference.PreferenceManager
 import com.quittle.a11yally.activity.DialogActivity
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
+import com.quittle.a11yally.base.isNotNull
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         val PREFERENCE_RESOURCES = setOf(
-                R.xml.preferences,
-                R.xml.highlight_issues_preferences,
-                R.xml.content_description_preferences,
-                R.xml.linear_navigation_preferences)
+            R.xml.preferences,
+            R.xml.highlight_issues_preferences,
+            R.xml.content_description_preferences,
+            R.xml.linear_navigation_preferences
+        )
     }
 
     private val prefServiceEnabled by lazy { getString(R.string.pref_service_enabled) }
@@ -24,24 +26,30 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
 
     init {
         if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder()
                     .detectAll()
                     .penaltyLog()
                     // .penaltyDeath()
-                    .build())
-            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+                    .build()
+            )
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
                     .detectAll()
                     .penaltyLog()
                     // .penaltyDeath()
-                    .build())
+                    .build()
+            )
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (sharedPreferences.isNotNull() && key.isNotNull() &&
-                prefServiceEnabled == key && sharedPreferences.getBoolean(key, false)) {
+            prefServiceEnabled == key && sharedPreferences.getBoolean(key, false)
+        ) {
             applicationContext.startService(
-                    Intent(applicationContext, A11yAllyAccessibilityAnalyzer::class.java))
+                Intent(applicationContext, A11yAllyAccessibilityAnalyzer::class.java)
+            )
         }
     }
 
@@ -57,7 +65,7 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
         }
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this)
+            .registerOnSharedPreferenceChangeListener(this)
     }
 
     private fun initializePreferenceController() {
@@ -80,8 +88,9 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
                 if (enabled) {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                         DialogActivity.show(
-                                this@A11yAllyApplication,
-                                R.string.linear_navigation_overlay_unavailable_dialog_message)
+                            this@A11yAllyApplication,
+                            R.string.linear_navigation_overlay_unavailable_dialog_message
+                        )
                         setLinearNavigationEnabled(false)
                     } else {
                         setHighlightIssues(false)

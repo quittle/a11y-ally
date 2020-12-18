@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.quittle.a11yally.DisableAnimationsRule
 import com.quittle.a11yally.R
+import com.quittle.a11yally.activity.welcome.WelcomeActivity
 import com.quittle.a11yally.clearSharedPreferences
 import com.quittle.a11yally.fullySetUpPermissions
 import com.quittle.a11yally.fullyTearDownPermissions
@@ -38,9 +39,9 @@ class LearnMoreActivityInstrumentationTest {
     @Test
     fun getStartedButtonWorks() {
         onView(withId(R.id.get_started))
-                .perform(scrollTo())
-                .check(matches(isCompletelyDisplayed()))
-                .perform(click())
+            .perform(scrollTo())
+            .check(matches(isCompletelyDisplayed()))
+            .perform(click())
 
         assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
     }
@@ -54,12 +55,12 @@ class LearnMoreActivityInstrumentationTest {
         assertEquals(WelcomeActivity::class.java, getCurrentActivity().javaClass)
 
         onView(withId(R.id.learn_more))
-                .perform(scrollTo(), click())
+            .perform(scrollTo(), click())
 
         onView(withId(R.id.get_started))
-                .perform(scrollTo())
-                .check(matches(isCompletelyDisplayed()))
-                .perform(click())
+            .perform(scrollTo())
+            .check(matches(isCompletelyDisplayed()))
+            .perform(click())
 
         assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
 
@@ -73,11 +74,11 @@ class LearnMoreActivityInstrumentationTest {
         launchActivity(WelcomeActivity::class)
 
         onView(withId(R.id.learn_more))
-                .perform(scrollTo(), click())
+            .perform(scrollTo(), click())
 
         onView(withContentDescription(R.string.abc_action_bar_up_description))
-                .check(matches(isCompletelyDisplayed()))
-                .perform(click())
+            .check(matches(isCompletelyDisplayed()))
+            .perform(click())
 
         assertEquals(WelcomeActivity::class.java, getCurrentActivity().javaClass)
     }
@@ -89,15 +90,15 @@ class LearnMoreActivityInstrumentationTest {
         launchActivity(MainActivity::class)
 
         onView(withContentDescription(R.string.abc_action_menu_overflow_description))
-                .perform(click())
+            .perform(click())
 
         onView(withText(R.string.show_learn_more))
-                .perform(click())
+            .perform(click())
 
         assertEquals(LearnMoreActivity::class.java, getCurrentActivity().javaClass)
 
         onView(withContentDescription(R.string.abc_action_bar_up_description))
-                .perform(click())
+            .perform(click())
 
         assertEquals(MainActivity::class.java, getCurrentActivity().javaClass)
     }

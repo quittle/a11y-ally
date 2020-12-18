@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.base
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -64,10 +64,36 @@ fun <T> forEach(vararg args: T, callable: (T) -> Unit) {
  * @return [this] if not null, otherwise [default]
  */
 fun <T> T?.orElse(default: T): T {
-    if (this.isNull()) {
-        return default
+    return if (this.isNull()) {
+        default
     } else {
-        return this
+        this
+    }
+}
+
+/**
+ * Helper method for handling nullable types to provide a default value
+ * @param default Generates the return value if [this] is null
+ * @return [this] if not null, otherwise the return value of [default]
+ */
+fun <T> T?.orElse(default: () -> T): T {
+    return if (this.isNull()) {
+        default()
+    } else {
+        this
+    }
+}
+
+/**
+ * Helper method for handling nullable types to provide a default value
+ * @param default Generates the return value if [this] is null
+ * @return [this] if not null, otherwise the return value of [default]
+ */
+suspend fun <T> T?.orElse(default: suspend () -> T): T {
+    return if (this.isNull()) {
+        default()
+    } else {
+        this
     }
 }
 

@@ -2,17 +2,17 @@ package com.quittle.a11yally.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.XmlRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import com.quittle.a11yally.preferences.PreferenceProvider
-import com.quittle.a11yally.view.ButtonSwitch
-import android.view.Menu
-import android.view.MenuItem
 import com.quittle.a11yally.PermissionsManager
 import com.quittle.a11yally.R
+import com.quittle.a11yally.preferences.PreferenceProvider
+import com.quittle.a11yally.view.ButtonSwitch
 
 class MainActivity : AppCompatActivity() {
     private companion object {
@@ -40,19 +40,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         setUpButtonSwitchAsFeaturePreferencesButton(
-                R.id.highlight_issues,
-                R.xml.highlight_issues_preferences,
-                R.drawable.highlight_icon)
+            R.id.highlight_issues,
+            R.xml.highlight_issues_preferences,
+            R.drawable.highlight_icon
+        )
         setUpButtonSwitchAsFeaturePreferencesButton(
-                R.id.display_content_descriptions,
-                R.xml.content_description_preferences,
-                R.drawable.display_content_descriptions_icon)
+            R.id.display_content_descriptions,
+            R.xml.content_description_preferences,
+            R.drawable.display_content_descriptions_icon
+        )
         // Note: The feature preferences screen has an issue where the icon appears below the only
         // entry
         setUpButtonSwitchAsFeaturePreferencesButton(
-                R.id.linear_navigation,
-                R.xml.linear_navigation_preferences,
-                R.drawable.linear_navigation_icon)
+            R.id.linear_navigation,
+            R.xml.linear_navigation_preferences,
+            R.drawable.linear_navigation_icon
+        )
 
         findViewById<View>(R.id.open_unfriendly_activity_button).setOnClickListener {
             startActivity(Intent(this, UnfriendlyActivity::class.java))
@@ -104,7 +107,8 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, FEATURE_SETTINGS_ACTIVITY_CLASS)
                 intent.putExtra(FeatureSettingsActivity.EXTRA_KEY_IMAGE_RESOURCE_ID, imageResource)
                 intent.putExtra(
-                        FeatureSettingsActivity.EXTRA_KEY_PREFERENCE_XML_RESOURCE_ID, preferences)
+                    FeatureSettingsActivity.EXTRA_KEY_PREFERENCE_XML_RESOURCE_ID, preferences
+                )
                 startActivity(intent)
             }
         }

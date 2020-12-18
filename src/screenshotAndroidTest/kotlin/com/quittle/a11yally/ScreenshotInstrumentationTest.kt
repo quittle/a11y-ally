@@ -2,6 +2,7 @@ package com.quittle.a11yally
 
 import android.Manifest
 import android.annotation.TargetApi
+import android.os.Build.VERSION_CODES.JELLY_BEAN_MR2
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -18,7 +19,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy
-import android.os.Build.VERSION_CODES.JELLY_BEAN_MR2
 
 @RunWith(AndroidJUnit4::class)
 @TargetApi(JELLY_BEAN_MR2)
@@ -35,7 +35,7 @@ class ScreenshotInstrumentationTest {
 
     @get:Rule
     val mGrantPermissionsRule =
-            GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     @get:Rule
     val mBuildTypeRule = BuildTypeRule("screenshot")

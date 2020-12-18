@@ -2,7 +2,7 @@ autoCorrect: true
 failFast: true
 
 build:
-  maxIssues: 14
+  maxIssues: 6
 
 processors:
   active: true
@@ -349,6 +349,8 @@ style:
   DataClassContainsFunctions:
     active: false
     conversionFunctionPrefix: 'to'
+  DataClassShouldBeImmutable:
+    active: falseDataClassShouldBeImmutable
   EqualsNullCall:
     active: false
   ExpressionBodySyntax:

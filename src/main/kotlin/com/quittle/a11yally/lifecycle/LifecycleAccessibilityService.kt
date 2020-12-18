@@ -4,8 +4,8 @@ import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ServiceLifecycleDispatcher
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ServiceLifecycleDispatcher
 
 /**
  * Forked from LifecycleService:

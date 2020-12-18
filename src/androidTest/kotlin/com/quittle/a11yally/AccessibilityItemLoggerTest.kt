@@ -50,12 +50,16 @@ class AccessibilityTestActivity : Activity() {
         } else {
             @Suppress("deprecation")
             window.setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
         }
-        Handler(mainLooper).postDelayed({
-            setContentView(TestR.layout.accessibility_test_activity)
-        }, 2000)
+        Handler(mainLooper).postDelayed(
+            {
+                setContentView(TestR.layout.accessibility_test_activity)
+            },
+            2000
+        )
     }
 }
 
@@ -77,7 +81,7 @@ class AccessibilityItemLoggerTest {
     private lateinit var recordingFile: File
 
     private val outputReader: ObjectReader =
-            jacksonObjectMapper().readerFor(object : TypeReference<Set<AccessibilityOutput>>() {})
+        jacksonObjectMapper().readerFor(object : TypeReference<Set<AccessibilityOutput>>() {})
 
     @get:Rule
     val mPermissionsRule = PermissionsRule()
@@ -115,20 +119,27 @@ class AccessibilityItemLoggerTest {
         assertFalse(recordingFile.exists())
 
         // Enable the necessary preferences
-        assertTrue(PreferenceManager(targetContext).sharedPreferences.edit()
+        assertTrue(
+            PreferenceManager(targetContext).sharedPreferences.edit()
                 .clear()
-                .commit())
-        assertTrue(PreferenceManager(targetContext).sharedPreferences.edit()
+                .commit()
+        )
+        assertTrue(
+            PreferenceManager(targetContext).sharedPreferences.edit()
                 .putBoolean(targetContext.getString(R.string.pref_service_enabled), true)
                 .putBoolean(targetContext.getString(R.string.pref_highlight_issues), true)
                 .putBoolean(targetContext.getString(R.string.pref_highlight_missing_labels), true)
                 .putBoolean(
-                        targetContext.getString(R.string.pref_highlight_small_touch_targets), true)
+                    targetContext.getString(R.string.pref_highlight_small_touch_targets), true
+                )
                 .putBoolean(targetContext.getString(R.string.pref_enable_all_apps), false)
-                .putStringSet(targetContext.getString(R.string.pref_enabled_apps),
-                        setOf(testContext.applicationInfo.packageName))
+                .putStringSet(
+                    targetContext.getString(R.string.pref_enabled_apps),
+                    setOf(testContext.applicationInfo.packageName)
+                )
                 .putString(targetContext.getString(R.string.pref_small_touch_target_size), "30")
-                .commit())
+                .commit()
+        )
 
         onIdle()
 
@@ -136,9 +147,10 @@ class AccessibilityItemLoggerTest {
 
         // Start the activity which will add content after two seconds
         targetContext.startActivity(
-                Intent(testContext, AccessibilityTestActivity::class.java).apply {
-                    flags += FLAG_ACTIVITY_NEW_TASK
-                })
+            Intent(testContext, AccessibilityTestActivity::class.java).apply {
+                flags += FLAG_ACTIVITY_NEW_TASK
+            }
+        )
 
         // It is up to the OS to send accessibility events, which do not have a guaranteed
         // "frame rate". Wait until at least one should get triggered.
@@ -152,21 +164,29 @@ class AccessibilityItemLoggerTest {
 
         val contents: Set<AccessibilityOutput> = outputReader.readValue(recordingFile)
 
-        val expectedReport: Set<AccessibilityOutput> = outputReader.readValue(testContext.resources
-                .openRawResource(TestR.raw.unfriendly_activity_report))
+        val expectedReport: Set<AccessibilityOutput> = outputReader.readValue(
+            testContext.resources
+                .openRawResource(TestR.raw.unfriendly_activity_report)
+        )
 
         assertEquals(expectedReport, contents)
     }
 
     private fun startRecording() {
-        testContext.startService(Intent(
-                START_RECORDING_INTENT_ACTION, null, targetContext, RecordingService::class.java))
+        testContext.startService(
+            Intent(
+                START_RECORDING_INTENT_ACTION, null, targetContext, RecordingService::class.java
+            )
+        )
         onIdle()
     }
 
     private fun stopRecording() {
-        testContext.startService(Intent(
-                STOP_RECORDING_INTENT_ACTION, null, targetContext, RecordingService::class.java))
+        testContext.startService(
+            Intent(
+                STOP_RECORDING_INTENT_ACTION, null, targetContext, RecordingService::class.java
+            )
+        )
         onIdle()
     }
 }

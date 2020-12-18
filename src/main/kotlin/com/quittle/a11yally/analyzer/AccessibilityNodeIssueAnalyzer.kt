@@ -12,7 +12,7 @@ class AccessibilityNodeIssueAnalyzer(
     context: Context,
     private val mAccessibilityIssueListener: AccessibilityIssueListener
 ) :
-                AccessibilityItemEventListener {
+    AccessibilityItemEventListener {
     private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(context)
     private val mPreferenceProvider by lazy { PreferenceProvider(context, true) }
     private val mCurrentIssues = mutableListOf<AccessibilityIssue>()
@@ -44,15 +44,21 @@ class AccessibilityNodeIssueAnalyzer(
         val nodeSummary = AccessibilityNodeSummary(node).getSummary()
 
         if (mPreferenceProvider.getHighlightMissingLabels() &&
-                mAccessibilityNodeAnalyzer.isUnlabeledNode(node)) {
+            mAccessibilityNodeAnalyzer.isUnlabeledNode(node)
+        ) {
             mCurrentIssues.add(
-                    AccessibilityIssue(IssueType.UnlabeledNode, nodePosition, nodeSummary))
+                AccessibilityIssue(IssueType.UnlabeledNode, nodePosition, nodeSummary)
+            )
         }
         if (mPreferenceProvider.getHighlightSmallTouchTargets() &&
-                mAccessibilityNodeAnalyzer.isNodeSmallTouchTarget(node,
-                        mPreferenceProvider.getSmallTouchTargetSize())) {
+            mAccessibilityNodeAnalyzer.isNodeSmallTouchTarget(
+                    node,
+                    mPreferenceProvider.getSmallTouchTargetSize()
+                )
+        ) {
             mCurrentIssues.add(
-                    AccessibilityIssue(IssueType.SmallTouchTarget, nodePosition, nodeSummary))
+                AccessibilityIssue(IssueType.SmallTouchTarget, nodePosition, nodeSummary)
+            )
         }
     }
 }

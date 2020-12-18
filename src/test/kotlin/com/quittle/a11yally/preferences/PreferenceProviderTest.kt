@@ -56,17 +56,17 @@ class PreferenceProviderTest {
     fun testGetValues() {
         preferenceProvider.onResume()
         sharedPreferences.edit()
-                .putBoolean(context.getString(R.string.pref_service_enabled), true)
-                .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
-                .putBoolean(context.getString(R.string.pref_linear_navigation_enabled), true)
-                .putBoolean(context.getString(R.string.pref_highlight_issues), true)
-                .putBoolean(context.getString(R.string.pref_highlight_missing_labels), true)
-                .putBoolean(context.getString(R.string.pref_highlight_small_touch_targets), true)
-                .putString(context.getString(R.string.pref_small_touch_target_size), "123")
-                .putBoolean(context.getString(R.string.pref_enable_all_apps), false)
-                .putStringSet(context.getString(R.string.pref_enabled_apps), setOf("a", "b"))
-                .putBoolean(context.getString(R.string.pref_show_tutorial), false)
-                .commit()
+            .putBoolean(context.getString(R.string.pref_service_enabled), true)
+            .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
+            .putBoolean(context.getString(R.string.pref_linear_navigation_enabled), true)
+            .putBoolean(context.getString(R.string.pref_highlight_issues), true)
+            .putBoolean(context.getString(R.string.pref_highlight_missing_labels), true)
+            .putBoolean(context.getString(R.string.pref_highlight_small_touch_targets), true)
+            .putString(context.getString(R.string.pref_small_touch_target_size), "123")
+            .putBoolean(context.getString(R.string.pref_enable_all_apps), false)
+            .putStringSet(context.getString(R.string.pref_enabled_apps), setOf("a", "b"))
+            .putBoolean(context.getString(R.string.pref_show_tutorial), false)
+            .commit()
         assertTrue(preferenceProvider.getServiceEnabled())
         assertTrue(preferenceProvider.getDisplayContentDescription())
         assertTrue(preferenceProvider.getLinearNavigationEnabled())
@@ -119,20 +119,40 @@ class PreferenceProviderTest {
             assertFalse(getShowTutorial())
         }
 
-        assertTrue(sharedPreferences.getBoolean(
-                context.getString(R.string.pref_service_enabled), false))
-        assertTrue(sharedPreferences.getBoolean(
-                context.getString(R.string.pref_display_content_descriptions), false))
-        assertTrue(sharedPreferences.getBoolean(
-                context.getString(R.string.pref_linear_navigation_enabled), false))
-        assertTrue(sharedPreferences.getBoolean(
-                context.getString(R.string.pref_highlight_issues), false))
-        assertFalse(sharedPreferences.getBoolean(
-                context.getString(R.string.pref_enable_all_apps), true))
-        assertEquals(setOf("a", "b"),
-                sharedPreferences.getStringSet(context.getString(R.string.pref_enabled_apps), null))
-        assertFalse(sharedPreferences.getBoolean(
-                context.getString(R.string.pref_show_tutorial), true))
+        assertTrue(
+            sharedPreferences.getBoolean(
+                context.getString(R.string.pref_service_enabled), false
+            )
+        )
+        assertTrue(
+            sharedPreferences.getBoolean(
+                context.getString(R.string.pref_display_content_descriptions), false
+            )
+        )
+        assertTrue(
+            sharedPreferences.getBoolean(
+                context.getString(R.string.pref_linear_navigation_enabled), false
+            )
+        )
+        assertTrue(
+            sharedPreferences.getBoolean(
+                context.getString(R.string.pref_highlight_issues), false
+            )
+        )
+        assertFalse(
+            sharedPreferences.getBoolean(
+                context.getString(R.string.pref_enable_all_apps), true
+            )
+        )
+        assertEquals(
+            setOf("a", "b"),
+            sharedPreferences.getStringSet(context.getString(R.string.pref_enabled_apps), null)
+        )
+        assertFalse(
+            sharedPreferences.getBoolean(
+                context.getString(R.string.pref_show_tutorial), true
+            )
+        )
 
         assertKnownSetters(7)
     }
@@ -143,8 +163,8 @@ class PreferenceProviderTest {
         assertFalse(preferenceProvider.getDisplayContentDescription())
 
         sharedPreferences.edit()
-                .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
-                .commit()
+            .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
+            .commit()
         // Still false because it hasn't been resumed
         assertFalse(preferenceProvider.getDisplayContentDescription())
 
@@ -152,8 +172,8 @@ class PreferenceProviderTest {
         assertTrue(preferenceProvider.getDisplayContentDescription())
 
         sharedPreferences.edit()
-                .putBoolean(context.getString(R.string.pref_display_content_descriptions), false)
-                .commit()
+            .putBoolean(context.getString(R.string.pref_display_content_descriptions), false)
+            .commit()
 
         // Back to false due to listener
         assertFalse(preferenceProvider.getDisplayContentDescription())
@@ -161,8 +181,8 @@ class PreferenceProviderTest {
         preferenceProvider.onPause()
 
         sharedPreferences.edit()
-                .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
-                .commit()
+            .putBoolean(context.getString(R.string.pref_display_content_descriptions), true)
+            .commit()
 
         // Not responsive due to listener being paused
         assertFalse(preferenceProvider.getDisplayContentDescription())
@@ -186,21 +206,25 @@ class PreferenceProviderTest {
     }
 
     private fun assertKnownSetters(curKnownGetters: Int) {
-        assertEquals("When this test fails, you should update it with the new method added",
-                curKnownGetters,
-                PreferenceProvider::class.memberFunctions
-                        .filter { it.visibility == KVisibility.PUBLIC }
-                        .filter { it.name.startsWith("set") }
-                        .count())
+        assertEquals(
+            "When this test fails, you should update it with the new method added",
+            curKnownGetters,
+            PreferenceProvider::class.memberFunctions
+                .filter { it.visibility == KVisibility.PUBLIC }
+                .filter { it.name.startsWith("set") }
+                .count()
+        )
     }
 
     private fun assertKnownGetters(curKnownGetters: Int) {
-        assertEquals("When this test fails, you should update it with the new method added",
-                curKnownGetters,
-                PreferenceProvider::class.memberFunctions
-                        .filter { it.visibility == KVisibility.PUBLIC }
-                        .filter { it.name.startsWith("get") }
-                        .filterNot { it.name.endsWith("LiveData") }
-                        .count())
+        assertEquals(
+            "When this test fails, you should update it with the new method added",
+            curKnownGetters,
+            PreferenceProvider::class.memberFunctions
+                .filter { it.visibility == KVisibility.PUBLIC }
+                .filter { it.name.startsWith("get") }
+                .filterNot { it.name.endsWith("LiveData") }
+                .count()
+        )
     }
 }

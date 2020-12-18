@@ -1,5 +1,6 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.base
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -117,11 +118,35 @@ class KotlinUtilsTest {
     }
 
     @Test
-    fun testOrElse() {
+    fun `testOrElse literal`() {
         assertTrue(null.orElse(true))
         assertNull(null.orElse(null))
         assertTrue(true.orElse(false))
         assertFalse(false.orElse(true))
+    }
+
+    @Test
+    fun `testOrElse generator not suspending`() {
+        // Must be declared externally to avoid ambiguity
+        // See: https://stackoverflow.com/a/60247582/1554990
+        val rTrue = { true }
+        val rFalse = { false }
+        val rNull = { null }
+
+        assertTrue(null.orElse(rTrue))
+        assertNull(null.orElse(rNull))
+        assertTrue(true.orElse(rFalse))
+        assertFalse(false.orElse(rTrue))
+    }
+
+    @Test
+    fun `testOrElse generator suspending`() {
+        runBlocking {
+            assertTrue(null.orElse(suspend { true }))
+            assertNull(null.orElse(suspend { null }))
+            assertTrue(true.orElse(suspend { false }))
+            assertFalse(false.orElse(suspend { true }))
+        }
     }
 
     @Test

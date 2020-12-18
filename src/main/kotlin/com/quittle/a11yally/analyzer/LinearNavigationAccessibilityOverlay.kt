@@ -13,9 +13,9 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.quittle.a11yally.R
-import com.quittle.a11yally.ifNotNull
-import com.quittle.a11yally.isNull
-import com.quittle.a11yally.orElse
+import com.quittle.a11yally.base.ifNotNull
+import com.quittle.a11yally.base.isNull
+import com.quittle.a11yally.base.orElse
 import com.quittle.a11yally.lifecycle.AllTrueLiveData
 import com.quittle.a11yally.preferences.PreferenceProvider
 
@@ -23,7 +23,7 @@ import com.quittle.a11yally.preferences.PreferenceProvider
  * Displays accessibility issues visibly on the screen.
  */
 class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer) :
-        AccessibilityOverlay<ViewGroup>(accessibilityAnalyzer) {
+    AccessibilityOverlay<ViewGroup>(accessibilityAnalyzer) {
     override val mOverlayFlags: Int = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
 
     private var mListView: LinearLayout? = null
@@ -39,15 +39,19 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
         mPreferenceProvider.onResume()
 
         mLinearNavigationLiveData = AllTrueLiveData(
-                mPreferenceProvider.getLinearNavigationLiveData(),
-                mPreferenceProvider.getServiceEnabledLiveData())
-        mLinearNavigationLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
-            if (enabled) {
-                accessibilityAnalyzer.resumeListener(this)
-            } else {
-                accessibilityAnalyzer.pauseListener(this)
+            mPreferenceProvider.getLinearNavigationLiveData(),
+            mPreferenceProvider.getServiceEnabledLiveData()
+        )
+        mLinearNavigationLiveData.observe(
+            accessibilityAnalyzer,
+            Observer { enabled ->
+                if (enabled) {
+                    accessibilityAnalyzer.resumeListener(this)
+                } else {
+                    accessibilityAnalyzer.pauseListener(this)
+                }
             }
-        })
+        )
 
         if (mLinearNavigationLiveData.value!!) {
             accessibilityAnalyzer.resumeListener(this)
@@ -68,13 +72,16 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
         mListView.ifNotNull { listView ->
             val descriptionText = mAccessibilityNodeAnalyzer
-                    .getContentDescription(node)
-                    .orElse(node.text)
-                    .orElse("[[No Text]]")
-                    .toString()
+                .getContentDescription(node)
+                .orElse(node.text)
+                .orElse("[[No Text]]")
+                .toString()
             if (mAccessibilityNodeAnalyzer.isNodeLikelyFocusable(node)) {
-                val textView = (mLayoutInflator.inflate(
-                        R.layout.linear_navigation_entry, listView, false) as TextView).apply {
+                val textView = (
+                    mLayoutInflator.inflate(
+                        R.layout.linear_navigation_entry, listView, false
+                    ) as TextView
+                    ).apply {
                     val descriptors = getDescriptors(node)
                     if (descriptors.isEmpty()) {
                         text = descriptionText
@@ -84,12 +91,13 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
 
                     setOnClickListener {
                         findClickableAccessibilityNode(node)
-                                ?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                            ?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
                     }
                 }
                 val params = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT)
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
                 listView.addView(textView, params)
             }
         }
@@ -115,8 +123,10 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
 
     @SuppressLint("InflateParams")
     override fun buildRootView(): ViewGroup {
-        return (mLayoutInflator.inflate(R.layout.linear_navigation_overlay, null, false)
-                as ViewGroup).apply {
+        return (
+            mLayoutInflator.inflate(R.layout.linear_navigation_overlay, null, false)
+                as ViewGroup
+            ).apply {
             findViewById<View>(R.id.disable).setOnClickListener {
                 mPreferenceProvider.setLinearNavigationEnabled(false)
             }
@@ -136,13 +146,13 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
      * there is no clickable parent.
      */
     private fun findClickableAccessibilityNode(node: AccessibilityNodeInfo?):
-            AccessibilityNodeInfo? {
-        return when {
-            node.isNull() -> null
-            node.isClickable -> node
-            else -> findClickableAccessibilityNode(node.parent)
+        AccessibilityNodeInfo? {
+            return when {
+                node.isNull() -> null
+                node.isClickable -> node
+                else -> findClickableAccessibilityNode(node.parent)
+            }
         }
-    }
 
     private fun getDescriptors(node: AccessibilityNodeInfo): List<String> {
         val ret = mutableListOf<String>()

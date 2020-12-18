@@ -1,4 +1,4 @@
-package com.quittle.a11yally
+package com.quittle.a11yally.base
 
 import android.content.Context
 import android.graphics.Bitmap

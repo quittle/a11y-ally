@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.ImageView
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.R
-import com.quittle.a11yally.isNullOrZero
+import com.quittle.a11yally.base.isNullOrZero
 import com.quittle.a11yally.view.FixedPreferenceFragment
 
 /**
@@ -37,10 +37,13 @@ class FeatureSettingsActivity : FixedContentActivity() {
         val imageResourceId = extras?.getInt(EXTRA_KEY_IMAGE_RESOURCE_ID)
 
         if (preferenceXmlResourceId.isNullOrZero() || imageResourceId.isNullOrZero()) {
-            Log.e(TAG, "Unable to start ${FeatureSettingsActivity::class.simpleName} due to " +
+            Log.e(
+                TAG,
+                "Unable to start ${FeatureSettingsActivity::class.simpleName} due to " +
                     "missing argument(s). " +
                     "$EXTRA_KEY_PREFERENCE_XML_RESOURCE_ID: $preferenceXmlResourceId, " +
-                    "$EXTRA_KEY_IMAGE_RESOURCE_ID: $imageResourceId")
+                    "$EXTRA_KEY_IMAGE_RESOURCE_ID: $imageResourceId"
+            )
             finish()
             return
         }
@@ -48,9 +51,11 @@ class FeatureSettingsActivity : FixedContentActivity() {
         findViewById<ImageView>(R.id.hero_image).setImageResource(imageResourceId)
 
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings_holder,
-                        FixedPreferenceFragment.newInstance(preferenceXmlResourceId))
-                .commit()
+            .beginTransaction()
+            .replace(
+                R.id.settings_holder,
+                FixedPreferenceFragment.newInstance(preferenceXmlResourceId)
+            )
+            .commit()
     }
 }

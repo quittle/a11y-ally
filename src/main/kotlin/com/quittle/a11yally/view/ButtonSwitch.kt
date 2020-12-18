@@ -2,9 +2,10 @@ package com.quittle.a11yally.view
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Build
-import android.view.LayoutInflater
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatButton
@@ -14,7 +15,7 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.ViewCompat
 import com.quittle.a11yally.R
-import com.quittle.a11yally.isNotNull
+import com.quittle.a11yally.base.isNotNull
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 /**
@@ -44,63 +45,72 @@ class ButtonSwitch : LinearLayoutCompat {
     private lateinit var mTitleButton: AppCompatButton
     private lateinit var mDivider: LinearLayoutCompat
     private lateinit var mSwitchCompat: SwitchCompat
-    private val mSharedPreferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener?
+    private val mSharedPreferenceChangeListener: OnSharedPreferenceChangeListener?
 
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
-            super(context, attrs, defStyle) {
-        if (attrs.isNotNull()) {
-            with(context.obtainStyledAttributes(attrs, R.styleable.ButtonSwitch, defStyle, 0)) {
-                mText = getText(R.styleable.ButtonSwitch_text)
-                mPreference = getString(R.styleable.ButtonSwitch_switchPreference)
-                mLayoutPadding = getDimensionPixelSize(R.styleable.ButtonSwitch_layoutPadding, 0)
-                mDividerPadding = getDimensionPixelSize(R.styleable.ButtonSwitch_dividerPadding, 0)
-                mDividerWidth = getDimensionPixelSize(R.styleable.ButtonSwitch_dividerWidth, 0)
-                mBackgroundTint = getColor(R.styleable.ButtonSwitch_backgroundTint, 0)
-                mDividerDrawableResource =
+        super(context, attrs, defStyle) {
+            if (attrs.isNotNull()) {
+                with(
+                    context.obtainStyledAttributes(
+                        attrs, R.styleable.ButtonSwitch, defStyle, 0
+                    )
+                ) {
+                    mText = getText(R.styleable.ButtonSwitch_text)
+                    mPreference = getString(R.styleable.ButtonSwitch_switchPreference)
+                    mLayoutPadding =
+                        getDimensionPixelSize(R.styleable.ButtonSwitch_layoutPadding, 0)
+                    mDividerPadding =
+                        getDimensionPixelSize(R.styleable.ButtonSwitch_dividerPadding, 0)
+                    mDividerWidth =
+                        getDimensionPixelSize(R.styleable.ButtonSwitch_dividerWidth, 0)
+                    mBackgroundTint = getColor(R.styleable.ButtonSwitch_backgroundTint, 0)
+                    mDividerDrawableResource =
                         getResourceId(R.styleable.ButtonSwitch_dividerDrawable, 0)
-            }
-        } else {
-            mText = null
-            mPreference = null
-            mLayoutPadding = 0
-            mDividerPadding = 0
-            mDividerWidth = 0
-            mBackgroundTint = 0
-            mDividerDrawableResource = 0
-        }
-
-        mSharedPreferences = PreferenceProvider(context).sharedPreferences
-
-        if (mPreference.isNotNull()) {
-            mSharedPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener {
-                    sharedPreferences, key ->
-                if (key == mPreference) {
-                    mSwitchCompat.isChecked = sharedPreferences.getBoolean(mPreference, false)
                 }
+            } else {
+                mText = null
+                mPreference = null
+                mLayoutPadding = 0
+                mDividerPadding = 0
+                mDividerWidth = 0
+                mBackgroundTint = 0
+                mDividerDrawableResource = 0
             }
-        } else {
-            mSharedPreferenceChangeListener = null
-        }
 
-        val inflater = context
+            mSharedPreferences = PreferenceProvider(context).sharedPreferences
+
+            if (mPreference.isNotNull()) {
+                mSharedPreferenceChangeListener = OnSharedPreferenceChangeListener {
+                    sharedPreferences, key ->
+                    if (key == mPreference) {
+                        mSwitchCompat.isChecked = sharedPreferences.getBoolean(mPreference, false)
+                    }
+                }
+            } else {
+                mSharedPreferenceChangeListener = null
+            }
+
+            val inflater = context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.button_switch, this)
-    }
+            inflater.inflate(R.layout.button_switch, this)
+        }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         mSharedPreferences.registerOnSharedPreferenceChangeListener(
-                mSharedPreferenceChangeListener)
+            mSharedPreferenceChangeListener
+        )
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mSharedPreferences.unregisterOnSharedPreferenceChangeListener(
-                mSharedPreferenceChangeListener)
+            mSharedPreferenceChangeListener
+        )
     }
 
     fun getButton(): AppCompatButton {
@@ -123,7 +133,8 @@ class ButtonSwitch : LinearLayoutCompat {
             when {
                 Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP -> {
                     val colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                            this.mBackgroundTint, BlendModeCompat.MODULATE)
+                        this.mBackgroundTint, BlendModeCompat.MODULATE
+                    )
                     wrapper.background.colorFilter = colorFilter
                 }
                 Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP -> {
@@ -158,8 +169,8 @@ class ButtonSwitch : LinearLayoutCompat {
 
                 setOnCheckedChangeListener { _, isChecked: Boolean ->
                     mSharedPreferences.edit()
-                            .putBoolean(mPreference, isChecked)
-                            .apply()
+                        .putBoolean(mPreference, isChecked)
+                        .apply()
                 }
             }
         }

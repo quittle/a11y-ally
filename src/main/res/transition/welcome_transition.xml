@@ -1,0 +1,41 @@
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="sequential"
+    android:duration="@android:integer/config_longAnimTime">
+    <transitionSet
+        android:transitionOrdering="together"
+        android:duration="@android:integer/config_mediumAnimTime">
+        <changeBounds>
+            <targets>
+                <target android:targetId="@id/title_banner" />
+            </targets>
+        </changeBounds>
+        <fade>
+            <targets>
+                <target android:targetId="@id/welcome_subtitle" />
+            </targets>
+        </fade>
+        <slide android:slideEdge="bottom">
+            <targets>
+                <target android:targetId="@id/scrollview" />
+                <target android:targetId="@id/learn_more" />
+            </targets>
+        </slide>
+    </transitionSet>
+    <transitionSet android:transitionOrdering="together">
+        <fade>
+            <targets>
+                <target android:targetId="@id/welcome_subtitle_pick" />
+            </targets>
+        </fade>
+        <slide android:slideEdge="top">
+            <targets>
+                <target android:targetId="@id/app_list" />
+            </targets>
+        </slide>
+        <slide android:slideEdge="bottom">
+            <targets>
+                <target android:targetId="@id/bottom_button_wrapper" />
+            </targets>
+        </slide>
+    </transitionSet>
+</transitionSet>

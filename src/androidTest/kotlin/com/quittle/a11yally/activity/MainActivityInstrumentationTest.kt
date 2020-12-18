@@ -15,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.quittle.a11yally.DisableAnimationsRule
 import com.quittle.a11yally.PermissionsRule
 import com.quittle.a11yally.R
+import com.quittle.a11yally.activity.welcome.WelcomeActivity
 import com.quittle.a11yally.clearSharedPreferences
 import com.quittle.a11yally.fullyTearDownPermissions
 import com.quittle.a11yally.getCurrentActivity
@@ -68,16 +69,16 @@ class MainActivityInstrumentationTest {
         launchActivity(MainActivity::class)
 
         onView(withId(R.id.highlight_issues))
-                .perform(scrollTo())
-                .perform(click())
+            .perform(scrollTo())
+            .perform(click())
 
         onView(withId(R.id.hero_image))
-                .check(matches(isDisplayed()))
-                .check(matches(not(isClickable())))
+            .check(matches(isDisplayed()))
+            .check(matches(not(isClickable())))
 
         onView(withId(R.id.settings_holder))
-                .check(matches(isDisplayed()))
-                .check(matches(not(isClickable())))
+            .check(matches(isDisplayed()))
+            .check(matches(not(isClickable())))
 
         assertSame(FeatureSettingsActivity::class.java, getCurrentActivity().javaClass)
     }
@@ -90,15 +91,15 @@ class MainActivityInstrumentationTest {
 
         arrayOf(R.id.display_content_descriptions, R.id.highlight_issues).forEach { id ->
             onView(withId(id))
-                    .perform(scrollTo())
+                .perform(scrollTo())
             onView(allOf(withId(R.id.switch_compat), isDescendantOfA(withId(id))))
-                    .perform(scrollTo())
-                    .check(matches(isCompletelyDisplayed()))
-                    .check(matches(isClickable()))
-                    .perform(click())
-                    .check(matches(isCompletelyDisplayed()))
-                    .check(matches(isClickable()))
-                    .perform(click())
+                .perform(scrollTo())
+                .check(matches(isCompletelyDisplayed()))
+                .check(matches(isClickable()))
+                .perform(click())
+                .check(matches(isCompletelyDisplayed()))
+                .check(matches(isClickable()))
+                .perform(click())
 
             assertSame(MainActivity::class.java, getCurrentActivity().javaClass)
         }
@@ -109,10 +110,10 @@ class MainActivityInstrumentationTest {
         disableTutorial()
         launchActivity(MainActivity::class)
         onView(withId(R.id.toggle_app_selection))
-                .perform(scrollTo())
-                .check(matches(isCompletelyDisplayed()))
-                .check(matches(isClickable()))
-                .perform(click())
+            .perform(scrollTo())
+            .check(matches(isCompletelyDisplayed()))
+            .check(matches(isClickable()))
+            .perform(click())
 
         assertSame(MultiAppSelectionActivity::class.java, getCurrentActivity().javaClass)
     }
@@ -124,10 +125,10 @@ class MainActivityInstrumentationTest {
         launchActivity(MainActivity::class)
 
         onView(withId(R.id.open_unfriendly_activity_button))
-                .perform(scrollTo())
-                .check(matches(isCompletelyDisplayed()))
-                .check(matches(isClickable()))
-                .perform(click())
+            .perform(scrollTo())
+            .check(matches(isCompletelyDisplayed()))
+            .check(matches(isClickable()))
+            .perform(click())
 
         assertSame(UnfriendlyActivity::class.java, getCurrentActivity().javaClass)
     }

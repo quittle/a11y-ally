@@ -88,12 +88,12 @@ class A11yAllyAccessibilityAnalyzer : AccessibilityAnalyzer(), OnSharedPreferenc
         val highlighterAccessibilityOverlay = HighlighterAccessibilityOverlay(this)
 
         val rootListener =
-                fanOutIssueListeners(highlighterAccessibilityOverlay, mAccessibilityItemLogger)
+            fanOutIssueListeners(highlighterAccessibilityOverlay, mAccessibilityItemLogger)
 
         setOf(
-                AccessibilityNodeIssueAnalyzer(this, rootListener),
-                ContentDescriptionOverlay(this),
-                LinearNavigationAccessibilityOverlay(this)
+            AccessibilityNodeIssueAnalyzer(this, rootListener),
+            ContentDescriptionOverlay(this),
+            LinearNavigationAccessibilityOverlay(this)
         )
     }
 

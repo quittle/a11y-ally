@@ -1,9 +1,12 @@
-package com.quittle.a11yally.activity
+package com.quittle.a11yally.activity.welcome
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.quittle.a11yally.R
+import com.quittle.a11yally.activity.FixedContentActivity
+import com.quittle.a11yally.activity.LearnMoreActivity
+import com.quittle.a11yally.activity.MainActivity
 import com.quittle.a11yally.preferences.withPreferenceProvider
 
 class WelcomeActivity : FixedContentActivity() {

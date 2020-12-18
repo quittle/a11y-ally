@@ -10,7 +10,7 @@ import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 import java.lang.RuntimeException
 
 class PermissionsManagerInitializationException(msg: String, cause: Throwable) :
-        RuntimeException(msg, cause)
+    RuntimeException(msg, cause)
 
 class PermissionsManager(context: Context) {
     private companion object {
@@ -24,14 +24,16 @@ class PermissionsManager(context: Context) {
             context.applicationContext
         } catch (e: NullPointerException) {
             throw PermissionsManagerInitializationException(
-                    "Unable to initialize Permissions Manager so soon in the application " +
+                "Unable to initialize Permissions Manager so soon in the application " +
                     "lifecycle. This usually occurs when trying to construct the class before " +
                     "the application has fully initialized. Instead initialize this lazily or " +
-                    "during the onCreate() of your activity or application.", e)
+                    "during the onCreate() of your activity or application.",
+                e
+            )
         }
     }
     private val mAccessibilityManager =
-            mContext.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+        mContext.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
     private val mPackageName = mContext.packageName
 
     /**
@@ -48,9 +50,9 @@ class PermissionsManager(context: Context) {
      */
     fun hasAccessibilityServicePermission(): Boolean {
         return mAccessibilityManager
-                .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK)
-                .map(AccessibilityServiceInfo::getId)
-                .any("$mPackageName/.analyzer.$ANALYZER_CLASS_NAME"::equals)
+            .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK)
+            .map(AccessibilityServiceInfo::getId)
+            .any("$mPackageName/.analyzer.$ANALYZER_CLASS_NAME"::equals)
     }
 
     /**

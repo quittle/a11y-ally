@@ -9,7 +9,7 @@ import android.view.WindowManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.quittle.a11yally.BuildConfig.TAG
-import com.quittle.a11yally.ifNotNull
+import com.quittle.a11yally.base.ifNotNull
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 /**
@@ -18,23 +18,23 @@ import com.quittle.a11yally.preferences.PreferenceProvider
 abstract class AccessibilityOverlay<T : ViewGroup>(
     accessibilityAnalyzer: A11yAllyAccessibilityAnalyzer
 ) :
-            AccessibilityItemEventListener {
+    AccessibilityItemEventListener {
     private companion object {
         private const val PIXEL_FORMAT: Int = PixelFormat.TRANSLUCENT
 
         private val sOverlayType: Int =
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                    @Suppress("deprecation")
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ERROR
-                } else {
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                @Suppress("deprecation")
+                WindowManager.LayoutParams.TYPE_SYSTEM_ERROR
+            } else {
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            }
     }
 
     private var mRootView: T? = null
     private val mWindowManager =
-            accessibilityAnalyzer.applicationContext
-                    .getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
+        accessibilityAnalyzer.applicationContext
+            .getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
     private val mPreferenceProvider = PreferenceProvider(accessibilityAnalyzer)
     private val mServiceEnabledLiveData: LiveData<Boolean>
 
@@ -52,20 +52,25 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
     protected abstract fun buildRootView(): T
 
     private val mWindowLayoutParams by lazy {
-            WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                sOverlayType,
-                mOverlayFlags,
-                PIXEL_FORMAT) }
+        WindowManager.LayoutParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            sOverlayType,
+            mOverlayFlags,
+            PIXEL_FORMAT
+        )
+    }
 
     init {
         mServiceEnabledLiveData = mPreferenceProvider.getServiceEnabledLiveData()
-        mServiceEnabledLiveData.observe(accessibilityAnalyzer, Observer { enabled ->
-            if (!enabled) {
-                accessibilityAnalyzer.pauseListener(this)
+        mServiceEnabledLiveData.observe(
+            accessibilityAnalyzer,
+            Observer { enabled ->
+                if (!enabled) {
+                    accessibilityAnalyzer.pauseListener(this)
+                }
             }
-        })
+        )
     }
 
     override fun onResume() {

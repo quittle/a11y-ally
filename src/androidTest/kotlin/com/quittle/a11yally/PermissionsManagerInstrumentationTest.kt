@@ -29,7 +29,7 @@ class PermissionsManagerInstrumentationTest {
     @Before
     fun setUp() {
         mPermissionsManager =
-                PermissionsManager(InstrumentationRegistry.getInstrumentation().targetContext)
+            PermissionsManager(InstrumentationRegistry.getInstrumentation().targetContext)
         fullyTearDownPermissions()
     }
 

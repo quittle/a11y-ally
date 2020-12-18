@@ -29,8 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar.Real" />
-        <activity android:name=".activity.LearnMoreActivity" android:label="@string/learn_more" android:parentActivityName=".activity.WelcomeActivity" />
+        <activity android:name=".activity.welcome.WelcomeActivity" android:theme="@style/Theme.Main.NoActionBar.Real" />
+        <activity android:name=".activity.welcome.Welcome2Activity" android:theme="@style/Theme.Main.NoActionBar.Real" />
+        <activity android:name=".activity.LearnMoreActivity" android:label="@string/learn_more" android:parentActivityName=".activity.welcome.WelcomeActivity" />
         <activity android:name=".activity.PermissionsActivity" />
         <activity android:name=".activity.UnfriendlyActivity" android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.FeatureSettingsActivity" android:parentActivityName=".activity.MainActivity" />

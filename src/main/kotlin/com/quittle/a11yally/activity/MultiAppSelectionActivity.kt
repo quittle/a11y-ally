@@ -16,7 +16,7 @@ import com.quittle.a11yally.preferences.PreferenceProvider
 
 class MultiAppSelectionActivity : FixedContentActivity() {
     private class CustomQueryTextListener(private val mCheckboxAdapter: CheckboxAdapter) :
-            SearchView.OnQueryTextListener {
+        SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
         }
@@ -26,8 +26,8 @@ class MultiAppSelectionActivity : FixedContentActivity() {
                 stateArray.forEach { state ->
                     val entry = state.checkboxAdapterEntry
                     state.visible =
-                            entry.subtitle.contains(newText, true) ||
-                            entry.title.contains(newText, true)
+                        entry.subtitle.contains(newText, true) ||
+                        entry.title.contains(newText, true)
                 }
                 notifyDataSetChanged()
             }
@@ -64,28 +64,29 @@ class MultiAppSelectionActivity : FixedContentActivity() {
         val currentlyEnabledApps = mPreferenceProvider.getAppsToInspect()
         val installedApplicationInfos = getAllInstalledApplicationInfos()
         val installedApplicationStatus =
-                installedApplicationInfos
-                        .map(CheckboxAdapterEntry::subtitle)
-                        .map(currentlyEnabledApps::contains)
-                        .toBooleanArray()
+            installedApplicationInfos
+                .map(CheckboxAdapterEntry::subtitle)
+                .map(currentlyEnabledApps::contains)
+                .toBooleanArray()
 
         val selectAllEnabled = mPreferenceProvider.getInspectAllAppsEnabled()
 
         val state = installedApplicationInfos.map { info ->
             CheckboxAdapterState(
-                    checkboxAdapterEntry = info,
-                    checked = selectAllEnabled || currentlyEnabledApps.contains(info.subtitle),
-                    enabled = !selectAllEnabled,
-                    visible = true)
+                checkboxAdapterEntry = info,
+                checked = selectAllEnabled || currentlyEnabledApps.contains(info.subtitle),
+                enabled = !selectAllEnabled,
+                visible = true
+            )
         }.toTypedArray()
 
         mCheckboxAdapter = CheckboxAdapter(state) { index: Int, isChecked: Boolean ->
             installedApplicationStatus[index] = isChecked
 
             val apps = installedApplicationInfos
-                    .filterIndexed { i, _ -> installedApplicationStatus[i] }
-                    .map(CheckboxAdapterEntry::subtitle)
-                    .toSet()
+                .filterIndexed { i, _ -> installedApplicationStatus[i] }
+                .map(CheckboxAdapterEntry::subtitle)
+                .toSet()
             mPreferenceProvider.setAppsToInspect(apps)
         }
 
@@ -125,13 +126,15 @@ class MultiAppSelectionActivity : FixedContentActivity() {
 
     private fun getAllInstalledApplicationInfos(): Array<out CheckboxAdapterEntry> {
         return getAllInstalledApplications().asSequence()
-                .map { applicationInfo -> CheckboxAdapterEntry(
-                        title = packageManager.getApplicationLabel(applicationInfo).toString(),
-                        subtitle = applicationInfo.packageName)
-                }
-                .sorted()
-                .toList()
-                .toTypedArray()
+            .map { applicationInfo ->
+                CheckboxAdapterEntry(
+                    title = packageManager.getApplicationLabel(applicationInfo).toString(),
+                    subtitle = applicationInfo.packageName
+                )
+            }
+            .sorted()
+            .toList()
+            .toTypedArray()
     }
 
     private fun getAllInstalledApplications(): Collection<ApplicationInfo> {

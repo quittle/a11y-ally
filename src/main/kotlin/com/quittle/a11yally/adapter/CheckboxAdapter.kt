@@ -17,7 +17,7 @@ class CheckboxAdapter(
     val stateArray: Array<CheckboxAdapterState>,
     private val onCheckedChangeListener: (index: Int, isChecked: Boolean) -> Unit
 ) :
-                RecyclerView.Adapter<CheckboxAdapter.Companion.CheckboxViewHolder>() {
+    RecyclerView.Adapter<CheckboxAdapter.Companion.CheckboxViewHolder>() {
     companion object {
         class CheckboxViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
@@ -29,15 +29,15 @@ class CheckboxAdapter(
         )
 
         data class CheckboxAdapterEntry(val title: String, val subtitle: String) :
-                Comparable<CheckboxAdapterEntry> {
+            Comparable<CheckboxAdapterEntry> {
             override fun compareTo(other: CheckboxAdapterEntry): Int {
                 return COMPARATOR.compare(this, other)
             }
 
             private companion object {
                 private val COMPARATOR = compareBy<CheckboxAdapterEntry>(
-                        { it.title },
-                        { it.subtitle }
+                    { it.title },
+                    { it.subtitle }
                 )
             }
         }
@@ -54,7 +54,8 @@ class CheckboxAdapter(
             visibility = if (state.visible) { View.VISIBLE } else { View.GONE }
             layoutParams = if (state.visible) {
                 RecyclerView.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                )
             } else {
                 RecyclerView.LayoutParams(0, 0)
             }
@@ -82,11 +83,11 @@ class CheckboxAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CheckboxViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.checkbox_adapter_entry, parent, false).apply {
-            val checkbox = findViewById<View>(R.id.checkbox)
-            findViewById<View>(R.id.title).setOnClickListener { checkbox.performClick() }
-            findViewById<View>(R.id.subtitle).setOnClickListener { checkbox.performClick() }
-        }
+            .inflate(R.layout.checkbox_adapter_entry, parent, false).apply {
+                val checkbox = findViewById<View>(R.id.checkbox)
+                findViewById<View>(R.id.title).setOnClickListener { checkbox.performClick() }
+                findViewById<View>(R.id.subtitle).setOnClickListener { checkbox.performClick() }
+            }
         return CheckboxViewHolder(view)
     }
 }

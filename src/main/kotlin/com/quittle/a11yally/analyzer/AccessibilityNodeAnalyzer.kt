@@ -3,8 +3,8 @@ package com.quittle.a11yally.analyzer
 import android.content.Context
 import android.graphics.Rect
 import android.view.accessibility.AccessibilityNodeInfo
-import com.quittle.a11yally.isNotNull
-import com.quittle.a11yally.isNull
+import com.quittle.a11yally.base.isNotNull
+import com.quittle.a11yally.base.isNull
 
 class AccessibilityNodeAnalyzer(context: Context) {
     private val mScreenDensity = context.resources.displayMetrics.density
@@ -14,9 +14,9 @@ class AccessibilityNodeAnalyzer(context: Context) {
      */
     fun isUnlabeledNode(node: AccessibilityNodeInfo): Boolean {
         return node.isFocusable &&
-                node.childCount == 0 &&
-                node.text.isNull() &&
-                getContentDescription(node).isNull()
+            node.childCount == 0 &&
+            node.text.isNull() &&
+            getContentDescription(node).isNull()
     }
 
     fun isNodeSmallTouchTarget(node: AccessibilityNodeInfo, minTouchTargetSizeDp: Int): Boolean {
@@ -24,7 +24,7 @@ class AccessibilityNodeAnalyzer(context: Context) {
             val rect = Rect()
             node.getBoundsInScreen(rect)
             return rect.width() / mScreenDensity < minTouchTargetSizeDp ||
-                    rect.height() / mScreenDensity < minTouchTargetSizeDp
+                rect.height() / mScreenDensity < minTouchTargetSizeDp
         }
         return false
     }
@@ -34,8 +34,8 @@ class AccessibilityNodeAnalyzer(context: Context) {
      */
     fun isNodeLikelyFocusable(node: AccessibilityNodeInfo): Boolean {
         return node.text.isNotNull() ||
-                (node.isFocusable && node.childCount == 0) ||
-                getContentDescription(node).isNotNull()
+            (node.isFocusable && node.childCount == 0) ||
+            getContentDescription(node).isNotNull()
     }
 
     fun getContentDescription(node: AccessibilityNodeInfo): CharSequence? {

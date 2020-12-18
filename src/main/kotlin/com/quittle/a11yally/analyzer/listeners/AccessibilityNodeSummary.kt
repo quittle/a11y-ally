@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
-import com.quittle.a11yally.isNotNull
+import com.quittle.a11yally.base.isNotNull
 
 /**
  * Provides summaries of accessibility nodes
@@ -19,16 +19,17 @@ class AccessibilityNodeSummary(node: AccessibilityNodeInfo) {
      */
     fun getSummary(): Map<String, Any> {
         var info = mapOf(
-                Pair("windowTitle", getWindowTitle()),
-                Pair("paneTitle", getPaneTitle()),
-                Pair("boundsInScreen", getBoundsInScreen().toShortString()),
-                Pair("windowType", getWindowType()),
-                Pair("viewIdResourceName", getViewIdResourceName()),
-                Pair("tooltipText", getTooltipText()),
-                Pair("packageName", getPackageName()),
-                Pair("hintText", getHintText()),
-                Pair("text", getText()),
-                Pair("nodeClassPath", getNodeClassPath()))
+            Pair("windowTitle", getWindowTitle()),
+            Pair("paneTitle", getPaneTitle()),
+            Pair("boundsInScreen", getBoundsInScreen().toShortString()),
+            Pair("windowType", getWindowType()),
+            Pair("viewIdResourceName", getViewIdResourceName()),
+            Pair("tooltipText", getTooltipText()),
+            Pair("packageName", getPackageName()),
+            Pair("hintText", getHintText()),
+            Pair("text", getText()),
+            Pair("nodeClassPath", getNodeClassPath())
+        )
         @Suppress("UNCHECKED_CAST")
         info = info.filterValues { value -> value.isNotNull() } as Map<String, Any>
         return info.toSortedMap()

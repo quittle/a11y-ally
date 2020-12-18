@@ -5,7 +5,6 @@ import android.util.Log
 import com.quittle.a11yally.BuildConfig
 import com.quittle.a11yally.analyzer.AccessibilityIssue
 import com.quittle.a11yally.analyzer.AccessibilityIssueListener
-
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -32,10 +31,11 @@ class AccessibilityItemLogger(context: Context) : AccessibilityIssueListener {
 
         issues.forEach { issue ->
             val summaryMap = issue.info +
-                    mapOf(
-                            "boundsInScreen" to issue.area.toShortString(),
-                            "issues" to listOf(issue.type.toString()),
-                            "timestamp" to System.currentTimeMillis())
+                mapOf(
+                    "boundsInScreen" to issue.area.toShortString(),
+                    "issues" to listOf(issue.type.toString()),
+                    "timestamp" to System.currentTimeMillis()
+                )
             mOngoingRecording.add(summaryMap)
             val nodeSummary = JSONObject(summaryMap).toString(JSON_INDENTATION)
             Log.i(TAG, "Issue found: $nodeSummary")

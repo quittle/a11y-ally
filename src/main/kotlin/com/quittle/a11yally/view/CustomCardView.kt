@@ -1,8 +1,8 @@
 package com.quittle.a11yally.view
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -81,7 +81,7 @@ open class CustomCardView : LinearLayout {
 
     private fun initializeViews(context: Context) {
         val inflater = context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.custom_card_view, this)
     }
 

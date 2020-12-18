@@ -4,6 +4,7 @@ import android.content.Intent
 import android.util.Log
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
+import com.quittle.a11yally.base.isNotNull
 
 @SuppressWarnings("deprecated")
 @Suppress("deprecation")
@@ -13,11 +14,11 @@ class RecordingService : android.app.IntentService(RecordingService::javaClass.n
         const val STOP_RECORDING_INTENT_ACTION = "com.quittle.a11yally.STOP_RECORDING"
 
         private const val START_RECORDING_FAILED_MESSAGE =
-                "Unable to start recording as the accessibility service is not running. You may " +
-                        "have to start the app and grant it permissions before you can record"
+            "Unable to start recording as the accessibility service is not running. You may " +
+                "have to start the app and grant it permissions before you can record"
         private const val STOP_RECORDING_FAILED_MESSAGE =
-                "Unable to stop recording as the accessibility service is not running. You may " +
-                        "have to start the app and grant it permissions before you can record"
+            "Unable to stop recording as the accessibility service is not running. You may " +
+                "have to start the app and grant it permissions before you can record"
     }
 
     override fun onHandleIntent(intent: Intent?) {
@@ -32,7 +33,8 @@ class RecordingService : android.app.IntentService(RecordingService::javaClass.n
 
     private fun startRecording() {
         runServiceOrLog(
-                A11yAllyAccessibilityAnalyzer::startRecording, START_RECORDING_FAILED_MESSAGE)
+            A11yAllyAccessibilityAnalyzer::startRecording, START_RECORDING_FAILED_MESSAGE
+        )
     }
 
     private fun stopRecording() {

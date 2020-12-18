@@ -77,34 +77,34 @@ class MultiAppSelectionActivityInstrumentationTest {
     @Test
     fun selectAll() {
         onView(recyclerView)
-                .check(selectedDescendantsMatch(isCheckbox, allOf(isChecked(), not(isEnabled()))))
-                .check(selectedDescendantsMatch(title, not(isEnabled())))
-                .check(selectedDescendantsMatch(subtitle, not(isEnabled())))
+            .check(selectedDescendantsMatch(isCheckbox, allOf(isChecked(), not(isEnabled()))))
+            .check(selectedDescendantsMatch(title, not(isEnabled())))
+            .check(selectedDescendantsMatch(subtitle, not(isEnabled())))
 
         withPreferenceProvider { assertTrue(getInspectAllAppsEnabled()) }
 
         onView(withId(R.id.select_all))
-                .check(matches(isCompletelyDisplayed()))
-                .check(matches(isChecked()))
-                .perform(click())
-                .check(matches(isNotChecked()))
+            .check(matches(isCompletelyDisplayed()))
+            .check(matches(isChecked()))
+            .perform(click())
+            .check(matches(isNotChecked()))
 
         withPreferenceProvider { assertFalse(getInspectAllAppsEnabled()) }
 
         onView(recyclerView)
-                .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
-                .check(selectedDescendantsMatch(title, isEnabled()))
-                .check(selectedDescendantsMatch(subtitle, isEnabled()))
+            .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
+            .check(selectedDescendantsMatch(title, isEnabled()))
+            .check(selectedDescendantsMatch(subtitle, isEnabled()))
 
         onView(withId(R.id.recycler_view))
-                .perform(swipeUp())
+            .perform(swipeUp())
 
         onIdle()
 
         onView(recyclerView)
-                .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
-                .check(selectedDescendantsMatch(title, isEnabled()))
-                .check(selectedDescendantsMatch(subtitle, isEnabled()))
+            .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
+            .check(selectedDescendantsMatch(title, isEnabled()))
+            .check(selectedDescendantsMatch(subtitle, isEnabled()))
     }
 
     @Test
@@ -112,7 +112,7 @@ class MultiAppSelectionActivityInstrumentationTest {
         withPreferenceProvider { setInspectAllAppsEnabled(false) }
 
         onView(recyclerView)
-                .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
+            .check(selectedDescendantsMatch(isCheckbox, allOf(isNotChecked(), isEnabled())))
 
         withPreferenceProvider { assertTrue(getAppsToInspect().isEmpty()) }
 
@@ -145,45 +145,45 @@ class MultiAppSelectionActivityInstrumentationTest {
         val expectedTitle = "System UI"
         val expectedAppId = "com.android.systemui"
         val inputMethodManager = InstrumentationRegistry.getInstrumentation().targetContext
-                .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         // Check that it doesn't match
         onView(withId(R.id.recycler_view))
-                .check(matches(not(hasDescendant(withText(expectedTitle)))))
-                .check(matches(not(hasDescendant(withText(expectedAppId)))))
+            .check(matches(not(hasDescendant(withText(expectedTitle)))))
+            .check(matches(not(hasDescendant(withText(expectedAppId)))))
 
         // When clicking the search box, the keyboard pops up
         assertFalse(inputMethodManager.isAcceptingText)
 
         onView(withId(R.id.search))
-                .check(matches(isCompletelyDisplayed()))
-                .perform(click())
+            .check(matches(isCompletelyDisplayed()))
+            .perform(click())
 
         assertTrue(inputMethodManager.isAcceptingText)
 
         // Typing the app id searches for the app
         onView(isAssignableFrom(EditText::class.java))
-                .perform(typeText("roid.systemu"))
+            .perform(typeText("roid.systemu"))
 
         onView(withId(R.id.recycler_view))
-                .check(matches(hasDescendant(withText(expectedTitle))))
-                .check(matches(hasDescendant(withText(expectedAppId))))
+            .check(matches(hasDescendant(withText(expectedTitle))))
+            .check(matches(hasDescendant(withText(expectedAppId))))
 
         // Clearing the search restores the entries
         onView(isAssignableFrom(EditText::class.java))
-                .perform(*Array(15) { pressKey(KeyEvent.KEYCODE_DEL) })
+            .perform(*Array(15) { pressKey(KeyEvent.KEYCODE_DEL) })
 
         onView(withId(R.id.recycler_view))
-                .check(matches(not(hasDescendant(withText(expectedTitle)))))
-                .check(matches(not(hasDescendant(withText(expectedAppId)))))
+            .check(matches(not(hasDescendant(withText(expectedTitle)))))
+            .check(matches(not(hasDescendant(withText(expectedAppId)))))
 
         // Searching the app name also works
         onView(isAssignableFrom(EditText::class.java))
-                .perform(typeTextIntoFocusedView("tem ui"))
+            .perform(typeTextIntoFocusedView("tem ui"))
 
         onView(withId(R.id.recycler_view))
-                .check(matches(hasDescendant(withText(expectedTitle))))
-                .check(matches(hasDescendant(withText(expectedAppId))))
+            .check(matches(hasDescendant(withText(expectedTitle))))
+            .check(matches(hasDescendant(withText(expectedAppId))))
     }
 
     @Test
@@ -232,14 +232,18 @@ class MultiAppSelectionActivityInstrumentationTest {
         ) -> Unit
     ) {
         onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<CheckboxViewHolder>(position))
-                .perform(actionOnItemAtPosition<CheckboxViewHolder>(position,
-                        ViewActionCheck { view ->
-                            handler(
-                                    view.findViewById(R.id.checkbox),
-                                    view.findViewById(R.id.title),
-                                    view.findViewById(R.id.subtitle))
-                        }
-                ))
+            .perform(scrollToPosition<CheckboxViewHolder>(position))
+            .perform(
+                actionOnItemAtPosition<CheckboxViewHolder>(
+                    position,
+                    ViewActionCheck { view ->
+                        handler(
+                            view.findViewById(R.id.checkbox),
+                            view.findViewById(R.id.title),
+                            view.findViewById(R.id.subtitle)
+                        )
+                    }
+                )
+            )
     }
 }
