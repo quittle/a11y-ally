@@ -25,6 +25,7 @@ plugins {
 }
 
 import com.diffplug.gradle.imagegrinder.Size
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 import org.gradle.util.VersionNumber
 
 final File customResDir = new File(buildDir, 'custom-generated/res')
@@ -142,21 +143,18 @@ dependencies {
     androidTestImplementation 'org.skyscreamer:jsonassert:1.5.0'
 }
 
-if (IS_IN_TRAVIS) {
-    play {
+
+play {
+    if (IS_IN_TRAVIS) {
         serviceAccountCredentials = file('config/a11y-ally-app-publisher@api-7302096083209403391-613431.iam.gserviceaccount.com.json')
-        defaultToAppBundles = true
-        track = 'alpha'
-        resolutionStrategy = 'auto'
-        outputProcessor {
-            versionNameOverride = "$versionNameOverride.$versionCode"
-        }
-    }
-} else {
-    play {
+
+        resolutionStrategy = ResolutionStrategy.AUTO
+    } else {
         // Doesn't need to be valid, just have a valid file extension
         serviceAccountCredentials = file('config/dummy_service_account.json')
     }
+    defaultToAppBundles = true
+    track = 'alpha'
 }
 
 setupAndroidSdk {
