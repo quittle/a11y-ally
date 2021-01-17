@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.AttrRes
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.UiController
@@ -31,6 +32,8 @@ import com.quittle.a11yally.base.orElse
 import com.quittle.a11yally.base.resolveAttributeResourceValue
 import com.quittle.a11yally.preferences.PreferenceProvider
 import com.quittle.a11yally.preferences.withPreferenceProvider
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.greaterThanOrEqualTo
@@ -47,6 +50,7 @@ import java.io.RandomAccessFile
 import java.lang.Thread.sleep
 import java.nio.charset.StandardCharsets
 import kotlin.reflect.KClass
+import kotlin.reflect.cast
 
 /**
  * Sets up and tears down permissions around a test
@@ -183,8 +187,7 @@ fun clearSharedPreferences() {
 }
 
 fun sharedPreferences(): SharedPreferences {
-    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
-    return PreferenceManager.getDefaultSharedPreferences(targetContext)
+    return PreferenceManager.getDefaultSharedPreferences(targetContext())
 }
 
 class ViewActionCheck(private val check: (view: View) -> Unit) : ViewAction {
@@ -206,13 +209,82 @@ class ViewActionCheck(private val check: (view: View) -> Unit) : ViewAction {
  * @param activity The activity to launch
  * @return The activity instance created
  */
-fun <T : Activity> launchActivity(clazz: KClass<T>): T {
+fun <T : Activity> launchActivity(activity: KClass<T>): T {
     val instrumentation = InstrumentationRegistry.getInstrumentation()
-    val intent = Intent(instrumentation.targetContext, clazz.java).apply {
+    val intent = Intent(instrumentation.targetContext, activity.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
     }
     @Suppress("unchecked_cast")
     return instrumentation.startActivitySync(intent) as T
+}
+
+/**
+ * This should only be used as a matter of last resort as it may extend test time and mask transient
+ * misbehavior if used improperly. The block is guaranteed to run at least once, even if maxDuration
+ * is less than or equal to 0.
+ * @param maxDurationMs The maximum amount of time to continue retrying until.
+ * @param pauseDurationMs How long to pause for after running the block results in a failure.
+ * @param block The code to run and potentially retry if a Throwable is thrown during invocation.
+ * @return The return value of a successful run of [block].
+ * @throws Throwable The latest throwable raised from running [block]. If retried multiple times,
+ *                   only the last one will be re-thrown.
+ */
+fun <T> retry(maxDurationMs: Long, pauseDurationMs: Long, block: () -> T): T {
+    val endTimeMs = System.currentTimeMillis() + maxDurationMs
+    var lastResult: Result<T>
+    do {
+        lastResult = runCatching(block).onSuccess {
+            return it
+        }
+        sleep(pauseDurationMs)
+    } while (System.currentTimeMillis() < endTimeMs)
+
+    // This should only throw since a success should have triggered a return previously.
+    return lastResult.getOrThrow()
+}
+
+fun testContext(): Context = InstrumentationRegistry.getInstrumentation().context
+
+fun targetContext(): Context = InstrumentationRegistry.getInstrumentation().targetContext
+
+/**
+ * Runs [block] on the applications main thread, blocking the current thread on the results. Very
+ * helpful for lazy operations.
+ */
+fun Activity.runBlockingOnUiThread(block: () -> Unit) {
+    runBlocking {
+        val lock = Mutex(true)
+        this@runBlockingOnUiThread.runOnUiThread {
+            block()
+            lock.unlock()
+        }
+        lock.lock()
+    }
+}
+
+/**
+ * Launches an activity in the test application. This should be a rare necessity and cannot be
+ * introspected by the test outside of inter-app communication and accessibility detection.
+ *
+ * Suspected to not work properly.
+ */
+fun <T : Activity> launchTestActivity(clazz: KClass<T>): T {
+    val instrumentation = InstrumentationRegistry.getInstrumentation()
+    val targetContext = instrumentation.targetContext
+    val testContext = instrumentation.context
+    val intent = Intent(testContext, clazz.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+    }
+
+    targetContext.startActivity(intent)
+
+    return retry(5 * 1000, 100) {
+        InstrumentationRegistry.getInstrumentation().newActivity(
+            clazz.java, testContext, null, null, intent, null,
+            "title", null, "thing", null
+        )
+        clazz.cast(getCurrentActivity())
+    }
 }
 
 /**
@@ -293,8 +365,7 @@ fun runShellCommand(command: String) {
  * @return True if the service is running, otherwise false.
  */
 fun isA11yAllyAccessibilityAnalyzerRunning(): Boolean {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-    val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val manager = targetContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     @Suppress("deprecation")
     for (service in manager.getRunningServices(Int.MAX_VALUE)) {
         if (A11yAllyAccessibilityAnalyzer::class.java.name == service.service.className) {
@@ -305,17 +376,17 @@ fun isA11yAllyAccessibilityAnalyzerRunning(): Boolean {
 }
 
 fun withPreferenceProvider(block: PreferenceProvider.() -> Unit) {
-    withPreferenceProvider(InstrumentationRegistry.getInstrumentation().targetContext) {
+    withPreferenceProvider(targetContext()) {
         block(this)
     }
 }
 
 private fun getPackageName(): String {
-    return InstrumentationRegistry.getInstrumentation().targetContext.packageName
+    return targetContext().packageName
 }
 
 private fun getTestPackageName(): String {
-    return InstrumentationRegistry.getInstrumentation().context.packageName
+    return testContext().packageName
 }
 
 fun hasTextColorFromAttribute(@AttrRes attrId: Int): Matcher<View> {

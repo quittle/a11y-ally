@@ -16,6 +16,8 @@
         <item name="secondary_action_disabled_background">#E7ECE6</item>
         <item name="call_to_action_text">#3A5961</item>
         <item name="call_to_action_disabled_text">#9AA7AD</item>
+        <item name="planet">@null</item>
+        <item name="background_gradient_color">#8ccc</item>
     </style>
 
     <style name="Theme.Main.Light" parent="Theme.Main">
@@ -30,5 +32,7 @@
         <item name="secondary_action_disabled_background">#E7ECE6</item>
         <item name="call_to_action_text">#3A5961</item>
         <item name="call_to_action_disabled_text">#9AA7AD</item>
+        <item name="planet">@null</item>
+        <item name="background_gradient_color">#8ccc</item>
     </style>
 </resources>

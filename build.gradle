@@ -134,6 +134,7 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'androidx.test:core:1.3.0'
     testImplementation 'org.robolectric:robolectric:4.5-alpha-2'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
 
     androidTestImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.3'
     androidTestImplementation 'tools.fastlane:screengrab:2.0.0'
@@ -142,7 +143,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
     androidTestImplementation 'org.skyscreamer:jsonassert:1.5.0'
 }
-
 
 play {
     if (IS_IN_TRAVIS) {

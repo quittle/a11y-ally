@@ -26,7 +26,7 @@ class CheckableConstraintLayout(context: Context, attrs: AttributeSet?, defStyle
     }
 
     override fun setOnCheckedChangedListener(
-        listener: CheckedChangeListener<CheckableConstraintLayout>
+        listener: CheckedChangeListener<CheckableConstraintLayout>?
     ) {
         mCheckableHelper.setOnCheckedChangedListener(listener)
     }

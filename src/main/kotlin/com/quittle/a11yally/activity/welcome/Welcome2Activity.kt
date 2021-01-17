@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.transition.Scene
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.View
+import android.widget.Button
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -16,16 +16,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quittle.a11yally.R
 import com.quittle.a11yally.activity.FixedContentActivity
 import com.quittle.a11yally.activity.LearnMoreActivity
+import com.quittle.a11yally.activity.PermissionsActivity
 import com.quittle.a11yally.base.RefreshableWeakReference
 import com.quittle.a11yally.base.flaggedHasCode
+import com.quittle.a11yally.base.ifElse
 import com.quittle.a11yally.base.orElse
 import com.quittle.a11yally.base.time
+import com.quittle.a11yally.preferences.withPreferenceProvider
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.system.measureTimeMillis
 
 class Welcome2Activity : FixedContentActivity() {
     private companion object {
@@ -78,7 +80,7 @@ class Welcome2Activity : FixedContentActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean("mIsInListView", mIsInListView)
-        val t = measureTimeMillis {
+        time(TAG, { "Serializing in ${it}ms" }) {
             outState.putParcelableArray(
                 "mApps",
                 (
@@ -93,7 +95,6 @@ class Welcome2Activity : FixedContentActivity() {
                     )?.toTypedArray()
             )
         }
-        Log.i(TAG, "Serializing in ${t}ms")
     }
 
     private fun onCreateInitialState(savedInstanceState: Bundle?) {
@@ -140,6 +141,9 @@ class Welcome2Activity : FixedContentActivity() {
             this@Welcome2Activity.recreate()
         }
 
+        val nextButton = findViewById<Button>(R.id.next)
+        nextButton.isEnabled = false
+
         sceneList.sceneRoot.findViewById<RecyclerView>(R.id.app_list).apply {
             layoutManager = LinearLayoutManager(this@Welcome2Activity)
 
@@ -162,7 +166,28 @@ class Welcome2Activity : FixedContentActivity() {
 
             lifecycleScope.launch {
                 val generatedApps = appsGenerator.await()
-                adapter = AppInfoRecyclerViewAdapter(this@Welcome2Activity, generatedApps)
+
+                var checkedCount = 0
+                adapter = AppInfoRecyclerViewAdapter(this@Welcome2Activity, generatedApps) {
+                    _, _, isChecked ->
+                    checkedCount += isChecked.ifElse(1, -1)
+                    nextButton.isEnabled = checkedCount > 0
+                }
+
+                nextButton.isEnabled = false
+                nextButton.setOnClickListener {
+                    val enabledApps = generatedApps
+                        .filter { it.isChecked }
+                        .map { it.appInfo.packageName }
+                    withPreferenceProvider(this@Welcome2Activity) {
+                        setAppsToInspect(enabledApps.toSet())
+                        setInspectAllAppsEnabled(false)
+                        setShowTutorial(false)
+                    }
+                    startActivity(Intent(this@Welcome2Activity, PermissionsActivity::class.java))
+                    // Prevents the activity from appearing in the backstack
+                    finish()
+                }
             }
         }
     }
@@ -177,9 +202,8 @@ class Welcome2Activity : FixedContentActivity() {
     }
 
     private fun getCachedAppListFromBundle(savedInstanceState: Bundle?): List<CheckableAppInfo>? {
-        var ret: List<CheckableAppInfo>? = null
-        val t = measureTimeMillis {
-            ret = savedInstanceState?.getParcelableArray("mApps")?.map {
+        return time(TAG, "Deserializing in %dms") {
+            savedInstanceState?.getParcelableArray("mApps")?.map {
                 (it as ParcelableCheckableAppInfo).let {
                     CheckableAppInfo(
                         it.appInfo.let {
@@ -195,8 +219,6 @@ class Welcome2Activity : FixedContentActivity() {
                 }
             }
         }
-        Log.i(TAG, "Deserializing in ${t}ms")
-        return ret
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

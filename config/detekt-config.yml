@@ -414,9 +414,7 @@ style:
   RedundantVisibilityModifierRule:
     active: false
   ReturnCount:
-    active: true
-    max: 2
-    excludedFunctions: "equals"
+    active: false
   SafeCast:
     active: true
   SerialVersionUIDInSerializableClass:

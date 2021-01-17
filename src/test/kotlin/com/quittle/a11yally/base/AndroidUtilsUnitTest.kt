@@ -29,8 +29,31 @@ class AndroidUtilsUnitTest {
     }
 
     @Test
-    fun testTime() {
+    fun testTimeFormatMessage() {
         val ret = time(TAG, "runtime is %d milliseconds") {
+            sleep(100)
+            3
+        }
+
+        shadowOf(getMainLooper()).idle()
+
+        assertEquals(3, ret)
+        val logs = ShadowLog.getLogsForTag(TAG)
+        assertEquals(logs.toString(), 1, logs.size)
+        assertEquals(TAG, logs[0].tag)
+        val message = logs[0].msg
+
+        val pattern = Pattern.compile("^runtime is (\\d+) milliseconds$")
+        assertThat(message, matchesPattern(pattern))
+        val matcher = pattern.matcher(message)
+        assertTrue(matcher.find())
+        val duration = matcher.group(1)!!.toLong()
+        assertThat(duration, greaterThanOrEqualTo(100))
+    }
+
+    @Test
+    fun testTimeGenerateMessage() {
+        val ret = time(TAG, { "runtime is $it milliseconds" }) {
             sleep(100)
             3
         }

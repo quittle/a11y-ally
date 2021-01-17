@@ -29,7 +29,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:background="@drawable/bottom_up_gradient"
+                    android:background="@drawable/feature_settings_gradient"
                     app:layout_constraintDimensionRatio="H,10:7" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout

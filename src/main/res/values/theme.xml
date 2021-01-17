@@ -9,6 +9,8 @@
     <attr name="call_to_action_text" format="color" />
     <attr name="call_to_action_disabled_text" format="color" />
     <attr name="dividerColor" format="color" />
+    <attr name="planet" format="reference" />
+    <attr name="background_gradient_color" format="color" />
 
     <!-- Transitive Properties -->
     <attr name="primary_action_background" format="color" />
@@ -34,6 +36,7 @@
         <item name="primary_action_disabled_text">?attr/call_to_action_disabled_text</item>
         <item name="secondary_action_text">?attr/call_to_action_text</item>
         <item name="secondary_action_disabled_text">?attr/call_to_action_disabled_text</item>
+        <item name="background_gradient_color">?attr/background_gradient_color</item>
     </style>
 
     <!-- This should be identical to Theme.Main -->
@@ -53,6 +56,7 @@
         <item name="primary_action_disabled_text">?attr/call_to_action_disabled_text</item>
         <item name="secondary_action_text">?attr/call_to_action_text</item>
         <item name="secondary_action_disabled_text">?attr/call_to_action_disabled_text</item>
+        <item name="background_gradient_color">?attr/background_gradient_color</item>
     </style>
 
     <style name="Theme.Main.Real" parent="Theme.Main.Light" />

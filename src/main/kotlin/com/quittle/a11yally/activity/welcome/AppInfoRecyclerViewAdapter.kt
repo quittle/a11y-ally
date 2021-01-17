@@ -66,31 +66,38 @@ class AppInfoRecyclerViewAdapterViewHolder(itemView: CheckableConstraintLayout) 
  * RecyclerView adapter for displaying rows of selectable apps.
  */
 class AppInfoRecyclerViewAdapter(
-    private val activity: Activity,
-    private val apps: List<CheckableAppInfo>
+    private val mActivity: Activity,
+    private val mApps: List<CheckableAppInfo>,
+    private val mOnCheckedChange: (
+        apps: List<CheckableAppInfo>,
+        index: Int,
+        isChecked: Boolean
+    ) -> Unit = { _, _, _ -> },
 ) :
     RecyclerView.Adapter<AppInfoRecyclerViewAdapterViewHolder>() {
     private val mCheckboxDrawable = RefreshableWeakReference {
-        ContextCompat.getDrawable(activity, android.R.drawable.checkbox_on_background)!!
+        ContextCompat.getDrawable(mActivity, android.R.drawable.checkbox_on_background)!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
         AppInfoRecyclerViewAdapterViewHolder {
-            val layout = activity.layoutInflater.inflate(
+            val layout = mActivity.layoutInflater.inflate(
                 R.layout.welcome2_activity_app_entry, parent, false
             )
             return AppInfoRecyclerViewAdapterViewHolder(layout as CheckableConstraintLayout)
         }
 
     override fun onBindViewHolder(holder: AppInfoRecyclerViewAdapterViewHolder, position: Int) {
-        val checkableAppInfo = apps[position]
+        val checkableAppInfo = mApps[position]
         val appInfo = checkableAppInfo.appInfo
 
         // Set checked status based on apps
         holder.wrapper.apply {
+            setOnCheckedChangedListener(null)
             isChecked = checkableAppInfo.isChecked
             setOnCheckedChangedListener { _, isChecked ->
                 checkableAppInfo.isChecked = isChecked
+                mOnCheckedChange(mApps, position, isChecked)
             }
         }
 
@@ -112,10 +119,10 @@ class AppInfoRecyclerViewAdapter(
             null
         }
 
-        holder.divider.visibility = (position < apps.size - 1).ifElse(View.VISIBLE, View.GONE)
+        holder.divider.visibility = (position < mApps.size - 1).ifElse(View.VISIBLE, View.GONE)
     }
 
     override fun getItemCount(): Int {
-        return apps.size
+        return mApps.size
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quittle.a11yally.test">
-    <application>
+    <application android:theme="@style/Theme.Test">
         <activity android:name="com.quittle.a11yally.AccessibilityTestActivity" android:exported="true" />
     </application>
 </manifest>

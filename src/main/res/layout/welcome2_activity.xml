@@ -42,7 +42,7 @@
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bottom_up_gradient"
+        android:background="@drawable/welcome2_gradient"
         android:fillViewport="true"
         android:orientation="vertical">
 
@@ -93,7 +93,7 @@
                 android:importantForAccessibility="no"
                 android:scaleX="1.5"
                 android:scaleY="1.5"
-                android:src="@drawable/planet"
+                android:src="?attr/planet"
                 android:translationX="40dp"
                 android:translationY="40dp" />
         </LinearLayout>

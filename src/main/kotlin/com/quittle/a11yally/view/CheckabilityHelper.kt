@@ -76,7 +76,7 @@ class CheckabilityHelper<T>(private val mView: T) : Checkable
     /**
      * Call this from implementations of [CheckedChangeRegister.setOnCheckedChangedListener].
      */
-    fun setOnCheckedChangedListener(listener: CheckedChangeListener<T>) {
+    fun setOnCheckedChangedListener(listener: CheckedChangeListener<T>?) {
         mCheckedChangeListener = listener
     }
 
@@ -105,7 +105,7 @@ interface CheckedChangeRegister<T : View> {
      * Set's a callback for a checked change listener. Calling this twice should result in the the
      * initial callback being discarded.
      */
-    fun setOnCheckedChangedListener(listener: CheckedChangeListener<T>)
+    fun setOnCheckedChangedListener(listener: CheckedChangeListener<T>?)
 }
 
 /**
