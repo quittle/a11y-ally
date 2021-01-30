@@ -25,7 +25,7 @@ before_deploy:
 - git config --local user.email "me@dustintoff.com"
 - apkanalyzer=./build/android-sdk-root/cmdline-tools/latest/bin/apkanalyzer
 - chmod +x $apkanalyzer
-- version_code="$($apkanalyzer manifest version-code build/outputs/apk/release/a11y-ally-release.apk)"
+- version_code="$($apkanalyzer manifest version-code app/build/outputs/apk/release/a11y-ally-release.apk)"
 - git tag "version-code-${version_code}" || echo "Release already tagged"
 
 deploy:
@@ -33,9 +33,9 @@ deploy:
   api_key:
     secure: aWc/75tkbiVuve/Tbg9U4wB/Mm4id8IXcgVm4YsQZxHKxouaOo44gCksjINdJP99WOcG8Oq/slKykaLcDXBJBmBNjzdDCh9jx7C2MKzZ9+jXO70Ql/Bgfmzlw9ffbngWb2Ti8EEgF403omMebVhXX5ZnR+eecAV5nVr2rMFWA455RY08dN1sivUcv/vZvt1voCETSW2z/x81y1TRLedOlNKdGOa7NU/EsXJISBaUfUblrEulO+4hnbFs2/KWtUrRtHzcPDEOhYfONCrNqQa/4p15PHCVKUZVP9Gb/6cIlgT0SjtIb1u8V9/5Agzd7/UPB0VYY+xmwjad8dYVx5ZQWTyRuHMj71YF6N+gzue+n3hJ8tVnWuw1/cx1o7uDfEqhmxuv6BtBl078q9DHPm3JI8rGchxkWRzuhCFutoie2Oy9aK0WNBjhorCvFDsEKWSPAUZ1OqYrLVhZUyQ34Q8IZJNBFa2WEcc9XYGERAdMn5Bs58noGzxXV3sNRpiQ6f+3fCNEUIRPlYhg2+eI++vUyV7rEuOEAktJKzdshsmk9p0PERmiU4mAEvAO+uCJFXrh/yj6LZ+PloKU/c8vzL5ixNcaFW8k4TZuCm5JoljEH0/lF2SChgv7VAmYYqNPSzNFkgTr1pNqSBzyVEqL29eTClVK0vkE9L4XwbeLahFpkeU=
   file:
-  - build/outputs/apk/release/a11y-ally-release.apk
-  - build/outputs/bundle/release/a11y-ally.aab
-  - build/outputs/mapping/release/*
+  - app/build/outputs/apk/release/a11y-ally-release.apk
+  - app/build/outputs/bundle/release/a11y-ally.aab
+  - app/build/outputs/mapping/release/*
   file_glob: true
   skip_cleanup: true
   on:
