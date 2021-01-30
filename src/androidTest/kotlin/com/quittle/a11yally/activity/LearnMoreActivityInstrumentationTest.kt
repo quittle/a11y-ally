@@ -5,19 +5,22 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.quittle.a11yally.DisableAnimationsRule
 import com.quittle.a11yally.R
-import com.quittle.a11yally.activity.welcome.WelcomeActivity
+import com.quittle.a11yally.activity.welcome.Welcome2Activity
 import com.quittle.a11yally.clearSharedPreferences
 import com.quittle.a11yally.fullySetUpPermissions
 import com.quittle.a11yally.fullyTearDownPermissions
 import com.quittle.a11yally.getCurrentActivity
 import com.quittle.a11yally.launchActivity
+import com.quittle.a11yally.withPreferenceProvider
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -33,6 +36,7 @@ class LearnMoreActivityInstrumentationTest {
     @Before
     fun setUp() {
         fullyTearDownPermissions()
+        clearSharedPreferences()
         launchActivity(LearnMoreActivity::class)
     }
 
@@ -43,35 +47,27 @@ class LearnMoreActivityInstrumentationTest {
             .check(matches(isCompletelyDisplayed()))
             .perform(click())
 
-        assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
+        assertEquals(Welcome2Activity::class.java, getCurrentActivity().javaClass)
+
+        // Check in list view
+        onView(withText(R.string.welcome2_activity_pick_subtitle))
     }
 
     @Test
-    fun getStartedButtonPreventsTutorial() {
-        clearSharedPreferences()
+    fun getStartedButtonHiddenAfterTutorial() {
+        withPreferenceProvider {
+            setShowTutorial(false)
+        }
 
-        launchActivity(MainActivity::class)
-
-        assertEquals(WelcomeActivity::class.java, getCurrentActivity().javaClass)
-
-        onView(withId(R.id.learn_more))
-            .perform(scrollTo(), click())
+        launchActivity(LearnMoreActivity::class)
 
         onView(withId(R.id.get_started))
-            .perform(scrollTo())
-            .check(matches(isCompletelyDisplayed()))
-            .perform(click())
-
-        assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
-
-        launchActivity(MainActivity::class)
-
-        assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
+            .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
     }
 
     @Test
     fun backButtonWorksFromWelcomeActivity() {
-        launchActivity(WelcomeActivity::class)
+        launchActivity(Welcome2Activity::class)
 
         onView(withId(R.id.learn_more))
             .perform(scrollTo(), click())
@@ -80,7 +76,10 @@ class LearnMoreActivityInstrumentationTest {
             .check(matches(isCompletelyDisplayed()))
             .perform(click())
 
-        assertEquals(WelcomeActivity::class.java, getCurrentActivity().javaClass)
+        assertEquals(Welcome2Activity::class.java, getCurrentActivity().javaClass)
+
+        // Check in default view
+        onView(withText(R.string.welcome2_activity_subtitle))
     }
 
     @Test

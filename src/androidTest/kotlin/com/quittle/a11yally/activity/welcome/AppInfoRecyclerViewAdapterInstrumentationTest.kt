@@ -31,13 +31,13 @@ import com.quittle.a11yally.runBlockingOnUiThread
 import com.quittle.a11yally.test.R
 import com.quittle.a11yally.testContext
 import com.quittle.a11yally.withWidthAndHeight
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.anyOf
 import org.hamcrest.Matchers.greaterThan
 import org.hamcrest.Matchers.lessThan
 import org.hamcrest.Matchers.not
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 

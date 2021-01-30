@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.quittle.a11yally.BuildConfig
 import com.quittle.a11yally.PermissionsManager
 import com.quittle.a11yally.R
-import com.quittle.a11yally.activity.welcome.WelcomeActivity
+import com.quittle.a11yally.activity.welcome.Welcome2Activity
 import com.quittle.a11yally.base.ifElse
 import com.quittle.a11yally.base.ifNotNull
 import com.quittle.a11yally.base.resolveAttributeResourceValue
@@ -32,7 +32,7 @@ class PermissionsActivity : FixedContentActivity() {
 
         withPreferenceProvider(this) {
             if (getShowTutorial()) {
-                startActivity(Intent(this@PermissionsActivity, WelcomeActivity::class.java))
+                startActivity(Intent(this@PermissionsActivity, Welcome2Activity::class.java))
             }
         }
     }

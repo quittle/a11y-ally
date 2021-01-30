@@ -17,6 +17,7 @@ import com.quittle.a11yally.getCurrentActivity
 import com.quittle.a11yally.launchActivity
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -47,6 +48,10 @@ class WelcomeActivityInstrumentationTest {
     }
 
     @Test
+    @Ignore(
+        "Does not apply with Welcome 2 Activity as the official activity. " +
+            "Will be removed in a subsequent commit."
+    )
     fun testGetStartedDoesNotReappearAfterGettingStarted() {
         clearSharedPreferences()
 

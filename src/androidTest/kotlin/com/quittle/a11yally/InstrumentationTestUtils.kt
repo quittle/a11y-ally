@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.AttrRes
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.UiController
@@ -207,15 +206,15 @@ class ViewActionCheck(private val check: (view: View) -> Unit) : ViewAction {
 /**
  * Launches an activity in the app under test
  * @param activity The activity to launch
+ * @param configure An optional callback to configure the intent before launching the activity
  * @return The activity instance created
  */
-fun <T : Activity> launchActivity(activity: KClass<T>): T {
-    val instrumentation = InstrumentationRegistry.getInstrumentation()
-    val intent = Intent(instrumentation.targetContext, activity.java).apply {
+fun <T : Activity> launchActivity(activity: KClass<T>, configure: (Intent) -> Unit = { _ -> }): T {
+    val intent = Intent(targetContext(), activity.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        configure(this)
     }
-    @Suppress("unchecked_cast")
-    return instrumentation.startActivitySync(intent) as T
+    return activity.cast(InstrumentationRegistry.getInstrumentation().startActivitySync(intent))
 }
 
 /**
@@ -328,7 +327,7 @@ private fun isFileClosed(file: File): Boolean {
 fun runShellCommand(command: String) {
     val instrumentation = InstrumentationRegistry.getInstrumentation()
     // On API level 24, even though it technically supports instrumentation.getUiAutomation(int),
-    // it does not work so this workaround is necssary to allow it to start accessibility services.
+    // it does not work so this workaround is necessary to allow it to start accessibility services.
     // See https://stackoverflow.com/a/55636900/1554990.
     if (Build.VERSION.SDK_INT == 24) {
         val flags = UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES

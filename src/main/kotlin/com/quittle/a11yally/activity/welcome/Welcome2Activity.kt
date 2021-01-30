@@ -30,8 +30,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Welcome2Activity : FixedContentActivity() {
-    private companion object {
-        val TAG = Welcome2Activity::class.simpleName
+    companion object {
+        const val INTENT_LAUNCH_IN_LIST_VIEW = "LAUNCH_IN_LIST_VIEW"
+        private const val BUNDLE_IS_IN_LIST_VIEW = "IS_IN_LIST_VIEW"
+        private val TAG = Welcome2Activity::class.simpleName
     }
 
     override val layoutId = R.layout.welcome2_activity
@@ -79,7 +81,7 @@ class Welcome2Activity : FixedContentActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean("mIsInListView", mIsInListView)
+        outState.putBoolean(BUNDLE_IS_IN_LIST_VIEW, mIsInListView)
         time(TAG, { "Serializing in ${it}ms" }) {
             outState.putParcelableArray(
                 "mApps",
@@ -138,6 +140,7 @@ class Welcome2Activity : FixedContentActivity() {
     ) {
         onBackPressedDispatcher.addCallback(this@Welcome2Activity) {
             mIsInListView = false
+            this@Welcome2Activity.intent.removeExtra(INTENT_LAUNCH_IN_LIST_VIEW)
             this@Welcome2Activity.recreate()
         }
 
@@ -224,7 +227,10 @@ class Welcome2Activity : FixedContentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mIsInListView = savedInstanceState?.getBoolean("mIsInListView", mIsInListView) == true
+        val launchInListView = intent.getBooleanExtra(INTENT_LAUNCH_IN_LIST_VIEW, false)
+
+        mIsInListView = launchInListView ||
+            savedInstanceState?.getBoolean(BUNDLE_IS_IN_LIST_VIEW, mIsInListView) == true
 
         if (!mIsInListView) {
             onCreateInitialState(savedInstanceState)

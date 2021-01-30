@@ -15,7 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.quittle.a11yally.DisableAnimationsRule
 import com.quittle.a11yally.PermissionsRule
 import com.quittle.a11yally.R
-import com.quittle.a11yally.activity.welcome.WelcomeActivity
+import com.quittle.a11yally.activity.welcome.Welcome2Activity
 import com.quittle.a11yally.clearSharedPreferences
 import com.quittle.a11yally.fullyTearDownPermissions
 import com.quittle.a11yally.getCurrentActivity
@@ -46,7 +46,7 @@ class MainActivityInstrumentationTest {
         ActivityScenario.launch(MainActivity::class.java).use {
             onIdle()
 
-            assertSame(WelcomeActivity::class.java, getCurrentActivity().javaClass)
+            assertSame(Welcome2Activity::class.java, getCurrentActivity().javaClass)
         }
     }
 
