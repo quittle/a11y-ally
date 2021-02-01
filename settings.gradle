@@ -1,2 +1,4 @@
 rootProject.name = 'a11y-ally'
+
 include 'app'
+include 'lint'

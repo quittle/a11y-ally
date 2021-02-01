@@ -1,3 +1,61 @@
+import org.gradle.util.VersionNumber
+
+buildscript {
+    ext {
+        KOTLIN_VERSION = '1.4.21'
+        ANDROID_GRADLE_VERSION = '4.1.2'
+    }
+
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
+        classpath "com.android.tools.build:gradle:$ANDROID_GRADLE_VERSION"
+    }
+}
+
+plugins {
+    id 'com.vanniktech.code.quality.tools' version '0.20.0'
+}
+
+allprojects {
+    buildscript {
+        repositories {
+            jcenter()
+            google()
+        }
+    }
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+
+    codeQualityTools {
+        htmlReports true
+        xmlReports false
+
+        detekt {
+            config = rootProject.file('config/detekt-config.yml')
+        }
+
+        ktlint {
+            final String hardcodedVersion = '0.40.0'
+            if (VersionNumber.parse(hardcodedVersion) > VersionNumber.parse(toolVersion)) {
+                toolVersion = hardcodedVersion
+            }
+        }
+
+        cpd {
+            enabled false
+        }
+    }
+}
+
 evaluationDependsOnChildren()
 
 task subprojectDefaultTasks {

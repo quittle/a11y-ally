@@ -1,0 +1,21 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin' // Required for com.vanniktech.code.quality.tools to generate kotlin tasks
+apply plugin: 'com.android.lint'
+
+lintOptions {
+    htmlReport true
+    textReport true
+    warningsAsErrors true
+    abortOnError true
+}
+
+final String lintVersion = '27.1.2'
+
+dependencies {
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KOTLIN_VERSION"
+    compileOnly "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
+    compileOnly "com.android.tools.lint:lint-api:$lintVersion"
+    compileOnly "com.android.tools.lint:lint-checks:$lintVersion"
+}
+
+defaultTasks 'test', 'check', 'assemble'
