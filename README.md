@@ -1,6 +1,6 @@
-# A11y Ally [<img alt="Get it on Google Play" src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="50px" align="top" />](https://play.google.com/store/apps/details?id=com.quittle.a11yally) [![Build Status](https://travis-ci.com/quittle/a11y-ally.svg?branch=master)](https://travis-ci.com/quittle/a11y-ally)
+# A11y Ally [<img alt="Get it on Google Play" src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="50px" align="top" />](https://play.google.com/store/apps/details?id=com.quittle.a11yally) [![Build Status](https://github.com/quittle/a11y-ally/workflows/Build/badge.svg)](https://github.com/quittle/a11y-ally/actions?query=workflow%3ABuild)
 
-<img align="left" src="src/main/custom-res/icon.svg" alt="A11y Ally Logo" height="80px" />
+<img align="left" src="app/src/main/custom-res/icon.svg" alt="A11y Ally Logo" height="80px" />
 A11y Ally (as in <a href="https://a11yproject.com/about/#what-does-the-term-a11y-mean">Accessibility Ally</a>)
 tool is aimed at developers, designers, and testers to analyze and inspect Android applications'
 accessibility to all users. Providing an AR-style overlay, it runs alongside your app and highlights
@@ -15,7 +15,7 @@ automated testing.
 
 | Main Screen | Highlighting Example |
 | --- | --- |
-| ![](src/main/play/listings/en-US/graphics/phone-screenshots/004_main.png) | ![](src/main/play/listings/en-US/graphics/phone-screenshots/005_content_descriptions.png) |
+| ![](app/src/main/play/listings/en-US/graphics/phone-screenshots/004_main.png) | ![](app/src/main/play/listings/en-US/graphics/phone-screenshots/005_content_descriptions.png) |
 
 > It currently only supports a small subset of intended functionality. Check the feature list below
 or in the app to see what features are currently supported. If there's something missing you would
