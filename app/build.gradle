@@ -1,5 +1,4 @@
 buildscript {
-    project.ext.IS_IN_TRAVIS = 'true' == System.getenv('TRAVIS')
     project.ext.TEST_BUILD_TYPE = project.properties.get('testBuildType', 'debug')
 }
 
@@ -129,7 +128,7 @@ dependencies {
 }
 
 play {
-    if (IS_IN_TRAVIS) {
+    if (IS_IN_CI) {
         serviceAccountCredentials = rootProject.file('config/a11y-ally-app-publisher@api-7302096083209403391-613431.iam.gserviceaccount.com.json')
 
         resolutionStrategy = ResolutionStrategy.AUTO
@@ -231,7 +230,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
-if (IS_IN_TRAVIS) {
+if (IS_IN_CI) {
     defaultTasks 'test', 'check', 'assemble', 'bundle'
 } else {
     defaultTasks 'assembleDebug', 'check', 'test', 'connectedCheck', 'assemble', 'bundle'

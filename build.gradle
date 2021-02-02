@@ -4,6 +4,8 @@ buildscript {
     ext {
         KOTLIN_VERSION = '1.4.21'
         ANDROID_GRADLE_VERSION = '4.1.2'
+
+        IS_IN_CI = 'true' == System.getenv('CI')
     }
 
     repositories {

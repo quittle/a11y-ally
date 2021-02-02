@@ -1,0 +1,61 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.10
+      - name: Determine if release
+        id: is-release
+        run: |
+          if [ '${{ github.ref }}' = 'refs/heads/main' }} ]; then
+            echo "ANDROID_SIGNING_PASSWORD=${{ secrets.android_signing_password }}" >> "${GITHUB_ENV}"
+            echo '::set-output name=value::true'
+          fi
+        outputs:
+          value: ${{ github.ref == 'refs/heads/main' }}
+      - name: Optionally unpack secrets
+        if: steps.is-release.outputs.value
+        run: |
+          openssl aes-256-cbc \
+            -K '${{ secrets.encryption_key }}' \
+            -iv '${{ secrets.encryption_iv }}' \
+            -in config/a11y-ally-secrets.zip.enc -out config/a11y-ally-secrets.zip \
+            -d
+          unzip config/a11y-ally-secrets.zip -d config
+      - name: Build and Test
+        run: ./gradlew
+      - name: Generate Release Info
+        id: generate-release-info
+        run: |
+          apkanalyzer=./build/android-sdk-root/cmdline-tools/latest/bin/apkanalyzer
+          chmod +x $apkanalyzer
+          version_code="$($apkanalyzer manifest version-code app/build/outputs/apk/release/a11y-ally-release.apk)"
+          echo "::set-output name=tag::${version_code}"
+
+          git_log="$(git log $(git describe --tags --abbrev=0)..HEAD --format='format:%C(auto)%h %s')"
+          echo "::set-output name=body::${git_log}"
+      - name: GitHub Release
+        if: steps.is-release.outputs.value
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.generate-release-info.outputs.tag }}
+          release_name: Release ${{ steps.generate-release-info.outputs.tag }}
+          body: ${{ steps.generate-release-info.outputs.body }}
+          draft: false
+          prerelease: false
+      - name: Publish to Google Play
+        if: steps.is-release.outputs.value
+        run: ./gradlew publish
