@@ -1,11 +1,9 @@
 buildscript {
-    project.ext.IS_IN_TRAVIS = 'true' == System.getenv('TRAVIS')
     project.ext.TEST_BUILD_TYPE = project.properties.get('testBuildType', 'debug')
 }
 
 plugins {
     id 'com.github.triplet.play' version '3.2.0'
-    id 'com.quittle.setup-android-sdk' version '2.0.3'
     id 'com.quittle.android-emulator' version '0.4.1'
     id 'com.quittle.svg-2-android-vector' version '0.0.6'
     id 'com.diffplug.image-grinder' version '2.1.2'
@@ -27,9 +25,9 @@ android {
     compileSdkVersion 30
     buildToolsVersion '29.0.3'
 
-    final String androidSigningPassword = System.getenv('ANDROID_SIGNING_PASSWORD')
     signingConfigs {
-        if (androidSigningPassword) {
+        if (IS_CI_RELEASE) {
+            final String androidSigningPassword = System.getenv('ANDROID_SIGNING_PASSWORD')
             release {
                 storeFile rootProject.file('config/a11y-ally-release.jks')
                 storePassword androidSigningPassword
@@ -50,7 +48,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), file('config/proguard-rules.pro')
             testProguardFiles file('config/test-proguard-rules.pro')
 
-            if (androidSigningPassword) {
+            if (IS_CI_RELEASE) {
                 signingConfig signingConfigs.release
             } else {
                 signingConfig debug.signingConfig
@@ -129,7 +127,7 @@ dependencies {
 }
 
 play {
-    if (IS_IN_TRAVIS) {
+    if (IS_CI_RELEASE) {
         serviceAccountCredentials = rootProject.file('config/a11y-ally-app-publisher@api-7302096083209403391-613431.iam.gserviceaccount.com.json')
 
         resolutionStrategy = ResolutionStrategy.AUTO
@@ -231,7 +229,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
-if (IS_IN_TRAVIS) {
+if (IS_IN_CI) {
     defaultTasks 'test', 'check', 'assemble', 'bundle'
 } else {
     defaultTasks 'assembleDebug', 'check', 'test', 'connectedCheck', 'assemble', 'bundle'

@@ -4,6 +4,9 @@ buildscript {
     ext {
         KOTLIN_VERSION = '1.4.21'
         ANDROID_GRADLE_VERSION = '4.1.2'
+
+        IS_IN_CI = 'true' == System.getenv('CI')
+        IS_CI_RELEASE = 'true' == System.getenv('IS_CI_RELEASE')
     }
 
     repositories {
@@ -19,6 +22,7 @@ buildscript {
 
 plugins {
     id 'com.vanniktech.code.quality.tools' version '0.20.0'
+    id 'com.quittle.setup-android-sdk' version '2.0.3'
 }
 
 allprojects {
@@ -56,12 +60,13 @@ allprojects {
     }
 }
 
-evaluationDependsOnChildren()
 
 task subprojectDefaultTasks {
     subprojects.each { subproject ->
-        subproject.defaultTasks.each {
-            dependsOn subproject.path+":"+it
+        subproject.afterEvaluate {
+            subproject.defaultTasks.each { task ->
+                dependsOn subproject.path+":"+task
+            }
         }
     }
 }
