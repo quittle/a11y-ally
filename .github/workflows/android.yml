@@ -22,8 +22,6 @@ jobs:
             echo "ANDROID_SIGNING_PASSWORD=${{ secrets.android_signing_password }}" >> "${GITHUB_ENV}"
             echo '::set-output name=value::true'
           fi
-        outputs:
-          value: ${{ github.ref == 'refs/heads/main' }}
       - name: Optionally unpack secrets
         if: steps.is-release.outputs.value
         run: |
