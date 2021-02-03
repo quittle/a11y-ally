@@ -21,6 +21,7 @@ buildscript {
 
 plugins {
     id 'com.vanniktech.code.quality.tools' version '0.20.0'
+    id 'com.quittle.setup-android-sdk' version '2.0.3'
 }
 
 allprojects {
@@ -58,12 +59,13 @@ allprojects {
     }
 }
 
-evaluationDependsOnChildren()
 
-task subprojectDefaultTasks {
-    subprojects.each { subproject ->
-        subproject.defaultTasks.each {
-            dependsOn subproject.path+":"+it
+afterEvaluate {
+    task subprojectDefaultTasks {
+        subprojects.each { subproject ->
+            subproject.defaultTasks.each {
+                dependsOn subproject.path+":"+it
+            }
         }
     }
 }
