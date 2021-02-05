@@ -30,7 +30,8 @@ jobs:
           openssl aes-256-cbc \
             -K '${{ secrets.encryption_key }}' \
             -iv '${{ secrets.encryption_iv }}' \
-            -in config/a11y-ally-secrets.zip.enc -out config/a11y-ally-secrets.zip \
+            -in config/a11y-ally-secrets.zip.enc \
+            -out config/a11y-ally-secrets.zip \
             -d
           unzip config/a11y-ally-secrets.zip -d config
       - name: Build and Test
@@ -44,6 +45,9 @@ jobs:
           echo "::set-output name=tag::${version_code}"
 
           git_log="$(git log $(git describe --tags --abbrev=0)..HEAD --format='format:%C(auto)%h %s')"
+          git_log="${git_log//'%'/'%25'}"
+          git_log="${git_log//$'\n'/'%0A'}"
+          git_log="${git_log//$'\r'/'%0D'}"
           echo "::set-output name=body::${git_log}"
       - name: GitHub Release
         if: steps.is-release.outputs.value
