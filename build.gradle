@@ -63,7 +63,7 @@ allprojects {
 task subprojectDefaultTasks {
     subprojects.each { subproject ->
         subproject.afterEvaluate {
-            subproject.defaultTasks.each { task
+            subproject.defaultTasks.each { task ->
                 dependsOn subproject.path+":"+task
             }
         }
