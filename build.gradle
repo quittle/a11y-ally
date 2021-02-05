@@ -2,7 +2,7 @@ import org.gradle.util.VersionNumber
 
 buildscript {
     ext {
-        KOTLIN_VERSION = '1.4.21'
+        KOTLIN_VERSION = '1.4.30'
         ANDROID_GRADLE_VERSION = '4.1.2'
 
         IS_IN_CI = 'true' == System.getenv('CI')
