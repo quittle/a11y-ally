@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -18,7 +20,7 @@ jobs:
       - name: Determine if release
         id: is-release
         run: |
-          if [ '${{ github.ref }}' = 'refs/heads/main' }} ]; then
+          if [ '${{ github.ref }}' = 'refs/heads/main' ]; then
             echo "ANDROID_SIGNING_PASSWORD=${{ secrets.android_signing_password }}" >> "${GITHUB_ENV}"
             echo '::set-output name=value::true'
           fi
