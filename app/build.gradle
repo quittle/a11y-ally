@@ -1,5 +1,6 @@
 buildscript {
     project.ext.TEST_BUILD_TYPE = project.properties.get('testBuildType', 'debug')
+    project.ext.ANDROID_SIGNING_PASSWORD = System.getenv('ANDROID_SIGNING_PASSWORD')
 }
 
 plugins {
@@ -25,13 +26,12 @@ android {
     compileSdkVersion 30
     buildToolsVersion '29.0.3'
 
-    final String androidSigningPassword = System.getenv('ANDROID_SIGNING_PASSWORD')
     signingConfigs {
-        if (androidSigningPassword) {
+        if (ANDROID_SIGNING_PASSWORD) {
             release {
                 storeFile rootProject.file('config/a11y-ally-release.jks')
-                storePassword androidSigningPassword
-                keyPassword androidSigningPassword
+                storePassword ANDROID_SIGNING_PASSWORD
+                keyPassword ANDROID_SIGNING_PASSWORD
                 keyAlias 'a11y-ally-release-11/11/18'
             }
         }
@@ -48,7 +48,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), file('config/proguard-rules.pro')
             testProguardFiles file('config/test-proguard-rules.pro')
 
-            if (androidSigningPassword) {
+            if (ANDROID_SIGNING_PASSWORD) {
                 signingConfig signingConfigs.release
             } else {
                 signingConfig debug.signingConfig
@@ -127,7 +127,7 @@ dependencies {
 }
 
 play {
-    if (IS_IN_CI) {
+    if (ANDROID_SIGNING_PASSWORD) {
         serviceAccountCredentials = rootProject.file('config/a11y-ally-app-publisher@api-7302096083209403391-613431.iam.gserviceaccount.com.json')
 
         resolutionStrategy = ResolutionStrategy.AUTO
