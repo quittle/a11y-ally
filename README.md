@@ -13,38 +13,42 @@ automated testing.
 <br />
 <br />
 
-| Main Screen | Highlighting Example |
-| --- | --- |
+| Main Screen                                                                   | Highlighting Example                                                                          |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | ![](app/src/main/play/listings/en-US/graphics/phone-screenshots/004_main.png) | ![](app/src/main/play/listings/en-US/graphics/phone-screenshots/005_content_descriptions.png) |
 
 > It currently only supports a small subset of intended functionality. Check the feature list below
-or in the app to see what features are currently supported. If there's something missing you would
-like, feel free to file an issue and I'll work on adding it.
+> or in the app to see what features are currently supported. If there's something missing you would
+> like, feel free to file an issue and I'll work on adding it.
 
 ## Features
 
 ### Filtering
-* Select which apps to provide checks for
-* Select what visual indicators to apply
+
+- Select which apps to provide checks for
+- Select what visual indicators to apply
 
 ### Visual Feedback
-* Issue Highlighting - Highlights views in your app that have accessibility issues
-  * Missing content descriptions
-  * Clickable views with no text or content description, making them opaque buttons to screen readers
-  * Clickable elements too small for all users to click.
-* Content Description Labels - Overlay views with their `contentDescription`
-* Linear Navigation - Covers the screen with a depiction of what users relying on Linear Navigation experience
+
+- Issue Highlighting - Highlights views in your app that have accessibility issues
+  - Missing content descriptions
+  - Clickable views with no text or content description, making them opaque buttons to screen readers
+  - Clickable elements too small for all users to click.
+- Content Description Labels - Overlay views with their `contentDescription`
+- Linear Navigation - Covers the screen with a depiction of what users relying on Linear Navigation experience
 
 ### Reports
-* Logging issues to [`logcat`](https://developer.android.com/studio/command-line/logcat)
-* Logging issues to a file for analysis
-* Toggling of logging via Android [Intents](https://developer.android.com/guide/components/intents-filters)
+
+- Logging issues to [`logcat`](https://developer.android.com/studio/command-line/logcat)
+- Logging issues to a file for analysis
+- Toggling of logging via Android [Intents](https://developer.android.com/guide/components/intents-filters)
 
 ## Coming One Day
-* Investigate checking color-issues
-  * Color-blind friendliness
-  * High text to background contrast
-* See [issues](https://github.com/quittle/a11y-ally/issues) for more and request what you'd like to see!
+
+- Investigate checking color-issues
+  - Color-blind friendliness
+  - High text to background contrast
+- See [issues](https://github.com/quittle/a11y-ally/issues) for more and request what you'd like to see!
 
 ## Usage
 
@@ -59,8 +63,8 @@ To enable logging to `logcat`and a file, you can send intents to the
 `com.quittle.a11yally.MANAGE_RECORDING`. This is to prevent malicious apps from making recordings and
 attempting to find sensitive data revealed to A11y Ally. The intents currently supported are
 
-* `com.quittle.a11yally.START_RECORDING` - Starts a recording session
-* `com.quittle.a11yally.STOP_RECORDING` - Stops a recording session
+- `com.quittle.a11yally.START_RECORDING` - Starts a recording session
+- `com.quittle.a11yally.STOP_RECORDING` - Stops a recording session
 
 To toggle via ADB, you can use the following commands
 
