@@ -28,6 +28,7 @@ import com.quittle.a11yally.getCurrentActivity
 import com.quittle.a11yally.instanceOf
 import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.runBlockingOnUiThread
+import com.quittle.a11yally.testPackageName
 import com.quittle.a11yally.withWidthAndHeight
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.allOf
@@ -171,7 +172,7 @@ class Welcome2ActivityInstrumentationTest {
         onView(withId(R.id.get_started))
             .perform(scrollTo(), click())
 
-        onView(withText(R.string.app_label)).perform(click())
+        onView(withText(testPackageName())).perform(click())
 
         onView(withText(R.string.welcome2_activity_next)).perform(click())
 

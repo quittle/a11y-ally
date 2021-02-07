@@ -1,5 +1,9 @@
 buildscript {
     project.ext.TEST_BUILD_TYPE = project.properties.get('testBuildType', 'debug')
+
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.5'
+    }
 }
 
 plugins {
@@ -20,6 +24,7 @@ final File customResDirBg = new File(buildDir, 'custom-generated/res-bg')
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -42,6 +47,11 @@ android {
             initWith debug
         }
 
+        debug {
+            // Ensures that debug app traffic isn't reported to Google Analytics as prod traffic.
+            applicationIdSuffix '.debug'
+        }
+
         release {
             minifyEnabled true
             shrinkResources true
@@ -62,6 +72,9 @@ android {
 
         buildConfigField('@androidx.annotation.NonNull String', 'TAG', '"A11yAlly"')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        // Require to ensure consistency across debug and release builds
+        testApplicationId 'com.quittle.a11yally.test'
     }
 
     lintOptions {
@@ -99,7 +112,7 @@ android {
 dependencies {
     lintChecks project(path: ':lint')
 
-    api "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2-native-mt'
@@ -111,6 +124,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.appcompat:appcompat-resources:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.hamcrest:hamcrest:2.2'

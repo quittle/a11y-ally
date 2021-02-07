@@ -32,6 +32,7 @@ import com.quittle.a11yally.grantPermissions
 import com.quittle.a11yally.hasTextColorFromAttribute
 import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.recordingIntents
+import com.quittle.a11yally.targetPackageName
 import com.quittle.a11yally.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
@@ -117,7 +118,7 @@ class PermissionsActivityInstrumentationTest {
                 allOf(
                     toPackage("com.android.settings"),
                     hasAction("android.settings.action.MANAGE_OVERLAY_PERMISSION"),
-                    hasData("package:com.quittle.a11yally")
+                    hasData("package:${targetPackageName()}")
                 ),
                 Intents.times(1)
             )
@@ -154,7 +155,7 @@ class PermissionsActivityInstrumentationTest {
             Intents.intended(
                 allOf(
                     hasAction("android.settings.ACCESSIBILITY_SETTINGS"),
-                    hasData("package:com.quittle.a11yally")
+                    hasData("package:${targetPackageName()}")
                 ),
                 Intents.times(1)
             )

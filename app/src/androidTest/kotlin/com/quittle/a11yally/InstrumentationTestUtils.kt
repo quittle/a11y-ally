@@ -111,7 +111,7 @@ fun grantPermissions(vararg permissions: String) {
  * Revokes all the permissions from the application under test
  */
 fun revokePermissions(vararg permissions: String) {
-    val packageName = getPackageName()
+    val packageName = targetPackageName()
     permissions.forEach { permission ->
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             InstrumentationRegistry.getInstrumentation()
@@ -132,7 +132,7 @@ fun enableAccessibilityService() {
     assumeThat(Build.VERSION.SDK_INT, greaterThanOrEqualTo(24))
     runShellCommand(
         "settings put secure enabled_accessibility_services " +
-            getPackageName() + "/.analyzer.A11yAllyAccessibilityAnalyzer"
+            targetPackageName() + "/" + A11yAllyAccessibilityAnalyzer::class.qualifiedName
     )
 
     // Depending on the OS version, enabling the service may be asynchronous
@@ -380,11 +380,11 @@ fun withPreferenceProvider(block: PreferenceProvider.() -> Unit) {
     }
 }
 
-private fun getPackageName(): String {
+fun targetPackageName(): String {
     return targetContext().packageName
 }
 
-private fun getTestPackageName(): String {
+fun testPackageName(): String {
     return testContext().packageName
 }
 
