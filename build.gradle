@@ -38,7 +38,6 @@ allprojects {
         jcenter()
     }
 
-
     codeQualityTools {
         htmlReports true
         xmlReports false
@@ -59,7 +58,6 @@ allprojects {
         }
     }
 }
-
 
 task subprojectDefaultTasks {
     subprojects.each { subproject ->

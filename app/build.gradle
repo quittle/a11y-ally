@@ -104,7 +104,18 @@ android {
 
     onVariantProperties {
         for (output in outputs) {
-            output.versionName.set("${output.versionName.get()}.${output.versionCode.get()}")
+            // Must be stored outside the provider to prevent an infinite loop
+            final String origVersionName = output.versionName.get()
+
+            // versionCode will be updated by Triple-T after the configuration stage. The version
+            // name can't be set at that time because versionName will be frozen. This gets around
+            // that by setting versionName (a Gradle Property) to be dynamic and thus generated at
+            // compile time
+            final Provider<String> processedVersionCode = output.versionCode.map { versionCode ->
+                "$origVersionName.$versionCode"
+            }
+
+            output.versionName.set(processedVersionCode)
         }
     }
 }
