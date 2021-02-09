@@ -17,6 +17,9 @@ import com.quittle.a11yally.R
 import com.quittle.a11yally.activity.FixedContentActivity
 import com.quittle.a11yally.activity.LearnMoreActivity
 import com.quittle.a11yally.activity.PermissionsActivity
+import com.quittle.a11yally.analytics.ContentType
+import com.quittle.a11yally.analytics.firebaseAnalytics
+import com.quittle.a11yally.analytics.logSelectContentEvent
 import com.quittle.a11yally.base.RefreshableWeakReference
 import com.quittle.a11yally.base.flaggedHasCode
 import com.quittle.a11yally.base.ifElse
@@ -187,6 +190,11 @@ class Welcome2Activity : FixedContentActivity() {
                         setInspectAllAppsEnabled(false)
                         setShowTutorial(false)
                     }
+
+                    enabledApps.forEach { app ->
+                        firebaseAnalytics.logSelectContentEvent(ContentType.APP_TO_ANALYZE, app)
+                    }
+
                     startActivity(Intent(this@Welcome2Activity, PermissionsActivity::class.java))
                     // Prevents the activity from appearing in the backstack
                     finish()
