@@ -1,5 +1,6 @@
 package com.quittle.a11yally.activity.welcome
 
+import android.transition.TransitionInflater
 import android.view.View
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onIdle
@@ -28,6 +29,7 @@ import com.quittle.a11yally.getCurrentActivity
 import com.quittle.a11yally.instanceOf
 import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.runBlockingOnUiThread
+import com.quittle.a11yally.targetContext
 import com.quittle.a11yally.testPackageName
 import com.quittle.a11yally.withWidthAndHeight
 import org.hamcrest.MatcherAssert.assertThat
@@ -39,6 +41,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Thread.sleep
 import com.quittle.a11yally.test.BuildConfig as TestBuildConfig
 
 @RunWith(AndroidJUnit4::class)
@@ -47,6 +50,14 @@ class Welcome2ActivityInstrumentationTest {
     val mDisableAnimationsRule = DisableAnimationsRule()
 
     lateinit var activity: Welcome2Activity
+
+    companion object {
+        val transitionDuration by lazy {
+            TransitionInflater.from(targetContext())
+                .inflateTransition(R.transition.welcome_transition)
+                .duration
+        }
+    }
 
     @Before
     fun setUp() {
@@ -69,7 +80,7 @@ class Welcome2ActivityInstrumentationTest {
             .perform(click())
             .check(doesNotExist())
 
-        TransitionManager.endTransitions(activity.findViewById(R.id.wrapper))
+        waitForTransitionToEnd()
 
         onView(withId(R.id.title_banner))
             .check(matches(isCompletelyDisplayed()))
@@ -172,6 +183,8 @@ class Welcome2ActivityInstrumentationTest {
         onView(withId(R.id.get_started))
             .perform(scrollTo(), click())
 
+        waitForTransitionToEnd()
+
         onView(withText(testPackageName())).perform(click())
 
         onView(withText(R.string.welcome2_activity_next)).perform(click())
@@ -187,5 +200,11 @@ class Welcome2ActivityInstrumentationTest {
         onIdle()
 
         assertEquals(PermissionsActivity::class.java, getCurrentActivity().javaClass)
+    }
+
+    private fun waitForTransitionToEnd() {
+        TransitionManager.endTransitions(activity.findViewById(R.id.wrapper))
+        // Forcing transition ending doesn't work on all devices
+        sleep(transitionDuration * 2)
     }
 }
