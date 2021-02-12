@@ -13,6 +13,7 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
@@ -140,6 +141,8 @@ class AppInfoRecyclerViewAdapterInstrumentationTest {
             .check(matches(isNotChecked()))
         onView(withId(R.id.recycler_view))
             .perform(swipeDown(), swipeDown())
+            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
+
         onIdle()
 
         onFirstRecyclerViewEntry()

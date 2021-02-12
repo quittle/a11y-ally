@@ -17,9 +17,10 @@ import com.quittle.a11yally.R
 import com.quittle.a11yally.activity.FixedContentActivity
 import com.quittle.a11yally.activity.LearnMoreActivity
 import com.quittle.a11yally.activity.PermissionsActivity
+import com.quittle.a11yally.analytics.AnalyticsSelectItem
 import com.quittle.a11yally.analytics.ContentType
 import com.quittle.a11yally.analytics.firebaseAnalytics
-import com.quittle.a11yally.analytics.logSelectContentEvent
+import com.quittle.a11yally.analytics.logSelectItems
 import com.quittle.a11yally.base.RefreshableWeakReference
 import com.quittle.a11yally.base.flaggedHasCode
 import com.quittle.a11yally.base.ifElse
@@ -182,17 +183,33 @@ class Welcome2Activity : FixedContentActivity() {
 
                 nextButton.isEnabled = false
                 nextButton.setOnClickListener {
-                    val enabledApps = generatedApps
+                    val enabledAppPackages = generatedApps
                         .filter { it.isChecked }
                         .map { it.appInfo.packageName }
+                        .toSet()
                     withPreferenceProvider(this@Welcome2Activity) {
-                        setAppsToInspect(enabledApps.toSet())
+                        setAppsToInspect(enabledAppPackages)
                         setInspectAllAppsEnabled(false)
                         setShowTutorial(false)
                     }
 
-                    enabledApps.forEach { app ->
-                        firebaseAnalytics.logSelectContentEvent(ContentType.APP_TO_ANALYZE, app)
+                    generatedApps.forEachIndexed { index, checkableAppInfo ->
+                        if (!checkableAppInfo.isChecked) {
+                            return@forEachIndexed
+                        }
+                        val app = checkableAppInfo.appInfo
+
+                        firebaseAnalytics.logSelectItems(
+                            items = arrayOf(
+                                AnalyticsSelectItem(
+                                    itemId = app.packageName,
+                                    itemName = app.label,
+                                    index = index
+                                )
+                            ),
+                            listName = "FirstTimeAppPicker",
+                            contentType = ContentType.APP_TO_ANALYZE
+                        )
                     }
 
                     startActivity(Intent(this@Welcome2Activity, PermissionsActivity::class.java))

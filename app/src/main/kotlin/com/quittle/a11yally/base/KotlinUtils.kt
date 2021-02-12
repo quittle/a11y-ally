@@ -109,3 +109,7 @@ suspend fun <T> T?.orElse(default: suspend () -> T): T {
 fun <T> Boolean.ifElse(trueCase: T, falseCase: T): T {
     return if (this) trueCase else falseCase
 }
+
+inline fun <I, reified O> Array<I>.mapArray(transform: (I) -> O): Array<O> {
+    return Array(this.size) { i -> transform(this[i]) }
+}

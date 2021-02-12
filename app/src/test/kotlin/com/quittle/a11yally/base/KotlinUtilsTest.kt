@@ -1,6 +1,10 @@
 package com.quittle.a11yally.base
 
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.not
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -158,5 +162,15 @@ class KotlinUtilsTest {
         assertSame(o1, true.ifElse(o1, o2))
         assertSame(o2, false.ifElse(o1, o2))
         assertNull(null?.ifElse(o1, o2))
+    }
+
+    @Test
+    fun testMapArray() {
+        val arr = arrayOf(1, 2, 3)
+        val newArr = arr.mapArray { v -> v * 2 }
+
+        assertThat(arr, not(`is`(newArr)))
+        assertThat(arr, equalTo(arrayOf(1, 2, 3)))
+        assertThat(newArr, equalTo(arrayOf(2, 4, 6)))
     }
 }
