@@ -14,6 +14,8 @@ import com.quittle.a11yally.BuildConfig
 import com.quittle.a11yally.PermissionsManager
 import com.quittle.a11yally.R
 import com.quittle.a11yally.activity.welcome.Welcome2Activity
+import com.quittle.a11yally.analytics.firebaseAnalytics
+import com.quittle.a11yally.analytics.logClick
 import com.quittle.a11yally.base.ifElse
 import com.quittle.a11yally.base.ifNotNull
 import com.quittle.a11yally.base.resolveAttributeResourceValue
@@ -75,6 +77,7 @@ class PermissionsActivity : FixedContentActivity() {
         findViewById<View>(R.id.continue_button).run {
             isEnabled = mPermissionsManager.hasAllPermissions()
             setOnClickListener {
+                firebaseAnalytics.logClick(it)
                 startActivity(Intent(this@PermissionsActivity, MainActivity::class.java))
             }
         }
@@ -114,7 +117,8 @@ class PermissionsActivity : FixedContentActivity() {
         val onClickListener: View.OnClickListener? = hasPermission.ifElse(
             null,
             object : View.OnClickListener {
-                override fun onClick(view: View?) {
+                override fun onClick(view: View) {
+                    firebaseAnalytics.logClick(view)
                     onClickCallback()
                 }
             }
