@@ -1,7 +1,7 @@
 package com.quittle.a11yally.base
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.lang.ref.WeakReference
 
 class RefreshableWeakReferenceTest {

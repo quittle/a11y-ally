@@ -7,11 +7,11 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import com.quittle.a11yally.R
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -207,24 +207,24 @@ class PreferenceProviderTest {
 
     private fun assertKnownSetters(curKnownGetters: Int) {
         assertEquals(
-            "When this test fails, you should update it with the new method added",
             curKnownGetters,
             PreferenceProvider::class.memberFunctions
                 .filter { it.visibility == KVisibility.PUBLIC }
                 .filter { it.name.startsWith("set") }
-                .count()
+                .count(),
+            "When this test fails, you should update it with the new method added"
         )
     }
 
     private fun assertKnownGetters(curKnownGetters: Int) {
         assertEquals(
-            "When this test fails, you should update it with the new method added",
             curKnownGetters,
             PreferenceProvider::class.memberFunctions
                 .filter { it.visibility == KVisibility.PUBLIC }
                 .filter { it.name.startsWith("get") }
                 .filterNot { it.name.endsWith("LiveData") }
-                .count()
+                .count(),
+            "When this test fails, you should update it with the new method added",
         )
     }
 }

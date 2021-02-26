@@ -4,10 +4,10 @@ import android.os.Looper.getMainLooper
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.greaterThanOrEqualTo
 import org.hamcrest.text.MatchesPattern.matchesPattern
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
@@ -39,7 +39,7 @@ class AndroidUtilsUnitTest {
 
         assertEquals(3, ret)
         val logs = ShadowLog.getLogsForTag(TAG)
-        assertEquals(logs.toString(), 1, logs.size)
+        assertEquals(1, logs.size, logs.toString())
         assertEquals(TAG, logs[0].tag)
         val message = logs[0].msg
 
@@ -62,7 +62,7 @@ class AndroidUtilsUnitTest {
 
         assertEquals(3, ret)
         val logs = ShadowLog.getLogsForTag(TAG)
-        assertEquals(logs.toString(), 1, logs.size)
+        assertEquals(1, logs.size, logs.toString())
         assertEquals(TAG, logs[0].tag)
         val message = logs[0].msg
 

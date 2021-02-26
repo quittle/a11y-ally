@@ -9,12 +9,12 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.quittle.a11yally.base.RefreshableWeakReference
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.lessThan
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.mockito.Mockito.verify
 import org.robolectric.Robolectric

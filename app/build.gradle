@@ -120,6 +120,11 @@ android {
             output.versionName.set(processedVersionCode)
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+    }
 }
 
 dependencies {
@@ -141,7 +146,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
+    testImplementation "org.junit.vintage:junit-vintage-engine:$JUNIT_VERSION"
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'androidx.test:core:1.3.0'
     testImplementation 'org.robolectric:robolectric:4.5.1'

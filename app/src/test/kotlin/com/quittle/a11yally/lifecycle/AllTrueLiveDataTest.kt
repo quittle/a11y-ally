@@ -2,9 +2,9 @@ package com.quittle.a11yally.lifecycle
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -38,19 +38,19 @@ class AllTrueLiveDataTest {
         val mutableLiveData2 = MutableLiveData(true)
         val allTrueLiveData = AllTrueLiveData(mutableLiveData1, mutableLiveData2)
         allTrueLiveData.observeForever {}
-        assertTrue("Starts true", allTrueLiveData.value!!)
+        assertTrue(allTrueLiveData.value!!, "Starts true")
 
         mutableLiveData1.value = false
-        assertFalse("Turns false", allTrueLiveData.value!!)
+        assertFalse(allTrueLiveData.value!!, "Turns false")
 
         mutableLiveData2.value = true
-        assertFalse("Stays false", allTrueLiveData.value!!)
+        assertFalse(allTrueLiveData.value!!, "Stays false")
 
         mutableLiveData2.value = false
         mutableLiveData1.value = true
-        assertFalse("Swapped, but still false", allTrueLiveData.value!!)
+        assertFalse(allTrueLiveData.value!!, "Swapped, but still false")
 
         mutableLiveData2.value = true
-        assertTrue("Finally true again", allTrueLiveData.value!!)
+        assertTrue(allTrueLiveData.value!!, "Finally true again")
     }
 }

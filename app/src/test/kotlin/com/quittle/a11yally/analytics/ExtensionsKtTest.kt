@@ -4,11 +4,11 @@ import android.os.Looper.getMainLooper
 import androidx.test.core.app.ApplicationProvider
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.ktx.ParametersBuilder
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
@@ -39,13 +39,13 @@ class ExtensionsKtTest {
         assertNull(builder.bundle.get(key))
 
         builder.param(key, null)
-        assertNull("Setting to null shouldn't do anything or throw", builder.bundle.get(key))
+        assertNull(builder.bundle.get(key), "Setting to null shouldn't do anything or throw")
 
         val cs: CharSequence = StringBuffer(value)
         builder.param(key, cs)
-        assertEquals("Value should be set", value, builder.bundle.get(key))
+        assertEquals(value, builder.bundle.get(key), "Value should be set")
 
         builder.param(key, null)
-        assertEquals("Value should not be cleared", value, builder.bundle.get(key))
+        assertEquals(value, builder.bundle.get(key), "Value should not be cleared")
     }
 }

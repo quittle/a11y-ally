@@ -6,11 +6,11 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import com.quittle.a11yally.preferences.PreferenceProvider
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
@@ -32,12 +32,12 @@ class A11yAllyApplicationTest {
     @Test
     fun testDefaultPreferenceInitialization() {
         assertEquals(
-            "If this fails, A11yAllyApplication likely is not initializing all preferences",
             A11yAllyApplication.PREFERENCE_RESOURCES,
             R.xml::class.members
                 .filter { member -> member.name.endsWith("preferences") }
                 .map { member -> member.call() }
-                .toSet()
+                .toSet(),
+            "If this fails, A11yAllyApplication likely is not initializing all preferences"
         )
     }
 

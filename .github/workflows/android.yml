@@ -65,4 +65,4 @@ jobs:
         if: steps.is-release.outputs.value
         env:
           ANDROID_SIGNING_PASSWORD: ${{ secrets.android_signing_password }}
-        run: ./gradlew publish
+        run: ./gradlew publishApps
