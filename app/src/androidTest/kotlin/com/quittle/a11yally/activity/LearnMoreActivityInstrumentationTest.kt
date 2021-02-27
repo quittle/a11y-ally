@@ -21,10 +21,10 @@ import com.quittle.a11yally.fullyTearDownPermissions
 import com.quittle.a11yally.getCurrentActivity
 import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.withPreferenceProvider
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.runner.RunWith
 
 @SuppressLint("PrivateResource")

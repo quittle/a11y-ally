@@ -68,6 +68,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
@@ -154,6 +159,8 @@ dependencies {
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'org.mockito:mockito-core:3.8.0'
 
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
+    androidTestImplementation "org.junit.vintage:junit-vintage-engine:$JUNIT_VERSION"
     androidTestImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1'
     androidTestImplementation 'tools.fastlane:screengrab:2.0.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

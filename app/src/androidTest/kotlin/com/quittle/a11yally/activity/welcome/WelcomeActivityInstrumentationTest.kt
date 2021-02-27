@@ -15,10 +15,10 @@ import com.quittle.a11yally.clearSharedPreferences
 import com.quittle.a11yally.fullyTearDownPermissions
 import com.quittle.a11yally.getCurrentActivity
 import com.quittle.a11yally.launchActivity
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)

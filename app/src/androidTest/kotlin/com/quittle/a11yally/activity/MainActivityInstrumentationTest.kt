@@ -23,9 +23,9 @@ import com.quittle.a11yally.launchActivity
 import com.quittle.a11yally.withPreferenceProvider
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
-import org.junit.Assert.assertSame
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)

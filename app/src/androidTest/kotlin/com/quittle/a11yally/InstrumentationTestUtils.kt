@@ -38,8 +38,8 @@ import org.hamcrest.Matchers
 import org.hamcrest.Matchers.greaterThanOrEqualTo
 import org.json.JSONArray
 import org.json.JSONException
-import org.junit.Assert.fail
 import org.junit.Assume.assumeThat
+import org.junit.jupiter.api.Assertions.fail
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
@@ -147,7 +147,7 @@ fun enableAccessibilityService() {
         }
     }
 
-    fail("Unable to start accessibility service")
+    fail<Nothing>("Unable to start accessibility service")
 }
 
 /**

@@ -5,8 +5,8 @@ import android.graphics.Canvas
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.quittle.a11yally.test.R
 import com.quittle.a11yally.testContext
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.runner.RunWith
 import java.nio.ByteBuffer
 

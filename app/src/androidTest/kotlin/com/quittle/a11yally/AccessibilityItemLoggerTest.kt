@@ -22,12 +22,12 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.quittle.a11yally.RecordingService.Companion.START_RECORDING_INTENT_ACTION
 import com.quittle.a11yally.RecordingService.Companion.STOP_RECORDING_INTENT_ACTION
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import java.io.File
 import java.lang.Thread.sleep
