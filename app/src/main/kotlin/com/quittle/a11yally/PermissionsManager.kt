@@ -15,7 +15,7 @@ class PermissionsManagerInitializationException(msg: String, cause: Throwable) :
 class PermissionsManager(context: Context) {
     private companion object {
         @JvmField
-        val ANALYZER_FULLY_QUALIFIED_CLASS = A11yAllyAccessibilityAnalyzer::class.qualifiedName
+        val ANALYZER_SIMPLE_NAME = A11yAllyAccessibilityAnalyzer::class.simpleName as String
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -52,7 +52,11 @@ class PermissionsManager(context: Context) {
         return mAccessibilityManager
             .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK)
             .map(AccessibilityServiceInfo::getId)
-            .any("$mPackageName/$ANALYZER_FULLY_QUALIFIED_CLASS"::equals)
+            .any { service ->
+                // Depending on the device, the service name may or may not have the package name
+                // stripped from service name.
+                service.startsWith(mPackageName) and service.endsWith(ANALYZER_SIMPLE_NAME)
+            }
     }
 
     /**
