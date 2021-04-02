@@ -58,3 +58,48 @@ fun FirebaseAnalytics.logClick(
         param(FirebaseAnalytics.Param.ITEM_CATEGORY, viewVariant.type)
     }
 }
+
+fun FirebaseAnalytics.logPreferenceChange(
+    preferenceName: String,
+    preferenceValue: String,
+) {
+    logPreferenceChange(preferenceName, EventPreferenceChange.SET) {
+        param(FirebaseAnalytics.Param.VALUE, preferenceValue)
+    }
+}
+
+fun FirebaseAnalytics.logPreferenceChange(
+    preferenceName: String,
+    preferenceValue: Number,
+) {
+    logPreferenceChange(preferenceName, EventPreferenceChange.SET) {
+        param(FirebaseAnalytics.Param.VALUE, preferenceValue.toLong())
+    }
+}
+
+fun FirebaseAnalytics.logPreferenceChange(
+    preferenceName: String,
+    preferenceValue: Boolean,
+) {
+    logPreferenceChange(preferenceName, EventPreferenceChange.SET) {
+        param(FirebaseAnalytics.Param.VALUE, preferenceValue.toString())
+    }
+}
+
+fun FirebaseAnalytics.logPreferenceRemoval(
+    preferenceName: String,
+) {
+    logPreferenceChange(preferenceName, EventPreferenceChange.REMOVE) {}
+}
+
+private fun FirebaseAnalytics.logPreferenceChange(
+    preferenceName: String,
+    change: EventPreferenceChange,
+    setValue: (ParametersBuilder.() -> Unit)
+) {
+    logEvent(ParamEvent.PREFERENCE.toString()) {
+        param(EVENT_PREFERENCE_CHANGE, change.toString())
+        param(FirebaseAnalytics.Param.ITEM_ID, preferenceName)
+        setValue(this)
+    }
+}

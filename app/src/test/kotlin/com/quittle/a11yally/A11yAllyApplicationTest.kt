@@ -7,6 +7,7 @@ import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import com.quittle.a11yally.preferences.PreferenceProvider
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -20,6 +21,9 @@ class A11yAllyApplicationTest {
     lateinit var context: Context
     lateinit var sharedPreferences: SharedPreferences
     lateinit var preferenceProvider: PreferenceProvider
+
+    @get:Rule
+    val firebaseRule = FirebaseRule()
 
     @Before
     fun setUp() {

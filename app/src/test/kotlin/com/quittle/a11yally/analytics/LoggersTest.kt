@@ -1,34 +1,34 @@
 package com.quittle.a11yally.analytics
 
 import android.annotation.SuppressLint
-import android.os.Looper
 import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.test.core.app.ApplicationProvider
-import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.nhaarman.mockitokotlin2.argForWhich
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.quittle.a11yally.BuildConfig
+import com.quittle.a11yally.FirebaseRule
 import com.quittle.a11yally.R
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.Shadows
 
 @RunWith(RobolectricTestRunner::class)
 @SuppressLint("SetTextI18n")
 class LoggersTest {
     lateinit var mockFirebaseAnalytics: FirebaseAnalytics
 
+    @get:Rule
+    val firebaseRule = FirebaseRule()
+
     @Before
     fun setUp() {
-        FirebaseApp.initializeApp(ApplicationProvider.getApplicationContext())
-        Shadows.shadowOf(Looper.getMainLooper()).idle()
         mockFirebaseAnalytics = mock()
     }
 

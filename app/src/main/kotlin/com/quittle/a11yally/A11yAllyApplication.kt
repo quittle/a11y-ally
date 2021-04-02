@@ -7,8 +7,14 @@ import android.os.Build
 import android.os.StrictMode
 import androidx.preference.PreferenceManager
 import com.quittle.a11yally.activity.DialogActivity
+import com.quittle.a11yally.analytics.firebaseAnalytics
+import com.quittle.a11yally.analytics.logPreferenceChange
+import com.quittle.a11yally.analytics.logPreferenceRemoval
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
-import com.quittle.a11yally.base.isNotNull
+import com.quittle.a11yally.base.ifNotNull
+import com.quittle.a11yally.base.isNull
+import com.quittle.a11yally.crashlytics.crashlytics
+import com.quittle.a11yally.crashlytics.recordException
 import com.quittle.a11yally.preferences.PreferenceProvider
 
 class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -43,13 +49,43 @@ class A11yAllyApplication : Application(), SharedPreferences.OnSharedPreferenceC
         }
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (sharedPreferences.isNotNull() && key.isNotNull() &&
-            prefServiceEnabled == key && sharedPreferences.getBoolean(key, false)
-        ) {
-            applicationContext.startService(
-                Intent(applicationContext, A11yAllyAccessibilityAnalyzer::class.java)
-            )
+    override fun onSharedPreferenceChanged(
+        nullableSharedPreferences: SharedPreferences?,
+        key: String?
+    ) {
+        nullableSharedPreferences.ifNotNull { sharedPreferences ->
+            if (key.isNull()) {
+                return
+            }
+
+            val curValue = sharedPreferences.all[key]
+            when {
+                curValue is Set<*> -> {
+                    firebaseAnalytics.logPreferenceChange(key, curValue.joinToString())
+                }
+                curValue is String -> {
+                    firebaseAnalytics.logPreferenceChange(key, curValue)
+                }
+                curValue is Number -> {
+                    firebaseAnalytics.logPreferenceChange(key, curValue)
+                }
+                curValue is Boolean -> {
+                    firebaseAnalytics.logPreferenceChange(key, curValue)
+                }
+                curValue.isNull() -> {
+                    firebaseAnalytics.logPreferenceRemoval(key)
+                }
+                else -> {
+                    val clazz = curValue.javaClass.name
+                    crashlytics.recordException("Unsupported shared preferences type: $clazz")
+                }
+            }
+
+            if (prefServiceEnabled == key && sharedPreferences.getBoolean(key, false)) {
+                applicationContext.startService(
+                    Intent(applicationContext, A11yAllyAccessibilityAnalyzer::class.java)
+                )
+            }
         }
     }
 

@@ -43,13 +43,14 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
         return getPreferenceProviderMemberByPrefKey<T>(prefKey).getValue()
     }
 
-    private fun <T> getPreferenceProviderMemberByPrefKey(prefKey: Int):
-        PreferenceProviderMember<T> {
-            @Suppress("unchecked_cast")
-            return preferenceProviderMembers.find {
-                it.getPrefKeyId() == prefKey
-            } as PreferenceProviderMember<T>
-        }
+    private fun <T> getPreferenceProviderMemberByPrefKey(
+        prefKey: Int
+    ): PreferenceProviderMember<T> {
+        @Suppress("unchecked_cast")
+        return preferenceProviderMembers.find {
+            it.getPrefKeyId() == prefKey
+        } as PreferenceProviderMember<T>
+    }
 
     private fun <T> putPreferenceProviderByPrefKey(prefKey: Int, value: T) {
         getPreferenceProviderMemberByPrefKey<T>(prefKey).setValue(sharedPreferences, value)
