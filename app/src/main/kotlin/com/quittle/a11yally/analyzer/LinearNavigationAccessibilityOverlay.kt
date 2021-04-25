@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationEntry
 import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationScrollOffset
@@ -50,7 +49,7 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
         mLinearNavigationState = LinearNavigationState()
         mLinearNavigationLiveData.observe(
             accessibilityAnalyzer,
-            Observer { enabled ->
+            { enabled ->
                 if (enabled) {
                     accessibilityAnalyzer.resumeListener(this)
                 } else {
@@ -163,8 +162,9 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
      * @return The first clickable node, which is either [node] or a parent of it. Returns `null` if
      * there is no clickable parent.
      */
-    private fun findClickableAccessibilityNode(node: AccessibilityNodeInfo?):
-        AccessibilityNodeInfo? {
+    private fun findClickableAccessibilityNode(
+        node: AccessibilityNodeInfo?
+    ): AccessibilityNodeInfo? {
         return when {
             node.isNull() -> null
             node.isClickable -> node
