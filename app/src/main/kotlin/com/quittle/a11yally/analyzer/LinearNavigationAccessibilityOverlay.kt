@@ -13,6 +13,9 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.quittle.a11yally.R
+import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationEntry
+import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationScrollOffset
+import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationState
 import com.quittle.a11yally.base.ifNotNull
 import com.quittle.a11yally.base.isNull
 import com.quittle.a11yally.base.orElse
@@ -35,6 +38,8 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
     private val mPreferenceProvider = PreferenceProvider(mContext)
     private val mLinearNavigationLiveData: LiveData<Boolean>
 
+    private var mLinearNavigationState: LinearNavigationState
+
     init {
         mPreferenceProvider.onResume()
 
@@ -42,6 +47,7 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
             mPreferenceProvider.getLinearNavigationLiveData(),
             mPreferenceProvider.getServiceEnabledLiveData()
         )
+        mLinearNavigationState = LinearNavigationState()
         mLinearNavigationLiveData.observe(
             accessibilityAnalyzer,
             Observer { enabled ->
@@ -61,45 +67,43 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
     }
 
     override fun onAccessibilityEventStart() {
+        val x = mScrollView?.scrollX.orElse(0)
+        val y = mScrollView?.scrollY.orElse(0)
+        mLinearNavigationState = mLinearNavigationState.next(LinearNavigationScrollOffset(x, y))
         clear()
     }
 
     override fun onAccessibilityEventEnd() {
+        mListView.ifNotNull { listView ->
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            mLinearNavigationState.entries.forEach { entry ->
+                val textView = mLayoutInflator.inflate(
+                    R.layout.linear_navigation_entry, mListView, false
+                ) as TextView
+                textView.text = entry.text
+
+                textView.setOnClickListener {
+                    findClickableAccessibilityNode(entry.node)
+                        ?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                }
+                listView.addView(textView, params)
+            }
+        }
+        if (!mLinearNavigationState.haveEntriesDiverged()) {
+            mScrollView?.scrollX = mLinearNavigationState.prevOffset.x
+            mScrollView?.scrollY = mLinearNavigationState.prevOffset.y
+        }
         // Nothing to do
     }
 
     @SuppressLint("SetTextI18n")
     override fun onAccessibilityNodeInfo(node: AccessibilityNodeInfo) {
-        mListView.ifNotNull { listView ->
-            val descriptionText = mAccessibilityNodeAnalyzer
-                .getContentDescription(node)
-                .orElse(node.text)
-                .orElse("[[No Text]]")
-                .toString()
-            if (mAccessibilityNodeAnalyzer.isNodeLikelyFocusable(node)) {
-                val textView = (
-                    mLayoutInflator.inflate(
-                        R.layout.linear_navigation_entry, listView, false
-                    ) as TextView
-                    ).apply {
-                    val descriptors = getDescriptors(node)
-                    if (descriptors.isEmpty()) {
-                        text = descriptionText
-                    } else {
-                        text = descriptionText + "-" + descriptors.joinToString(", ")
-                    }
-
-                    setOnClickListener {
-                        findClickableAccessibilityNode(node)
-                            ?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                    }
-                }
-                val params = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                listView.addView(textView, params)
-            }
+        if (mAccessibilityNodeAnalyzer.isNodeLikelyFocusable(node)) {
+            val text = getNodeText(node)
+            mLinearNavigationState.entries.add(LinearNavigationEntry(text, node))
         }
     }
 
@@ -133,10 +137,24 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
         }
     }
 
+    private fun getNodeText(node: AccessibilityNodeInfo): String {
+        val descriptionText = mAccessibilityNodeAnalyzer
+            .getContentDescription(node)
+            .orElse(node.text)
+            .orElse("[[No Text]]")
+            .toString()
+        val descriptors = getDescriptors(node)
+        if (descriptors.isEmpty()) {
+            return descriptionText
+        }
+        return descriptionText + "-" + descriptors.joinToString(", ")
+    }
+
     private fun clear() {
         mTextEntries.clear()
         mListView?.removeAllViews()
         mScrollView?.scrollTo(0, 0)
+        mLinearNavigationState.entries.clear()
     }
 
     /**
@@ -147,12 +165,12 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
      */
     private fun findClickableAccessibilityNode(node: AccessibilityNodeInfo?):
         AccessibilityNodeInfo? {
-            return when {
-                node.isNull() -> null
-                node.isClickable -> node
-                else -> findClickableAccessibilityNode(node.parent)
-            }
+        return when {
+            node.isNull() -> null
+            node.isClickable -> node
+            else -> findClickableAccessibilityNode(node.parent)
         }
+    }
 
     private fun getDescriptors(node: AccessibilityNodeInfo): List<String> {
         val ret = mutableListOf<String>()

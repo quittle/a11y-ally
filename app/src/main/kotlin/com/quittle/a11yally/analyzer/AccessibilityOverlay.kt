@@ -77,7 +77,6 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
         mRootView = buildRootView()
 
         mWindowLayoutParams.verticalMargin = 0f
-
         try {
             mWindowManager.addView(mRootView, mWindowLayoutParams)
         } catch (e: WindowManager.BadTokenException) {
