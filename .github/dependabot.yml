@@ -6,7 +6,7 @@ updates:
     interval: weekly
     day: friday
     time: "18:00"
-    timezone: Europe/London
+    timezone: America/New_York
   open-pull-requests-limit: 99
   reviewers:
   - quittle
@@ -14,9 +14,3 @@ updates:
   - quittle
   labels:
   - dependencies
-  ignore:
-  - dependency-name: com.github.triplet.play
-    versions:
-    - 3.1.0-agp4.2
-    - 3.2.0-agp4.2-2
-    - 3.3.0-agp4.2
