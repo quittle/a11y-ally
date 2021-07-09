@@ -161,7 +161,7 @@ dependencies {
 
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
     androidTestImplementation "org.junit.vintage:junit-vintage-engine:$JUNIT_VERSION"
-    androidTestImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3'
+    androidTestImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4'
     androidTestImplementation 'tools.fastlane:screengrab:2.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
