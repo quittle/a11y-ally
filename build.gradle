@@ -4,7 +4,7 @@ buildscript {
     ext {
         KOTLIN_VERSION = '1.4.32'
         ANDROID_GRADLE_VERSION = '4.1.3'
-        JUNIT_VERSION = '5.7.2'
+        JUNIT_VERSION = '5.8.0'
 
         IS_IN_CI = 'true' == System.getenv('CI')
         IS_CI_RELEASE = 'true' == System.getenv('IS_CI_RELEASE')
