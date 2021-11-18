@@ -15,6 +15,7 @@ import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationEntry
 import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationScrollOffset
 import com.quittle.a11yally.analyzer.linearnavigation.LinearNavigationState
+import com.quittle.a11yally.base.getDefaultDisplayContext
 import com.quittle.a11yally.base.ifNotNull
 import com.quittle.a11yally.base.isNull
 import com.quittle.a11yally.base.orElse
@@ -30,7 +31,7 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
 
     private var mListView: LinearLayout? = null
     private var mScrollView: ScrollView? = null
-    private val mContext: Context = accessibilityAnalyzer.applicationContext
+    private val mContext: Context = accessibilityAnalyzer.getDefaultDisplayContext()
     private val mAccessibilityNodeAnalyzer = AccessibilityNodeAnalyzer(mContext)
     private val mTextEntries: MutableList<String> = mutableListOf()
     private val mLayoutInflator = LayoutInflater.from(mContext)
@@ -74,6 +75,7 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
 
     override fun onAccessibilityEventEnd() {
         mListView.ifNotNull { listView ->
+            listView.setOnScrollChangeListener ((v, scrollX, scrollY, oldScrollX, oldScrollY) -> { })
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -88,6 +90,16 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
                     findClickableAccessibilityNode(entry.node)
                         ?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
                 }
+                textView.setOnLongClickListener {
+                    findLongClickableAccessibilityNode(entry.node)
+                        ?.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK)
+                    false
+                }
+//                textView.setOnTouchListener { _, _ ->
+//                    findFocusableAccessibilityNode(entry.node)
+//                        ?.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+//                    false
+//                }
                 listView.addView(textView, params)
             }
         }
@@ -156,19 +168,33 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
         mLinearNavigationState.entries.clear()
     }
 
+    private fun findClickableAccessibilityNode(
+        node: AccessibilityNodeInfo?
+    ): AccessibilityNodeInfo? = findAccessibilityNodeByCase(node, AccessibilityNodeInfo::isClickable)
+
+    private fun findLongClickableAccessibilityNode(
+        node: AccessibilityNodeInfo?
+    ): AccessibilityNodeInfo? = findAccessibilityNodeByCase(node, AccessibilityNodeInfo::isLongClickable)
+
+    private fun findFocusableAccessibilityNode(
+        node: AccessibilityNodeInfo?
+    ): AccessibilityNodeInfo? = findAccessibilityNodeByCase(node, AccessibilityNodeInfo::isFocusable)
+
     /**
-     * Recursively finds the first, clickable node in the hierarchy
+     * Recursively finds the first node that matches [case] in the hierarchy of a node and its parents
      * @param node The base node
+     * @param case Called with each node in the hierarchy, returning true if it's a match.
      * @return The first clickable node, which is either [node] or a parent of it. Returns `null` if
      * there is no clickable parent.
      */
-    private fun findClickableAccessibilityNode(
-        node: AccessibilityNodeInfo?
+    private fun findAccessibilityNodeByCase(
+        node: AccessibilityNodeInfo?,
+        case: (AccessibilityNodeInfo) -> Boolean,
     ): AccessibilityNodeInfo? {
         return when {
             node.isNull() -> null
-            node.isClickable -> node
-            else -> findClickableAccessibilityNode(node.parent)
+            case(node) -> node
+            else -> findAccessibilityNodeByCase(node.parent, case)
         }
     }
 
