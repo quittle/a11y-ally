@@ -9,7 +9,7 @@ buildscript {
 
 plugins {
     id 'com.github.triplet.play' version '3.3.0'
-    id 'com.quittle.android-emulator' version '0.4.3'
+    id 'com.quittle.android-emulator' version '0.4.4'
     id 'com.quittle.svg-2-android-vector' version '0.0.6'
     id 'com.diffplug.image-grinder' version '2.2.2'
 }
