@@ -22,7 +22,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.vanniktech.code.quality.tools' version '0.20.0'
+    id 'com.vanniktech.code.quality.tools' version '0.21.0'
     id 'com.quittle.setup-android-sdk' version '2.1.0'
 }
 
