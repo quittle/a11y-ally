@@ -58,18 +58,14 @@ class AccessibilityNodeSummary(node: AccessibilityNodeInfo) {
     }
 
     private fun getWindowType(): CharSequence? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            when (val windowType = mNode.window?.type) {
-                AccessibilityWindowInfo.TYPE_SYSTEM -> "TYPE_SYSTEM"
-                AccessibilityWindowInfo.TYPE_ACCESSIBILITY_OVERLAY -> "TYPE_ACCESSIBILITY_OVERLAY"
-                AccessibilityWindowInfo.TYPE_APPLICATION -> "TYPE_APPLICATION"
-                AccessibilityWindowInfo.TYPE_INPUT_METHOD -> "TYPE_INPUT_METHOD"
-                AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER -> "TYPE_SPLIT_SCREEN_DIVIDER"
-                null -> null
-                else -> "Unknown: $windowType"
-            }
-        } else {
-            null
+        return when (val windowType = mNode.window?.type) {
+            AccessibilityWindowInfo.TYPE_SYSTEM -> "TYPE_SYSTEM"
+            AccessibilityWindowInfo.TYPE_ACCESSIBILITY_OVERLAY -> "TYPE_ACCESSIBILITY_OVERLAY"
+            AccessibilityWindowInfo.TYPE_APPLICATION -> "TYPE_APPLICATION"
+            AccessibilityWindowInfo.TYPE_INPUT_METHOD -> "TYPE_INPUT_METHOD"
+            AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER -> "TYPE_SPLIT_SCREEN_DIVIDER"
+            null -> null
+            else -> "Unknown: $windowType"
         }
     }
 

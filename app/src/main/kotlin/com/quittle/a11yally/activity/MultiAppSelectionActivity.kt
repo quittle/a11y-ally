@@ -29,7 +29,7 @@ class MultiAppSelectionActivity : FixedContentActivity() {
                         entry.subtitle.contains(newText, true) ||
                         entry.title.contains(newText, true)
                 }
-                notifyDataSetChanged()
+                notifyItemRangeChanged(0, stateArray.size)
             }
             return true
         }
@@ -107,7 +107,7 @@ class MultiAppSelectionActivity : FixedContentActivity() {
                     state.enabled = !enabled
                 }
 
-                it.notifyDataSetChanged()
+                it.notifyItemRangeChanged(0, it.stateArray.size)
             }
             mList?.isEnabled = !enabled
             listScrollView.isEnabled = !enabled

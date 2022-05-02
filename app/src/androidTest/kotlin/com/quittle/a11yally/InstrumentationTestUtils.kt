@@ -277,7 +277,7 @@ fun <T : Activity> launchTestActivity(clazz: KClass<T>): T {
 
     targetContext.startActivity(intent)
 
-    return retry(5 * 1000, 100) {
+    return retry(5L * 1000, 100) {
         InstrumentationRegistry.getInstrumentation().newActivity(
             clazz.java, testContext, null, null, intent, null,
             "title", null, "thing", null

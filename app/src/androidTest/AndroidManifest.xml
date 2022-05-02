@@ -3,5 +3,9 @@
     package="com.quittle.a11yally.test">
     <application android:theme="@style/Theme.Test">
         <activity android:name="com.quittle.a11yally.AccessibilityTestActivity" android:exported="true" />
+
+        <activity android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity" android:exported="false" />
+        <activity android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity" android:exported="false" />
+        <activity android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity" android:exported="false" />
     </application>
 </manifest>

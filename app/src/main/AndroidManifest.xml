@@ -23,7 +23,7 @@
             android:allowBackup="true"
             android:theme="@style/Theme.Main.Real"
             android:supportsRtl="false">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,7 +39,7 @@
         <activity android:name=".activity.DialogActivity" android:theme="@style/Theme.AppCompat.DayNight.Dialog" android:excludeFromRecents="true" />
 
         <service android:name=".analyzer.A11yAllyAccessibilityAnalyzer"
-                android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+                android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="false">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
@@ -48,7 +48,8 @@
                     android:resource="@xml/accessibility_service_config" />
         </service>
         <service android:name=".RecordingService"
-                android:permission="com.quittle.a11yally.MANAGE_RECORDING">
+                android:permission="com.quittle.a11yally.MANAGE_RECORDING"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.quittle.a11yally.START_RECORDING" />
                 <action android:name="com.quittle.a11yally.STOP_RECORDING" />
