@@ -11,7 +11,6 @@ import android.widget.AbsoluteLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
 import com.quittle.a11yally.analyzer.AccessibilityNodeAnalyzer
@@ -52,15 +51,14 @@ class ContentDescriptionOverlay(accessibilityAnalyzer: A11yAllyAccessibilityAnal
         )
 
         mContentDescriptionLiveData.observe(
-            accessibilityAnalyzer,
-            Observer { enabled ->
-                if (enabled) {
-                    accessibilityAnalyzer.resumeListener(this)
-                } else {
-                    accessibilityAnalyzer.pauseListener(this)
-                }
+            accessibilityAnalyzer
+        ) { enabled ->
+            if (enabled) {
+                accessibilityAnalyzer.resumeListener(this)
+            } else {
+                accessibilityAnalyzer.pauseListener(this)
             }
-        )
+        }
 
         if (mContentDescriptionLiveData.value!!) {
             accessibilityAnalyzer.resumeListener(this)

@@ -33,6 +33,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@Suppress("LargeClass")
 class Welcome2Activity : FixedContentActivity() {
     companion object {
         const val INTENT_LAUNCH_IN_LIST_VIEW = "LAUNCH_IN_LIST_VIEW"

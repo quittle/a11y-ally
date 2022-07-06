@@ -43,7 +43,7 @@ class AccessibilityTestActivity : Activity() {
             // Kotlin fanciness doesn't work here for an unknown reason, using the accessor
             // shorthand or "?." will result in a NoClassDefFoundError due to
             // kotlin.jvm.internal.Intrinsics being missing.
-            val controller = window.getDecorView().getWindowInsetsController()
+            val controller = window.decorView.windowInsetsController
             if (controller != null) {
                 controller.hide(WindowInsets.Type.statusBars())
             }
@@ -54,12 +54,15 @@ class AccessibilityTestActivity : Activity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        Handler(mainLooper).postDelayed(
-            {
+        // same workaround for kotlin.jvm.internal.Intrinsics problem
+        val setContentViewAction: Runnable? = object : Runnable {
+            override fun run() {
                 setContentView(TestR.layout.accessibility_test_activity)
-            },
-            2000
-        )
+            }
+        }
+        if (setContentViewAction != null) {
+            Handler(mainLooper).postDelayed(setContentViewAction, 2000)
+        }
     }
 }
 

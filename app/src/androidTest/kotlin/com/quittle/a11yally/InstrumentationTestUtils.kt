@@ -55,12 +55,12 @@ import kotlin.reflect.cast
  * Sets up and tears down permissions around a test
  */
 class PermissionsRule : TestRule {
-    override fun apply(base: Statement?, description: Description?): Statement =
+    override fun apply(base: Statement, description: Description): Statement =
         object : Statement() {
             override fun evaluate() {
                 try {
                     fullySetUpPermissions()
-                    base?.evaluate()
+                    base.evaluate()
                 } finally {
                     fullyTearDownPermissions()
                 }
@@ -316,11 +316,11 @@ private fun isFileJsonArray(file: File): Boolean {
 }
 
 private fun isFileClosed(file: File): Boolean {
-    try {
+    return try {
         RandomAccessFile(file, "rws").close()
-        return true
+        true
     } catch (e: IOException) {
-        return false
+        false
     }
 }
 

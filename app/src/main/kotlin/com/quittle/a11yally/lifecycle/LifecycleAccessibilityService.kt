@@ -21,6 +21,7 @@ abstract class LifecycleAccessibilityService : AccessibilityService(), Lifecycle
     }
 
     @Suppress("deprecation")
+    @Deprecated("Deprecated in Java")
     @CallSuper
     override fun onStart(intent: Intent?, startId: Int) {
         mDispatcher.onServicePreSuperOnStart()

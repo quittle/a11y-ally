@@ -203,6 +203,7 @@ class PreferenceProvider(context: Context, resumeOnConstruction: Boolean = false
 /**
  * Hold onto the reference of pref to ensure it doesn't get garbage collected
  */
+@Suppress("CanBeParameter")
 internal class PreferenceLiveData<T>(private val pref: PreferenceProviderMember<T>) :
     MutableLiveData<T>(pref.getValue()) {
     init {

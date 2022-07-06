@@ -82,9 +82,11 @@ class AppInfoRecyclerViewAdapterInstrumentationTest {
                             "package name",
                             0,
                             RefreshableWeakReference {
-                                ContextCompat.getDrawable(
-                                    activity, android.R.drawable.sym_def_app_icon
-                                )!!
+                                requireNotNull(
+                                    ContextCompat.getDrawable(
+                                        activity, android.R.drawable.sym_def_app_icon
+                                    )
+                                )
                             }
                         ),
                         true
@@ -113,9 +115,11 @@ class AppInfoRecyclerViewAdapterInstrumentationTest {
                             "package.name.$index",
                             0,
                             RefreshableWeakReference {
-                                ContextCompat.getDrawable(
-                                    activity, android.R.drawable.sym_def_app_icon
-                                )!!
+                                requireNotNull(
+                                    ContextCompat.getDrawable(
+                                        activity, android.R.drawable.sym_def_app_icon
+                                    )
+                                )
                             }
                         ),
                         false

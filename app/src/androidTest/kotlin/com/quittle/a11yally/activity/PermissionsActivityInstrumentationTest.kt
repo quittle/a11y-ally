@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.repeatedlyUntil
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.PositionAssertions.isBottomAlignedWith
@@ -79,7 +80,8 @@ class PermissionsActivityInstrumentationTest {
 
         onView(withId(R.id.continue_button))
             .perform(scrollTo())
-            .perform(swipeUp())
+            // fix for Pixel 3 API 29 emulator
+            .perform(repeatedlyUntil(swipeUp(), isCompletelyDisplayed(), 3))
             .check(matches(isCompletelyDisplayed()))
             .check(matches(isEnabled()))
             .perform(click())

@@ -3,6 +3,7 @@ package com.quittle.a11yally.activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
@@ -84,7 +85,9 @@ class PermissionsActivity : FixedContentActivity() {
     }
 
     private fun onClickFixOverlay() {
-        if (!mPermissionsManager.hasDrawOverlaysPermission()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            !mPermissionsManager.hasDrawOverlaysPermission()
+        ) {
             startActivityIntent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, true)
         } else {
             updateViewsStatuses()

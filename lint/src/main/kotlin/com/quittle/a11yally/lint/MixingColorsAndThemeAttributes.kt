@@ -61,6 +61,7 @@ class MixingColorsAndThemeAttributes : ResourceXmlDetector() {
     companion object {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
+        @Suppress("MaxLineLength")
         val ISSUE: Issue = Issue.create(
             id = "MixingColorsAndThemeAttributes",
             briefDescription = "Mixing colors and theme attributes in drawables",

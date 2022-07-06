@@ -58,27 +58,20 @@ abstract class AccessibilityAnalyzer : LifecycleAccessibilityService() {
     protected abstract fun getAppWhitelist(): Iterable<String>?
 
     protected fun pauseListeners() {
-        activeListeners.forEach(AccessibilityItemEventListener::onPause)
+        activeListeners.iterator().forEach(AccessibilityItemEventListener::onPause)
     }
 
     protected fun resumeListeners() {
-        activeListeners.forEach(AccessibilityItemEventListener::onResume)
+        activeListeners.iterator().forEach(AccessibilityItemEventListener::onResume)
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        // Clear recycle nodes when events start
-        mCachedNodes.forEach {
-            try {
-                it.recycle()
-            } catch (e: IllegalStateException) {
-                Log.w(TAG, "Unable to recycle node", e)
-            }
-        }
-        mCachedNodes.clear()
+        // Recycle and clear nodes when events start
+        recycleAndClearNodes()
 
         val whitelist = getAppWhitelist()
         if (whitelist !== null && !whitelist.contains(rootInActiveWindow?.packageName)) {
-            activeListeners.forEach(AccessibilityItemEventListener::onNonWhitelistedApp)
+            activeListeners.iterator().forEach(AccessibilityItemEventListener::onNonWhitelistedApp)
             if (!mIsPaused) {
                 mIsPaused = true
                 pauseListeners()
@@ -91,7 +84,9 @@ abstract class AccessibilityAnalyzer : LifecycleAccessibilityService() {
             resumeListeners()
         }
 
-        activeListeners.forEach(AccessibilityItemEventListener::onAccessibilityEventStart)
+        activeListeners.iterator().forEach(
+            AccessibilityItemEventListener::onAccessibilityEventStart
+        )
 
         var rootNode: AccessibilityNodeInfo? = null
         try {
@@ -104,10 +99,21 @@ abstract class AccessibilityAnalyzer : LifecycleAccessibilityService() {
             iterateAccessibilityNodeInfos(it, this::onNodeEvent)
             mCachedNodes.add(it)
         }
-        activeListeners.forEach(AccessibilityItemEventListener::onAccessibilityEventEnd)
+        activeListeners.iterator().forEach(AccessibilityItemEventListener::onAccessibilityEventEnd)
     }
 
     override fun onInterrupt() {}
+
+    private fun recycleAndClearNodes() {
+        mCachedNodes.iterator().forEach {
+            try {
+                it.recycle()
+            } catch (e: IllegalStateException) {
+                Log.w(TAG, "Unable to recycle node", e)
+            }
+        }
+        mCachedNodes.clear()
+    }
 
     private fun iterateAccessibilityNodeInfos(
         root: AccessibilityNodeInfo,
@@ -123,7 +129,7 @@ abstract class AccessibilityAnalyzer : LifecycleAccessibilityService() {
     }
 
     private fun onNodeEvent(node: AccessibilityNodeInfo) {
-        listeners.forEach { listener: AccessibilityItemEventListener ->
+        listeners.iterator().forEach { listener: AccessibilityItemEventListener ->
             listener.onAccessibilityNodeInfo(node)
         }
     }

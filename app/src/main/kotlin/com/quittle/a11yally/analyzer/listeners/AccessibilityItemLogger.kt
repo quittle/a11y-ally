@@ -29,7 +29,7 @@ class AccessibilityItemLogger(context: Context) : AccessibilityIssueListener {
             return
         }
 
-        issues.forEach { issue ->
+        issues.iterator().forEach { issue ->
             val summaryMap = issue.info +
                 mapOf(
                     "boundsInScreen" to issue.area.toShortString(),

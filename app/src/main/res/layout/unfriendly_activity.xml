@@ -107,5 +107,28 @@
                 android:layout_height="46dp"
                 android:layout_width="46dp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:theme="@style/UnfriendlyEntryTheme">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/unlabeled_hintless_edittext" />
+
+            <EditText
+                android:id="@+id/edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

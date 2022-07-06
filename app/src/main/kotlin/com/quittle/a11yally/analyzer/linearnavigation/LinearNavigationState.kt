@@ -46,7 +46,7 @@ data class LinearNavigationState(
     fun haveEntriesDiverged(): Boolean {
         val curText = entries.map(LinearNavigationEntry::text)
         val prevText = prevEntries.map(LinearNavigationEntry::text)
-        val intersection = curText.intersect(prevText)
+        val intersection = curText.intersect(prevText.toSet())
         if (curText.isEmpty()) {
             return prevText.isNotEmpty()
         }
