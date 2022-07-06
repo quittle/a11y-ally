@@ -26,10 +26,10 @@ fun Canvas.clear() {
 
 fun Context.resolveAttributeResourceValue(@AttrRes attribute: Int): Int? {
     val typedValue = TypedValue()
-    if (theme.resolveAttribute(attribute, typedValue, true)) {
-        return typedValue.data
+    return if (theme.resolveAttribute(attribute, typedValue, true)) {
+        typedValue.data
     } else {
-        return null
+        null
     }
 }
 

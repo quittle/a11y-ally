@@ -21,9 +21,9 @@ class RecordingService : android.app.IntentService(RecordingService::javaClass.n
                 "have to start the app and grant it permissions before you can record"
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onHandleIntent(intent: Intent?) {
-        val action = intent?.action
-        when (action) {
+        when (val action = intent?.action) {
             START_RECORDING_INTENT_ACTION -> startRecording()
             STOP_RECORDING_INTENT_ACTION -> stopRecording()
             else -> Log.w(TAG, "Unsupported action received: $action")

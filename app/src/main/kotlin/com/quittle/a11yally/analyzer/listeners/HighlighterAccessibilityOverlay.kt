@@ -11,7 +11,6 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.R
 import com.quittle.a11yally.analyzer.A11yAllyAccessibilityAnalyzer
@@ -64,15 +63,14 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
         )
 
         mHighlightIssuesLiveData.observe(
-            accessibilityAnalyzer,
-            Observer { enabled ->
-                if (enabled) {
-                    accessibilityAnalyzer.resumeListener(this)
-                } else {
-                    accessibilityAnalyzer.pauseListener(this)
-                }
+            accessibilityAnalyzer
+        ) { enabled ->
+            if (enabled) {
+                accessibilityAnalyzer.resumeListener(this)
+            } else {
+                accessibilityAnalyzer.pauseListener(this)
             }
-        )
+        }
 
         if (mHighlightIssuesLiveData.value!!) {
             accessibilityAnalyzer.resumeListener(this)
@@ -93,7 +91,7 @@ class HighlighterAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccessibili
             paint.isAntiAlias = true
 
             canvas.clear()
-            issues.forEach { issue ->
+            issues.iterator().forEach { issue ->
                 val rect = issue.area
                 rect.offset(-drawViewOffsetX, -drawViewOffsetY)
                 paint.color = when (issue.type) {

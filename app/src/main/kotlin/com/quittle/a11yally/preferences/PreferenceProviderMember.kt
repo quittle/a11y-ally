@@ -55,7 +55,7 @@ internal abstract class PreferenceProviderMember<T>(
 
     fun updateValue(sharedPref: SharedPreferences) {
         mValue = getPrefValue(sharedPref, mPrefKey, mValue)
-        mListeners.forEach { it(mValue) }
+        mListeners.iterator().forEach { it(mValue) }
     }
 
     fun possiblyUpdateValue(sharedPref: SharedPreferences, prefKey: String) {

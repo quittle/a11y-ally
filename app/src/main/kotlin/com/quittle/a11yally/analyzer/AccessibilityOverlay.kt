@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.quittle.a11yally.BuildConfig.TAG
 import com.quittle.a11yally.base.ifNotNull
 import com.quittle.a11yally.preferences.PreferenceProvider
@@ -36,7 +35,8 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
         accessibilityAnalyzer.applicationContext
             .getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
     private val mPreferenceProvider = PreferenceProvider(accessibilityAnalyzer)
-    private val mServiceEnabledLiveData: LiveData<Boolean>
+    private val mServiceEnabledLiveData: LiveData<Boolean> =
+        mPreferenceProvider.getServiceEnabledLiveData()
 
     protected val rootView get() = mRootView
 
@@ -62,15 +62,13 @@ abstract class AccessibilityOverlay<T : ViewGroup>(
     }
 
     init {
-        mServiceEnabledLiveData = mPreferenceProvider.getServiceEnabledLiveData()
         mServiceEnabledLiveData.observe(
-            accessibilityAnalyzer,
-            Observer { enabled ->
-                if (!enabled) {
-                    accessibilityAnalyzer.pauseListener(this)
-                }
+            accessibilityAnalyzer
+        ) { enabled ->
+            if (!enabled) {
+                accessibilityAnalyzer.pauseListener(this)
             }
-        )
+        }
     }
 
     override fun onResume() {

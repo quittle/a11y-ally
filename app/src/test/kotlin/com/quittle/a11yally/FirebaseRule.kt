@@ -9,7 +9,7 @@ import org.junit.runners.model.Statement
 import org.robolectric.Shadows
 
 class FirebaseRule : TestRule {
-    override fun apply(base: Statement, description: Description?): Statement =
+    override fun apply(base: Statement, description: Description): Statement =
         object : Statement() {
             override fun evaluate() {
                 FirebaseApp.initializeApp(ApplicationProvider.getApplicationContext())

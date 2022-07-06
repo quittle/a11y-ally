@@ -124,25 +124,7 @@ class ButtonSwitch : LinearLayoutCompat {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        val wrapper = rootView.findViewById<LinearLayoutCompat>(R.id.wrapper)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            ViewCompat.setBackground(wrapper, this.background)
-
-            // Android 21 has a bug in background tints on ViewGroups
-            // See: https://stackoverflow.com/a/63602100/1554990
-            when {
-                Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP -> {
-                    val colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-                        this.mBackgroundTint, BlendModeCompat.MODULATE
-                    )
-                    wrapper.background.colorFilter = colorFilter
-                }
-                Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP -> {
-                    val tintList = ViewCompat.getBackgroundTintList(this)
-                    ViewCompat.setBackgroundTintList(wrapper, tintList)
-                }
-            }
-        }
+        setBackground()
 
         mTitleButton = findViewById(R.id.button)
         mDivider = findViewById(R.id.divider)
@@ -171,6 +153,28 @@ class ButtonSwitch : LinearLayoutCompat {
                     mSharedPreferences.edit()
                         .putBoolean(mPreference, isChecked)
                         .apply()
+                }
+            }
+        }
+    }
+
+    private fun setBackground() {
+        val wrapper = rootView.findViewById<LinearLayoutCompat>(R.id.wrapper)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            ViewCompat.setBackground(wrapper, this.background)
+
+            // Android 21 has a bug in background tints on ViewGroups
+            // See: https://stackoverflow.com/a/63602100/1554990
+            when {
+                Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP -> {
+                    val colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        this.mBackgroundTint, BlendModeCompat.MODULATE
+                    )
+                    wrapper.background.colorFilter = colorFilter
+                }
+                Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP -> {
+                    val tintList = ViewCompat.getBackgroundTintList(this)
+                    ViewCompat.setBackgroundTintList(wrapper, tintList)
                 }
             }
         }

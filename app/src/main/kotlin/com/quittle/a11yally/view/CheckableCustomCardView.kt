@@ -16,10 +16,14 @@ class CheckableCustomCardView : Checkable, CustomCardView {
     }
 
     private val mListeners: MutableList<OnCheckedChangeListener> = mutableListOf()
-    @DrawableRes private val mImageResource: Int
-    @ColorInt private val mImageBackgroundColor: Int
-    @DrawableRes private val mImageResourceUnchecked: Int
-    @ColorInt private val mImageBackgroundColorUnchecked: Int
+    @DrawableRes
+    private val mImageResource: Int
+    @ColorInt
+    private val mImageBackgroundColor: Int
+    @DrawableRes
+    private val mImageResourceUnchecked: Int
+    @ColorInt
+    private val mImageBackgroundColorUnchecked: Int
     private var mIsChecked: Boolean = false
     private val mPreferenceKey: String?
 
@@ -68,21 +72,19 @@ class CheckableCustomCardView : Checkable, CustomCardView {
         )
 
         @JvmField
-        val ON_TOGGLE = object : OnCheckedChangeListener {
-            override fun onCheckedChanged(view: CheckableCustomCardView, isChecked: Boolean) {
-                if (isChecked) {
-                    view.setImageResource(view.mImageResource)
-                    view.setImageBackgroundColor(view.mImageBackgroundColor)
-                } else {
-                    view.setImageResource(view.mImageResourceUnchecked)
-                    view.setImageBackgroundColor(view.mImageBackgroundColorUnchecked)
-                }
+        val ON_TOGGLE = OnCheckedChangeListener { view, isChecked ->
+            if (isChecked) {
+                view.setImageResource(view.mImageResource)
+                view.setImageBackgroundColor(view.mImageBackgroundColor)
+            } else {
+                view.setImageResource(view.mImageResourceUnchecked)
+                view.setImageBackgroundColor(view.mImageBackgroundColorUnchecked)
+            }
 
-                view.mPreferenceKey?.let { preferenceKey ->
-                    PreferenceManager.getDefaultSharedPreferences(view.context).edit()
-                        .putBoolean(preferenceKey, isChecked)
-                        ?.apply()
-                }
+            view.mPreferenceKey?.let { preferenceKey ->
+                PreferenceManager.getDefaultSharedPreferences(view.context).edit()
+                    .putBoolean(preferenceKey, isChecked)
+                    ?.apply()
             }
         }
 
@@ -156,7 +158,7 @@ class CheckableCustomCardView : Checkable, CustomCardView {
 
     override fun setChecked(isChecked: Boolean) {
         mIsChecked = isChecked
-        mListeners.forEach {
+        mListeners.iterator().forEach {
             it.onCheckedChanged(this, isChecked)
         }
     }

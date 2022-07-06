@@ -22,7 +22,7 @@ class BuildTypeRule(private vararg val mBuildTypes: String) : TestRule {
         }
     }
 
-    override fun apply(base: Statement, description: Description?): Statement {
+    override fun apply(base: Statement, description: Description): Statement {
         return BuildTypeRuleStatement(base, mBuildTypes)
     }
 }

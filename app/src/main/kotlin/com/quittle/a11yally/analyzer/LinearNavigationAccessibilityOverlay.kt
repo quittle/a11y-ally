@@ -48,15 +48,14 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
         )
         mLinearNavigationState = LinearNavigationState()
         mLinearNavigationLiveData.observe(
-            accessibilityAnalyzer,
-            { enabled ->
-                if (enabled) {
-                    accessibilityAnalyzer.resumeListener(this)
-                } else {
-                    accessibilityAnalyzer.pauseListener(this)
-                }
+            accessibilityAnalyzer
+        ) { enabled ->
+            if (enabled) {
+                accessibilityAnalyzer.resumeListener(this)
+            } else {
+                accessibilityAnalyzer.pauseListener(this)
             }
-        )
+        }
 
         if (mLinearNavigationLiveData.value!!) {
             accessibilityAnalyzer.resumeListener(this)
@@ -78,7 +77,7 @@ class LinearNavigationAccessibilityOverlay(accessibilityAnalyzer: A11yAllyAccess
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            mLinearNavigationState.entries.forEach { entry ->
+            mLinearNavigationState.entries.iterator().forEach { entry ->
                 val textView = mLayoutInflator.inflate(
                     R.layout.linear_navigation_entry, mListView, false
                 ) as TextView
