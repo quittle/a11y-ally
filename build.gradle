@@ -3,7 +3,7 @@ import org.gradle.util.VersionNumber
 buildscript {
     ext {
         KOTLIN_VERSION = '1.6.21'
-        ANDROID_GRADLE_VERSION = '4.1.3'
+        ANDROID_GRADLE_VERSION = '7.2.1'
         JUNIT_VERSION = '5.9.0'
         QUALITY_TOOLS_VERSION = '0.21.0'
 
