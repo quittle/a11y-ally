@@ -1,4 +1,4 @@
-# A11y Ally [<img alt="Get it on Google Play" src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="50px" align="top" />](https://play.google.com/store/apps/details?id=com.quittle.a11yally&referrer=utm_source%3Dgithub%26utm_medium%3Dheader) [![Build Status](https://github.com/quittle/a11y-ally/workflows/Build/badge.svg)](https://github.com/quittle/a11y-ally/actions?query=workflow%3ABuild)
+# A11y Ally [<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="50px" align="top" />](https://play.google.com/store/apps/details?id=com.quittle.a11yally&referrer=utm_source%3Dgithub%26utm_medium%3Dheader) [![Build Status](https://github.com/quittle/a11y-ally/workflows/Build/badge.svg)](https://github.com/quittle/a11y-ally/actions?query=workflow%3ABuild)
 
 <img align="left" src="app/src/main/custom-res/icon.svg" alt="A11y Ally Logo" height="80px" />
 A11y Ally (as in <a href="https://a11yproject.com/about/#what-does-the-term-a11y-mean">Accessibility Ally</a>)
