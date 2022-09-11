@@ -69,10 +69,8 @@ jobs:
   automerge:
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.2.0
+      - uses: fastify/github-action-merge-dependabot@v3.3.0 
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.DEPENDABOT_PAT}}
