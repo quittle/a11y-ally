@@ -156,7 +156,7 @@ dependencies {
     testImplementation 'androidx.test:core:1.5.0'
     testImplementation 'org.robolectric:robolectric:4.5.1'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation 'org.mockito:mockito-core:4.9.0'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
 
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
     androidTestImplementation "org.junit.vintage:junit-vintage-engine:$JUNIT_VERSION"
