@@ -9,7 +9,7 @@ lintOptions {
     abortOnError true
 }
 
-final String lintVersion = '30.3.1'
+final String lintVersion = '30.4.2'
 
 dependencies {
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KOTLIN_VERSION"
